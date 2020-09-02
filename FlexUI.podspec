@@ -28,10 +28,18 @@ TODO: Add long description of the pod here.
   s.source           = { :git => 'https://github.com/chmlaiii@gmail.com/FlexUI.git', :tag => s.version.to_s }
   # s.social_media_url = 'https://twitter.com/<TWITTER_USERNAME>'
 
-  s.ios.deployment_target = '8.0'
+  s.ios.deployment_target = '10.0'
+  s.swift_versions = ['5']
 
-  s.source_files = 'FlexUI/Classes/**/*'
-  
+  s.source_files = [
+    'FlexUI/Sources/**/*'
+  ]
+  s.dependency 'Yoga'
+  s.dependency 'MPITextKit'
+  s.dependency 'DifferenceKit'
+  s.dependency 'Nuke'
+  s.dependency 'FLAnimatedImage'
+
   # s.resource_bundles = {
   #   'FlexUI' => ['FlexUI/Assets/*.png']
   # }
