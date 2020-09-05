@@ -5,21 +5,26 @@
 //  Created by 黎昌明 on 2020/9/2.
 //
 
+extension Node {
+  public func scrollable() -> ScrollContent<Self> {
+    return ScrollContent {
+      self as Self
+    }
+  }
+}
+
 
 public struct ScrollContent<Content: Node>: Node, ViewProducible {
   public typealias Body = Never
   public typealias ProductedView = UIScrollView
-
   let content: Content
 
   public init(@NodeBuilder content: () -> Content) {
     self.content = content()
   }
-
 }
 
 extension ScrollContent {
-
   public func build(with context: YogaTreeContext) -> [YogaNode] {
     let viewProducer = ViewProducer(type: ProductedView.self)
     viewProducer.appendDeferConfiguration(as: ProductedView.self) { (view) in
@@ -34,17 +39,19 @@ extension ScrollContent {
     let containerYogaNode = YogaNode()
     yogaNode.insertChild(containerYogaNode)
     let contentYogaNodes = content.build(with: context.with(parent: yogaNode))
+    containerYogaNode.viewProducer = ViewProducer(type: UIView.self)
 
-    if let direction = contentYogaNodes.first?.style.flexDirection {
-      containerYogaNode.style.flexDirection = direction
-      if direction == .row || direction == .column {
-        containerYogaNode.style.alignSelf = .flexStart
-      }
-    }
+    containerYogaNode.viewProducer?.appendDeferConfiguration(config: { (v) in
+      // WORKAROUND FIX for Horizontal Scrolling in RTL
+      // TODO: Refactor
+      var frame = v.frame
+      frame.origin = .zero
+      v.frame = frame
+    })
+    
     contentYogaNodes.forEach { (child) in
       containerYogaNode.insertChild(child)
     }
-
     return [yogaNode]
   }
 

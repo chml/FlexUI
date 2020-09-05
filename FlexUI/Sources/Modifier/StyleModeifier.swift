@@ -73,12 +73,12 @@ extension Node {
   }
 
   @inlinable
-  public func paddding(of edge: Edge = .all, _ value: CGFloat) -> ModifiedContent<Self, PositioningModifier> {
-    paddding(of: edge, .point(value))
+  public func padding(of edge: Edge = .all, _ value: CGFloat) -> ModifiedContent<Self, PositioningModifier> {
+    padding(of: edge, .point(value))
   }
 
   @inlinable
-  public func paddding(of edge: Edge = .all, _ value: Value) -> ModifiedContent<Self, PositioningModifier> {
+  public func padding(of edge: Edge = .all, _ value: Value) -> ModifiedContent<Self, PositioningModifier> {
     modifier(PositioningModifier(demension: .padding, edge: edge, value: value))
   }
 

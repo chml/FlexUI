@@ -41,6 +41,7 @@ public class YogaTree {
   @discardableResult
   public func calculateLayout(width: CGFloat = .greatestFiniteMagnitude, height: CGFloat = .greatestFiniteMagnitude, direction: Direction = .inherit) -> YogaTree {
     layout = node.calculateLayout(width: width, height: height, direction: direction)
+    print("\(node)")
     return self
   }
 

@@ -6,17 +6,8 @@
 //
 
 
-public protocol CellBuildable: SectionBuildable {
+public protocol CellBuildable {
   func buildCells() -> [Cell]
-}
-
-extension CellBuildable {
-
-  public func buildSections() -> [Section] {
-    return [Section(id: UniqueIdentifier()) { () -> Self in
-      return self as Self
-    }]
-  }
 }
 
 extension Cell: CellBuildable {
@@ -26,43 +17,41 @@ extension Cell: CellBuildable {
 }
 
 extension ListViewAdapter {
-
-  public func render<Cells>(@CellBuilder cells: () -> Cells ) where Cells: CellBuildable {
+  public func render<Cells>(@CellBuilder cellsBuilder: () -> Cells ) where Cells: CellBuildable {
     render([
-      Section(id: UniqueIdentifier(), cells: cells)
+      Section(id: UniqueIdentifier(), cellsBuilder: cellsBuilder)
     ])
   }
-
 }
 
 extension Section {
 
-  public init<Header: Node, Footer: Node, Cells: CellBuildable>(id: AnyHashable, header: Header, footer: Footer, @CellBuilder cells: () -> Cells) {
+  public init<Header: Node, Footer: Node, Cells: CellBuildable>(id: AnyHashable, header: Header, footer: Footer, @CellBuilder cellsBuilder: () -> Cells) {
     self.id = id
     self.header = Cell(node: header)
     self.footer = Cell(node: footer)
-    self.cells = cells().buildCells()
+    self.cells = cellsBuilder().buildCells()
   }
 
-  public init<Cells: CellBuildable>(id: AnyHashable, @CellBuilder cells: () -> Cells) {
+  public init<Cells: CellBuildable>(id: AnyHashable, @CellBuilder cellsBuilder: () -> Cells) {
     self.id = id
     self.header = nil
     self.footer = nil
-    self.cells = cells().buildCells()
+    self.cells = cellsBuilder().buildCells()
   }
 
-  public init<Header: Node, Cells: CellBuildable>(id: AnyHashable, header: Header, @CellBuilder cells: () -> Cells) {
+  public init<Header: Node, Cells: CellBuildable>(id: AnyHashable, header: Header, @CellBuilder cellsBuilder: () -> Cells) {
     self.id = id
     self.header = Cell(node: header)
     self.footer = nil
-    self.cells = cells().buildCells()
+    self.cells = cellsBuilder().buildCells()
   }
 
-  public init<Footer: Node, Cells: CellBuildable>(id: AnyHashable, footer: Footer, @CellBuilder cells: () -> Cells) {
+  public init<Footer: Node, Cells: CellBuildable>(id: AnyHashable, footer: Footer, @CellBuilder cellsBuilder: () -> Cells) {
     self.id = id
     self.header = nil
     self.footer = Cell(node: footer)
-    self.cells = cells().buildCells()
+    self.cells = cellsBuilder().buildCells()
   }
 
 }
@@ -72,7 +61,7 @@ public struct CellBuilder: CellBuildable {
 
   private let cells: [Cell]
 
-  private init(_ cells: [Cell]) {
+  init(_ cells: [Cell]) {
     self.cells = cells
   }
 
@@ -93,6 +82,10 @@ public struct CellBuilder: CellBuildable {
       return CellBuilder([])
     }
     return content
+  }
+
+  public static func buildBlock<C: Collection>(_ content: C) -> CellBuildable where C.Element: CellBuildable{
+    return CellBuilder(content.map { $0.buildCells() }.flatMap { $0 })
   }
 
   public static func buildBlock(_ content: CellBuildable...) -> CellBuilder {

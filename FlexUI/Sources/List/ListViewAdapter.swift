@@ -9,7 +9,7 @@ public final class ListViewAdapter: NSObject {
 
   var data: [Section] = []
   var onSelect: ((AnyNode, IndexPath) -> Void)? = nil
-  var autoDeselect: Bool = false
+  public var autoDeselect: Bool = true
   lazy var updater: ListViewUpdater = ListViewUpdater()
 
   public weak var listView: ListView? {

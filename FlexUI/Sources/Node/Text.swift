@@ -11,36 +11,90 @@ public struct Text: Node, ViewProducible {
   public typealias Body = Never
   public typealias ProductedView = MPILabel
 
-  public struct StringAttributes {
-    public let string: NSAttributedString
-    public let numberOfLines: Int
+  enum Storage {
+    case verbatim(String)
+    case attributed(NSAttributedString)
+  }
 
-    public init(_ string: NSAttributedString, numberOfLines: Int = 0) {
-      self.string = string
-      self.numberOfLines = numberOfLines
-    }
-    public init(_ string: String, font: UIFont = .preferredFont(forTextStyle: .body), color: UIColor = .darkText, numberOfLines: Int = 0) {
-      self.init(NSAttributedString(string: string, attributes: [ .font: font, .foregroundColor: color ]), numberOfLines: numberOfLines)
+  enum Modifier {
+    case numberOfLines(Int)
+    case textAlignment(NSTextAlignment)
+    case textColor(UIColor)
+    case font(UIFont)
+  }
+  let storage: Storage
+  let modifiers: [Modifier]
+
+  var attributedString: NSAttributedString  {
+    switch storage {
+    case .attributed(let str):
+      return str
+    case .verbatim(let str):
+      var attr: [NSAttributedString.Key: Any] = [.font: UIFont.preferredFont(forTextStyle: .body),
+                                                 .foregroundColor: UIColor.darkText]
+      modifiers.forEach {
+        switch $0 {
+        case .font(let font):
+          attr[.font] = font
+        case .textColor(let color):
+          attr[.foregroundColor] = color
+        default: break
+        }
+      }
+      return NSAttributedString(string: str, attributes: attr)
     }
   }
 
-  let stringAttributes: StringAttributes
-
-  public init(_ stringAttributes: StringAttributes) {
-    self.stringAttributes = stringAttributes
+  var numberOfLines: Int {
+    for modifier in modifiers {
+      switch modifier {
+      case .numberOfLines(let lines): return lines
+      default: break
+      }
+    }
+    return 0
   }
 
+  init(storage: Storage, modifiers: [Modifier]) {
+    self.storage = storage
+    self.modifiers = modifiers
+  }
 }
 
+extension Text {
+  public init(_ string: NSAttributedString) {
+    self.init(storage: .attributed(string), modifiers: [])
+  }
+
+  public init(_ string: String) {
+    self.init(storage: .verbatim(string), modifiers: [])
+  }
+}
 
 extension Text {
-  public init(_ string: NSAttributedString, numberOfLines: Int = 0) {
-    self.init(.init(string, numberOfLines: numberOfLines))
+
+  private func with(modifier: Modifier) -> Text {
+    var modifiers = self.modifiers
+    modifiers.append(modifier)
+    return Text(storage: storage, modifiers: modifiers)
   }
 
-  public init(_ string: String, font: UIFont = .preferredFont(forTextStyle: .body), color: UIColor = .darkText, numberOfLines: Int = 0) {
-    self.init(.init(string, font: font, color: color, numberOfLines: numberOfLines))
+  public func numberOfLines(_ lines: Int) -> Text {
+    with(modifier: .numberOfLines(lines))
   }
+
+  public func textAlignment(_ align: NSTextAlignment) -> Text {
+    with(modifier: .textAlignment(align))
+  }
+
+  public func textColor(_ color: UIColor) -> Text {
+    with(modifier: .textColor(color))
+  }
+
+  public func font(_ font: UIFont) -> Text {
+    with(modifier: .font(font))
+  }
+
 }
 
 
@@ -50,8 +104,8 @@ extension Text {
     let viewProducer = ViewProducer(type: ProductedView.self)
     yogaNode.measureFunc = { (node, width, widthMode, height, heightMode) in
       let attrBuilder = MPITextRenderAttributesBuilder()
-      attrBuilder.attributedText = self.stringAttributes.string
-      attrBuilder.maximumNumberOfLines = UInt(self.stringAttributes.numberOfLines)
+      attrBuilder.attributedText = self.attributedString
+      attrBuilder.maximumNumberOfLines = UInt(self.numberOfLines)
       let attr = MPITextRenderAttributes(builder: attrBuilder)
       let fitSize = CGSize(width: width, height: height).normalized
       let size = MPITextSuggestFrameSizeForAttributes(attr, fitSize, .zero)
@@ -60,8 +114,17 @@ extension Text {
     viewProducer.appendConfiguration(as: ProductedView.self) { [weak yogaNode] label in
       let padding = yogaNode?.style.paddingInsets() ?? .zero
       label.textContainerInset = padding
-      label.attributedText = self.stringAttributes.string
-      label.numberOfLines = self.stringAttributes.numberOfLines
+      label.attributedText = self.attributedString
+      label.numberOfLines = 0
+      for modifier in self.modifiers {
+        switch modifier {
+        case .numberOfLines(let lines):
+          label.numberOfLines = lines
+        case .textAlignment(let align):
+          label.textAlignment = align
+        default: break
+        }
+      }
     }
     yogaNode.viewProducer = viewProducer
     return [yogaNode]

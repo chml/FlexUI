@@ -15,6 +15,13 @@ public struct Section {
   public let footer: Cell?
   public let cells: [Cell]
 
+  public init(id: AnyHashable, header: Cell? = nil, footer: Cell? = nil, cells: [Cell]) {
+    self.id = id
+    self.header = nil
+    self.footer = nil
+    self.cells = cells
+  }
+
 }
 
 extension Section: DifferenceKit.DifferentiableSection {

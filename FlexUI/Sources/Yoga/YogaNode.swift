@@ -184,11 +184,15 @@ extension YogaNode: CustomDebugStringConvertible {
       @unknown default: break
       }
     }
-//    if let view = viewProducer {
-//      return view.viewTypeName
-//    }
+    if let view = viewProducer {
+      switch view.viewTypeName {
+      case "MPILabel": return "Text"
+      case "FLAnimatedImageView": return "Image"
+      default: return view.viewTypeName
+      }
+    }
 
-    return "Node"
+    return "Div"
   }
 
 }

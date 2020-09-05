@@ -16,6 +16,12 @@ extension Section: SectionBuildable {
   }
 }
 
+extension Array: SectionBuildable where Element: SectionBuildable {
+  public func buildSections() -> [Section] {
+    return map { $0.buildSections() }.flatMap { $0 }
+  }
+}
+
 
 extension ListViewAdapter {
 
@@ -25,12 +31,11 @@ extension ListViewAdapter {
 
 }
 
-
 @_functionBuilder
 public struct SectionBuilder: SectionBuildable {
   private let sections: [Section]
 
-  private init(_ sections: [Section]) {
+  init(_ sections: [Section]) {
     self.sections = sections
   }
 
@@ -51,6 +56,10 @@ public struct SectionBuilder: SectionBuildable {
       return SectionBuilder([])
     }
     return content
+  }
+
+  public static func buildBlock<C: Collection>(_ content: C) -> SectionBuildable where C.Element: SectionBuildable {
+    return SectionBuilder(content.map { $0.buildSections() }.flatMap { $0 })
   }
 
   public static func buildBlock(_ content: SectionBuildable...) -> SectionBuilder {

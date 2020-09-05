@@ -6,13 +6,15 @@
 //
 
 
-public struct List<View: ListView, Data>: Node, ViewProducible {
+
+public struct List<View: ListView, Data, Element>: Node, ViewProducible {
   public typealias Body = Never
   public typealias ProductedView = View
 
   enum DataSource {
-    case `static`(()->SectionBuildable)
-    case dynamic(Binding<Data>, (Data)->SectionBuildable)
+    case `static`(() -> SectionBuildable)
+    case dynamicToCells(data: Data, builder: (Element) -> CellBuildable, adapter:(Data, (Element)->CellBuildable)->SectionBuildable)
+    case dynamicToSections(data: Data, builder: (Element) -> Section, adapter: (Data, (Element)-> Section)->SectionBuildable)
   }
   let dataSource: DataSource
 
@@ -23,22 +25,30 @@ public struct List<View: ListView, Data>: Node, ViewProducible {
   }
   let modifiers: [Modifier]
 
-  init(of _: View.Type, dataSource: DataSource, modifiers: [Modifier] = []) {
+  init(of type: View.Type, dataSource: DataSource, modifiers: [Modifier] = []) {
     self.dataSource = dataSource
     self.modifiers = modifiers
   }
 
 }
 
-extension List {
+extension List where Data: Collection, Element == Data.Element {
 
-  public init(of type: View.Type, data: Binding<Data>, @SectionBuilder sectionBuilder: @escaping (Data) -> SectionBuildable) {
-    self.init(of: type, dataSource: .dynamic(data, sectionBuilder))
+  public init(of type: View.Type, data: Data, sectionBuilder: @escaping (Element) -> Section) {
+    self.init(of: type, dataSource: .dynamicToSections(data: data, builder: sectionBuilder, adapter:{ (data, builder) in
+      return data.map{ builder($0) } as SectionBuildable
+    }))
   }
-  
+
+  public init(of type: View.Type, data: Data, @CellBuilder cellBuilder: @escaping (Element) -> CellBuildable) {
+    self.init(of: type, dataSource: .dynamicToCells(data: data, builder: cellBuilder, adapter: { (data, builder) -> SectionBuildable in
+      return Section(id: UniqueIdentifier(), cells: data.map { builder($0).buildCells() }.flatMap { $0 })
+    }))
+  }
+
 }
 
-extension List where Data == Void {
+extension List where Data == Void, Element == Void {
 
   public init(of type: View.Type, @SectionBuilder sectionBuilder: @escaping () -> SectionBuildable) {
     self.init(of: type, dataSource: .static(sectionBuilder))
@@ -85,7 +95,7 @@ extension List {
 
   public func build(with context: YogaTreeContext) -> [YogaNode] {
     let yogaNode = YogaNode()
-    let viewProducer = ViewProducer(type: ProductedView.self)
+    let viewProducer = ViewProducer(type: View.self)
     yogaNode.viewProducer = viewProducer
     configureListView(with: viewProducer)
     return [yogaNode]
@@ -102,11 +112,15 @@ extension List {
       switch self.dataSource {
       case .static(let builder):
         adapter.render(sections: builder)
-      case .dynamic(let data, let builder):
-        let items = data.wrappedValue
+      case .dynamicToCells(let data, let builder, let mapper):
         adapter.render {
-          builder(items)
+          mapper(data, builder)
         }
+      case .dynamicToSections(let data, let builder, let mapper):
+        adapter.render {
+          mapper(data, builder)
+        }
+      default: break
       }
 
       for modifier in self.modifiers {

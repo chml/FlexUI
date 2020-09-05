@@ -9,91 +9,55 @@
 import UIKit
 import FlexUI
 
-extension UIColor {
-  static var random: UIColor {
-    UIColor(red: CGFloat(arc4random()%255)/255.0, green: CGFloat(arc4random()%255)/255.0, blue: CGFloat(arc4random()%255)/255.0, alpha: 0.9)
-  }
-}
-
-
-struct TextCell: Node, Hashable {
+private struct Cell: Node {
   let title: String
-  var body: AnyNode {
-    Flex {
-      Text(title)
-        .paddding(20)
-        .viewReuseID("label")
-    }
-  }
-}
+  let viewController: () -> UIViewController
 
-struct ImageTextCell: Node, Hashable {
-  let title: String
+  init<VC: UIViewController>(_ title: String, _ vc: VC.Type) {
+    self.title = title
+    self.viewController = { VC() }
+  }
+
   var body: AnyNode {
-    Flex {
-      HStack(spacing: 20) {
-        Image(URL(string: "https://media.ifanrusercontent.com/user_files/wpdata/images/b4/33/b43360ece71de9dfcee48bf4fef38bfa31ba194b-bcb40bac29bab334e61726cf476645977fb748c6.jpg"))
-          .width(80)
-          .height(80)
-          .viewConfig { (v) in
-            v.layer.cornerRadius = 20
-            v.layer.masksToBounds = true
-          }
-          .viewReuseID("image")
-        Text(title)
-          .viewReuseID("label")
+    return Flex {
+      HStack(spacing: 20, alignItems: .center) {
+        Text(title).flexShrink(1).flexGrow(1)
+        Image(UIImage(systemName: "chevron.right")?.withRenderingMode(.alwaysOriginal))
       }
-      .paddding(20)
+      .padding(20)
     }
   }
 }
 
-class ViewController: UIViewController {
+final class ViewController: UIViewController {
 
   override func viewDidLoad() {
     super.viewDidLoad()
+    title = "FlexUI"
+    render()
+  }
+
+  func render() {
     let node = Flex {
       List(of: UITableView.self) {
-        TextCell(title: "hahahah")
-        ImageTextCell(title: "hahahah")
-        TextCell(title: "hahahah")
-        ImageTextCell(title: "hahahah")
-        TextCell(title: "hahahah")
-
-        Text("noway")
-          .paddding(20)
+        Section(id: 1, header: Text("Basic")) {
+          Cell("Flexbox Layout", FlexboxViewController.self)
+          Cell("Diffable TableView", DiffTableViewController.self)
+        }
+        Section(id: 2, header: Text("Demo")) {
+          Cell("User Profile Demo", UIViewController.self)
+          Cell("Contacts Demo", UIViewController.self)
+        }
       }
-      .onSelect({ (node) in
-        if let n = node.unwrap(as: TextCell.self) {
-          print("Selected: \(n.title)")
+      .onSelect {[weak self] (item) in
+        if let cell = item.unwrap(as: Cell.self) {
+          self?.navigationController?.pushViewController(cell.viewController(), animated: true)
         }
-      })
-      .pullToRefresh({ (endRefreshing) in
-        DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(2)) {
-          endRefreshing()
-        }
-      })
-      .infiniteScroll({ (endRefreshing) in
-      })
+      }
       .width(.percent(100))
       .height(.percent(100))
     }
-    node.buildYogaTree().calculateLayout(width: view.bounds.width, height: view.bounds.height).makeViews(in: view)
+    view.render(node: node)
   }
 
 }
-
-//#if canImport(SwiftUI)
-//import SwiftUI
-//@available(iOS 13.0, *)
-//struct _ViewController_Preview: PreviewProvider {
-//  typealias Previews = LiveView<UIViewController>
-//
-//  static var previews: LiveView<UIViewController> {
-//    return LiveView(ViewController())
-//  }
-//
-//}
-//#endif
-
-

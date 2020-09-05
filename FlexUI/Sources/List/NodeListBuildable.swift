@@ -10,8 +10,4 @@ extension Node {
   public func buildCells() -> [Cell] {
     return [Cell(node: self)]
   }
-
-  public func buildSections() -> [Section] {
-    return Cell(node: self).buildSections()
-  }
 }

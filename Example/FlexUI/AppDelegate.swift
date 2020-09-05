@@ -7,6 +7,27 @@
 //
 
 import UIKit
+//import SwiftUI
+
+//@available(iOS 13.0, *)
+//struct V: View {
+//
+//  @State var count: [Int] = [1, 2, 3]
+//
+//  var body: some View {
+//    List($count) {
+//
+//    }
+//    Text("asdfasdf")
+//    Button(action: {
+//      withAnimation { () -> Result in
+//        count = 2
+//      }
+//    }) {
+//      Text("click\(count)")
+//    }
+//  }
+//}
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -16,6 +37,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
   
   func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
     // Override point for customization after application launch.
+//    List
     return true
   }
   

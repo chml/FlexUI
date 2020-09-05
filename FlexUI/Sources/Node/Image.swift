@@ -12,7 +12,7 @@ public struct Image: Node, ViewProducible {
   public typealias ProductedView = FLAnimatedImageView
   public typealias Body = Never
   public enum Source {
-    case image(image: UIImage)
+    case image(image: UIImage?)
     case url(url: URL?, placeholder: UIImage? = nil)
   }
   public let source: Source
@@ -21,7 +21,7 @@ public struct Image: Node, ViewProducible {
     self.source = source
   }
 
-  public init(_ image: UIImage) {
+  public init(_ image: UIImage?) {
     self.init(.image(image: image))
   }
 
@@ -39,6 +39,10 @@ extension Image {
     yogaNode.viewProducer = viewProducer
     switch source {
     case .image(let image):
+      if let size = image?.size {
+        yogaNode.style.width = .point(size.width)
+        yogaNode.style.height = .point(size.height)
+      }
       viewProducer.appendConfiguration(as: ProductedView.self) { view in
         view.image = image
       }

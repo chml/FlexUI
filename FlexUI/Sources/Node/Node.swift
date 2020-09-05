@@ -7,12 +7,16 @@
 //
 
 public typealias FLNode = Node
-public protocol Node: YogaTreeBuildable, Diffable, CellBuildable, SectionBuildable {
+public protocol Node: YogaTreeBuildable, Diffable, CellBuildable {
   associatedtype Body: Node
   var body: Body { get }
+
+  var isComponent: Bool { get }
 }
 
 extension Node {
+  public var isComponent: Bool { false }
+
   public func build(with context: YogaTreeContext) -> [YogaNode] {
     body.build(with: context)
   }
