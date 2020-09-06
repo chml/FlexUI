@@ -28,3 +28,13 @@ extension ForEach {
   }
 
 }
+
+extension ForEach {
+
+  public func buildCells() -> [AnyNode] {
+    data.map { (elem) -> AnyNode in
+      AnyNode(content(elem))
+    }
+  }
+
+}

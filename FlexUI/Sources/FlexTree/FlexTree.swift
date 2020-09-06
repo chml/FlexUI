@@ -41,7 +41,7 @@ public class FlexTree {
   @discardableResult
   public func calculateLayout(width: CGFloat = .greatestFiniteMagnitude, height: CGFloat = .greatestFiniteMagnitude, direction: Direction = .inherit) -> FlexTree {
     layout = node.calculateLayout(width: width, height: height, direction: direction)
-    print("\(node)")
+//    print("\(node)")
     return self
   }
 

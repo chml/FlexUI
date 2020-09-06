@@ -47,8 +47,11 @@ final class ViewController: UIViewController {
           Cell("Custom CollectionViewLayout", DiffTableViewController.self)
         }
         Section(id: 2, header: Text("Demo")) {
-          Cell("User Profile Demo", UIViewController.self)
-          Cell("Contacts Demo", UIViewController.self)
+          ForEach(0..<10) {
+            Cell("hahah\($0)", UIViewController.self)
+          }
+//          Cell("User Profile Demo", UIViewController.self)
+//          Cell("Contacts Demo", UIViewController.self)
         }
       }
       .onSelect {[weak self] (item) in
