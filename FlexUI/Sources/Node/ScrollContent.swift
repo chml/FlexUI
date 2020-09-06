@@ -25,18 +25,18 @@ public struct ScrollContent<Content: Node>: Node, ViewProducible {
 }
 
 extension ScrollContent {
-  public func build(with context: YogaTreeContext) -> [YogaNode] {
+  public func build(with context: FlexTreeContext) -> [FlexNode] {
     let viewProducer = ViewProducer(type: ProductedView.self)
     viewProducer.appendDeferConfiguration(as: ProductedView.self) { (view) in
       DispatchQueue.main.async {
         view.adjustContentSizeForSubviews()
       }
     }
-    let yogaNode = YogaNode()
+    let yogaNode = FlexNode()
     yogaNode.viewProducer = viewProducer
     yogaNode.style.overflow = .scroll
 
-    let containerYogaNode = YogaNode()
+    let containerYogaNode = FlexNode()
     yogaNode.insertChild(containerYogaNode)
     let contentYogaNodes = content.build(with: context.with(parent: yogaNode))
     containerYogaNode.viewProducer = ViewProducer(type: UIView.self)

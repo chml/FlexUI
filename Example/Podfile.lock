@@ -12,17 +12,20 @@ PODS:
     - MPITextKit
     - Nuke
     - Yoga
+  - MagazineLayout (1.6.1)
   - MPITextKit (0.1.8)
   - Nuke (8.4.1)
   - Yoga (1.14.0)
 
 DEPENDENCIES:
   - FlexUI (from `../`)
+  - MagazineLayout
 
 SPEC REPOS:
   trunk:
     - DifferenceKit
     - FLAnimatedImage
+    - MagazineLayout
     - MPITextKit
     - Nuke
     - Yoga
@@ -35,10 +38,11 @@ SPEC CHECKSUMS:
   DifferenceKit: 516f12e336ed65a3a0665847b5c3cb5cad4bd4ea
   FLAnimatedImage: 4a0b56255d9b05f18b6dd7ee06871be5d3b89e31
   FlexUI: d477a0c79483e68950ebfe44bf0ec0d41be30d61
+  MagazineLayout: 163e04d3ee6b555728f2e79c66ae6aa3f6d661de
   MPITextKit: 475a22b8df57c42c8c040bf95df47427642199ad
   Nuke: d780e3507a86b86c589ab3cc5cd302d5456f06fb
   Yoga: cff67a400f6b74dc38eb0bad4f156673d9aa980c
 
-PODFILE CHECKSUM: 4a11ba7da807373bcce804859ac76f465d80220e
+PODFILE CHECKSUM: 47d5ba26e7d3bd221a665d7f0d3ceaa083b4fa78
 
 COCOAPODS: 1.9.3

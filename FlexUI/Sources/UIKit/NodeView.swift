@@ -11,13 +11,13 @@ open class NodeView: UIView {
   open var node: AnyNode? = nil {
     didSet {
       if let node = node {
-        nodeTree = node.buildYogaTree()
+        nodeTree = node.buildFlexTree()
         invalidateIntrinsicContentSize()
         setNeedsLayout()
       }
     }
   }
-  var nodeTree: YogaTree?
+  var nodeTree: FlexTree?
 
   open override func layoutSubviews() {
     super.layoutSubviews()

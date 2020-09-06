@@ -17,7 +17,7 @@ public protocol Node: YogaTreeBuildable, Diffable, CellBuildable {
 extension Node {
   public var isComponent: Bool { false }
 
-  public func build(with context: YogaTreeContext) -> [YogaNode] {
+  public func build(with context: FlexTreeContext) -> [FlexNode] {
     body.build(with: context)
   }
 }
@@ -25,7 +25,7 @@ extension Node {
 public struct Never: Node {
   public typealias Body = Never
   
-  public func build(with context: YogaTreeContext) -> [YogaNode] {
+  public func build(with context: FlexTreeContext) -> [FlexNode] {
     fatalError()
   }
 }

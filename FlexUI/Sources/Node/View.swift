@@ -39,8 +39,8 @@ extension View where T == UIView, Children == EmptyNode {
 
 extension View {
 
-  public func build(with context: YogaTreeContext) -> [YogaNode] {
-    let node = YogaNode()
+  public func build(with context: FlexTreeContext) -> [FlexNode] {
+    let node = FlexNode()
     let viewProducer = ViewProducer(type: T.self)
     node.viewProducer = viewProducer
     return [node]

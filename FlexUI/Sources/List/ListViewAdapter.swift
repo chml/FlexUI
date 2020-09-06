@@ -9,10 +9,25 @@ public final class ListViewAdapter: NSObject {
 
   var data: [Section] = []
   var onSelect: ((AnyNode, IndexPath) -> Void)? = nil
-  public var autoDeselect: Bool = true
+  var autoDeselect: Bool = true
   lazy var updater: ListViewUpdater = ListViewUpdater()
 
-  public weak var listView: ListView? {
+  struct Registration: Hashable {
+    let id: String
+    let viewClass: AnyClass
+    static func == (lhs: ListViewAdapter.Registration, rhs: ListViewAdapter.Registration) -> Bool {
+      return lhs.id == rhs.id && lhs.viewClass == lhs.viewClass
+    }
+    func hash(into hasher: inout Hasher) {
+      hasher.combine(id)
+      hasher.combine(ObjectIdentifier(viewClass))
+    }
+  }
+  var resigteredViews: Set<Registration> = .init()
+
+  let layoutStorage = ListLayoutStorage()
+
+  weak var listView: ListView? {
     didSet {
       if let listView = listView {
         updater.prepare(for: listView, adapter: self)
@@ -20,7 +35,7 @@ public final class ListViewAdapter: NSObject {
     }
   }
 
-  public func render<C: Collection>(_ data: C) where C.Element == Section {
+  func render<C: Collection>(_ data: C) where C.Element == Section {
     guard let listView = listView else {
       return
     }
@@ -37,7 +52,7 @@ public final class ListViewAdapter: NSObject {
     })
   }
 
-  public var refreshAction: ((_ endRefreshing: @escaping ()->Void) -> Void)? = nil
+  var refreshAction: ((_ endRefreshing: @escaping ()->Void) -> Void)? = nil
   func setRefreshControl(_ control: UIRefreshControl) {
     listView?.refreshControl = control
     control.addTarget(self, action: #selector(refresh(_:)), for: .valueChanged)

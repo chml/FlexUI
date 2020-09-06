@@ -3,6 +3,7 @@ use_frameworks!
 target 'FlexUI_Example' do
   platform :ios, '10.0'
   pod 'FlexUI', :path => '../'
+  pod 'MagazineLayout'
 
   target 'FlexUI_Tests' do
     inherit! :search_paths

@@ -11,7 +11,7 @@ import UIKit
 extension UIView {
 
   public func render<Content: Node>(node: Content) {
-    node.buildYogaTree()
+    node.buildFlexTree()
       .calculateLayout(width: bounds.width, height: bounds.height, direction: direction)
       .makeViews(in: self)
   }

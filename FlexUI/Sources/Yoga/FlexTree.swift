@@ -1,45 +1,45 @@
 //
-//  YogaTree.swift
+//  FlexTree.swift
 //  FlexUI
 //
 //  Created by 黎昌明 on 2020/8/31.
 //
 
 extension Node {
-  public func buildYogaTree() -> YogaTree {
-    let root = YogaNode()
-    let context = YogaTreeContext(root: root, parent: root)
+  public func buildFlexTree() -> FlexTree {
+    let root = FlexNode()
+    let context = FlexTreeContext(root: root, parent: root)
     let children = build(with: context)
     for child in children {
       root.insertChild(child)
     }
-    return YogaTree(root: root)
+    return FlexTree(root: root)
   }
 }
 
-public struct YogaTreeContext {
-  public let root: YogaNode
-  public let parent: YogaNode
+public struct FlexTreeContext {
+  public let root: FlexNode
+  public let parent: FlexNode
 
-  public func with(parent newParent: YogaNode) -> YogaTreeContext {
-    return YogaTreeContext(root: root, parent: newParent)
+  public func with(parent newParent: FlexNode) -> FlexTreeContext {
+    return FlexTreeContext(root: root, parent: newParent)
   }
 }
 
 public protocol YogaTreeBuildable {
-  func build(with context: YogaTreeContext) -> [YogaNode]
+  func build(with context: FlexTreeContext) -> [FlexNode]
 }
 
-public class YogaTree {
-  public let node: YogaNode
+public class FlexTree {
+  public let node: FlexNode
   public var layout: YogaNodeLayout?
 
-  public init(root: YogaNode) {
+  public init(root: FlexNode) {
     self.node = root
   }
 
   @discardableResult
-  public func calculateLayout(width: CGFloat = .greatestFiniteMagnitude, height: CGFloat = .greatestFiniteMagnitude, direction: Direction = .inherit) -> YogaTree {
+  public func calculateLayout(width: CGFloat = .greatestFiniteMagnitude, height: CGFloat = .greatestFiniteMagnitude, direction: Direction = .inherit) -> FlexTree {
     layout = node.calculateLayout(width: width, height: height, direction: direction)
     print("\(node)")
     return self
@@ -50,7 +50,7 @@ public class YogaTree {
       return
     }
     struct LayoutNode {
-      let node: YogaNode
+      let node: FlexNode
       let parentView: UIView
       let recycler: ViewRecycler
     }
@@ -105,7 +105,7 @@ public class YogaTree {
 }
 
 
-extension YogaTree: CustomDebugStringConvertible {
+extension FlexTree: CustomDebugStringConvertible {
   public var debugDescription: String {
     return node.debugDescription
   }

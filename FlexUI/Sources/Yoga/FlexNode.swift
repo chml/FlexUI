@@ -1,5 +1,5 @@
 //
-//  NodeRef.swift
+//  FlexNode.swift
 //  FlexUI
 //
 //  Created by 黎昌明 on 2020/8/27.
@@ -8,14 +8,14 @@
 import yoga
 
 public final class YogaNodeLayout {
-  public let container: YogaNode
-  public let root: YogaNode
+  public let container: FlexNode
+  public let root: FlexNode
 
   var contentSize: CGSize {
     return root.layoutFrame.size
   }
 
-  public init(root: YogaNode, container: YogaNode) {
+  public init(root: FlexNode, container: FlexNode) {
     self.root = root
     self.container = container
   }
@@ -23,13 +23,13 @@ public final class YogaNodeLayout {
 }
 
 
-public final class YogaNode {
+public final class FlexNode {
 
   private let yogaRef: YGNodeRef = YGNodeNew()
 
-  public lazy var style = { YogaStyle(nodeRef: yogaRef) }()
-  public private(set) lazy var children: [YogaNode] = []
-  public private(set) weak var parent: YogaNode? = nil
+  public lazy var style = { FlexStyle(nodeRef: yogaRef) }()
+  public private(set) lazy var children: [FlexNode] = []
+  public private(set) weak var parent: FlexNode? = nil
 
 
   public var nodeType: NodeType {
@@ -37,7 +37,7 @@ public final class YogaNode {
     set { YGNodeSetNodeType(yogaRef, newValue) }
   }
 
-  public typealias MeasureFunc = (_ node: YogaNode, _ width:CGFloat, _ widthMode: MeasureMode, _ height: CGFloat, _ heightMode: MeasureMode) -> CGSize
+  public typealias MeasureFunc = (_ node: FlexNode, _ width:CGFloat, _ widthMode: MeasureMode, _ height: CGFloat, _ heightMode: MeasureMode) -> CGSize
   public var measureFunc: MeasureFunc? {
     didSet {
       if measureFunc != nil {
@@ -48,7 +48,7 @@ public final class YogaNode {
     }
   }
 
-  public typealias BaselineFunc = (_ node: YogaNode, _ width: CGFloat, _ height: CGFloat) -> CGFloat
+  public typealias BaselineFunc = (_ node: FlexNode, _ width: CGFloat, _ height: CGFloat) -> CGFloat
   public var baselineFunc: BaselineFunc? {
     didSet {
       if baselineFunc != nil {
@@ -74,14 +74,14 @@ public final class YogaNode {
     YGNodeSetContext(yogaRef, Unmanaged.passUnretained(self).toOpaque())
   }
 
-  public func insertChild(_ child: YogaNode, at index: Int? = nil) {
+  public func insertChild(_ child: FlexNode, at index: Int? = nil) {
     let i = index ?? children.count
     child.parent = self
     children.insert(child, at: i)
     YGNodeInsertChild(yogaRef, child.yogaRef, UInt32(i))
   }
 
-  public func removeChild(_ child: YogaNode) {
+  public func removeChild(_ child: FlexNode) {
     YGNodeRemoveChild(yogaRef, child.yogaRef)
     if let index = children.firstIndex(where: { (n) -> Bool in
       return n === child
@@ -105,7 +105,7 @@ public final class YogaNode {
     if dir == .inherit {
       dir = UIApplication.shared.delegate?.window??.direction ?? .LTR
     }
-    let container = YogaNode()
+    let container = FlexNode()
     container.insertChild(self)
     YGNodeCalculateLayout(container.yogaRef, Float(width), Float(height), dir)
     return YogaNodeLayout(root: self, container: container)
@@ -134,7 +134,7 @@ public final class YogaNode {
 }
 
 private func NodeMeasureFunc(ref: YGNodeRef!, width: Float, widthMode: MeasureMode, height: Float, heightMode: MeasureMode) -> YGSize {
-  let node = Unmanaged<YogaNode>.fromOpaque(YGNodeGetContext(ref)).takeUnretainedValue()
+  let node = Unmanaged<FlexNode>.fromOpaque(YGNodeGetContext(ref)).takeUnretainedValue()
   if let fn = node.measureFunc {
     let size = fn(node, CGFloat(width), widthMode, CGFloat(height), heightMode)
     return YGSize(width: Float(ceil(size.width)), height: Float(ceil(size.height)))
@@ -143,7 +143,7 @@ private func NodeMeasureFunc(ref: YGNodeRef!, width: Float, widthMode: MeasureMo
 }
 
 private func NodeBaselineFunc(ref: YGNodeRef!, width: Float, height: Float) -> Float {
-  let node = Unmanaged<YogaNode>.fromOpaque(YGNodeGetContext(ref)).takeUnretainedValue()
+  let node = Unmanaged<FlexNode>.fromOpaque(YGNodeGetContext(ref)).takeUnretainedValue()
   if let fn = node.baselineFunc {
     return Float(fn(node, CGFloat(width), CGFloat(height)))
   }
@@ -151,7 +151,7 @@ private func NodeBaselineFunc(ref: YGNodeRef!, width: Float, height: Float) -> F
 }
 
 
-extension YogaNode: CustomDebugStringConvertible {
+extension FlexNode: CustomDebugStringConvertible {
 
   public var debugDescription: String {
     debugDesc(indent: 0)

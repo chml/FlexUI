@@ -7,14 +7,9 @@
 
 
 public protocol CellBuildable {
-  func buildCells() -> [Cell]
+  func buildCells() -> [AnyNode]
 }
 
-extension Cell: CellBuildable {
-  public func buildCells() -> [Cell] {
-    return [self]
-  }
-}
 
 extension ListViewAdapter {
   public func render<Cells>(@CellBuilder cellsBuilder: () -> Cells ) where Cells: CellBuildable {
@@ -24,12 +19,18 @@ extension ListViewAdapter {
   }
 }
 
+extension Array: CellBuildable where Element: CellBuildable {
+  public func buildCells() -> [AnyNode] {
+    map { $0.buildCells() }.flatMap { $0 }
+  }
+}
+
 extension Section {
 
   public init<Header: Node, Footer: Node, Cells: CellBuildable>(id: AnyHashable, header: Header, footer: Footer, @CellBuilder cellsBuilder: () -> Cells) {
     self.id = id
-    self.header = Cell(node: header)
-    self.footer = Cell(node: footer)
+    self.header = AnyNode(header)
+    self.footer = AnyNode(footer)
     self.cells = cellsBuilder().buildCells()
   }
 
@@ -42,7 +43,7 @@ extension Section {
 
   public init<Header: Node, Cells: CellBuildable>(id: AnyHashable, header: Header, @CellBuilder cellsBuilder: () -> Cells) {
     self.id = id
-    self.header = Cell(node: header)
+    self.header = AnyNode(header)
     self.footer = nil
     self.cells = cellsBuilder().buildCells()
   }
@@ -50,7 +51,7 @@ extension Section {
   public init<Footer: Node, Cells: CellBuildable>(id: AnyHashable, footer: Footer, @CellBuilder cellsBuilder: () -> Cells) {
     self.id = id
     self.header = nil
-    self.footer = Cell(node: footer)
+    self.footer = AnyNode(footer)
     self.cells = cellsBuilder().buildCells()
   }
 
@@ -59,13 +60,13 @@ extension Section {
 @_functionBuilder
 public struct CellBuilder: CellBuildable {
 
-  private let cells: [Cell]
+  private let cells: [AnyNode]
 
-  init(_ cells: [Cell]) {
+  init(_ cells: [AnyNode]) {
     self.cells = cells
   }
 
-  public func buildCells() -> [Cell] {
+  public func buildCells() -> [AnyNode] {
     return cells
   }
 

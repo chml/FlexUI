@@ -1,5 +1,5 @@
 //
-//  Style.swift
+//  FlexStyle.swift
 //  FlexUI
 //
 //  Created by 黎昌明 on 2020/8/27.
@@ -8,7 +8,7 @@
 import yoga
 
 
-public final class YogaStyle  {
+public final class FlexStyle  {
 
   private let ref: YGNodeRef
 

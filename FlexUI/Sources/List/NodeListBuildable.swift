@@ -7,7 +7,7 @@
 
 
 extension Node {
-  public func buildCells() -> [Cell] {
-    return [Cell(node: self)]
+  public func buildCells() -> [AnyNode] {
+    return [AnyNode(self)]
   }
 }

@@ -26,6 +26,9 @@ public protocol ListView: UIView {
 
   func setup(with adapter: ListViewAdapter)
 
+  func registerCell(for viewClass: AnyClass?, reuseID: String)
+  func registerHeaderFooterView(for viewClass: AnyClass?, reuseID: String)
+
   func adjustContentOffsetIfNeeded(_ offset: CGPoint)
 
 }
@@ -96,6 +99,14 @@ extension ListView where Self: UITableView {
 
 extension UITableView: ListView {
 
+  public func registerCell(for viewClass: AnyClass?, reuseID: String) {
+    register(viewClass, forCellReuseIdentifier: reuseID)
+  }
+
+  public func registerHeaderFooterView(for viewClass: AnyClass?, reuseID: String) {
+    register(viewClass, forHeaderFooterViewReuseIdentifier: reuseID)
+  }
+
   public func performBatchUpdates(_ updates: ListUpdates, completion: (() -> Void)? = nil) {
     func performUpdate() {
       if !updates.insertItems.isEmpty {
@@ -137,13 +148,20 @@ extension UITableView: ListView {
       endUpdates()
       completion?()
     }
-
-
   }
 
 }
 
 extension UICollectionView: ListView {
+
+  public func registerCell(for viewClass: AnyClass?, reuseID: String) {
+    register(viewClass, forCellWithReuseIdentifier: reuseID)
+  }
+
+  public func registerHeaderFooterView(for viewClass: AnyClass?, reuseID: String) {
+    register(viewClass, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: reuseID)
+    register(viewClass, forSupplementaryViewOfKind: UICollectionView.elementKindSectionFooter, withReuseIdentifier: reuseID)
+  }
 
   public func performBatchUpdates(_ updates: ListUpdates, completion: (() -> Void)? = nil) {
     performBatchUpdates({

@@ -41,8 +41,8 @@ public struct VStack<Content: Node>: Node {
 
 extension VStack {
 
-  public func build(with context: YogaTreeContext) -> [YogaNode] {
-    let yogaNode = YogaNode()
+  public func build(with context: FlexTreeContext) -> [FlexNode] {
+    let yogaNode = FlexNode()
     yogaNode.style.flexDirection = reverse ? .columnReverse : .column
     yogaNode.style.justifyContent = justifyContent
     yogaNode.style.alignItems = alignItems

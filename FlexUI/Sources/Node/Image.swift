@@ -33,8 +33,8 @@ public struct Image: Node, ViewProducible {
 
 
 extension Image {
-  public func build(with context: YogaTreeContext) -> [YogaNode] {
-    let yogaNode = YogaNode()
+  public func build(with context: FlexTreeContext) -> [FlexNode] {
+    let yogaNode = FlexNode()
     let viewProducer = ViewProducer(type: ProductedView.self)
     yogaNode.viewProducer = viewProducer
     switch source {

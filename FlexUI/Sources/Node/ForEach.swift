@@ -20,8 +20,8 @@ public struct ForEach<Data: RandomAccessCollection, Content: Node>: Node {
 
 extension ForEach {
 
-  public func build(with context: YogaTreeContext) -> [YogaNode] {
-    data.map { (elem) -> [YogaNode] in
+  public func build(with context: FlexTreeContext) -> [FlexNode] {
+    data.map { (elem) -> [FlexNode] in
       content(elem).build(with: context)
     }
     .flatMap { $0 }

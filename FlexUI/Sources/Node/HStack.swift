@@ -41,8 +41,8 @@ public struct HStack<Content: Node>: Node {
 
 extension HStack {
 
-  public func build(with context: YogaTreeContext) -> [YogaNode] {
-    let yogaNode = YogaNode()
+  public func build(with context: FlexTreeContext) -> [FlexNode] {
+    let yogaNode = FlexNode()
     yogaNode.style.flexDirection = reverse ? .rowReverse : .row
     yogaNode.style.justifyContent = justifyContent
     yogaNode.style.alignItems = alignItems
@@ -67,7 +67,7 @@ extension HStack {
   }
 }
 
-extension YogaStyle {
+extension FlexStyle {
 
   func setMargin(of edge: Edge, offset: CGFloat) {
     let oldValue = margin(of: edge)

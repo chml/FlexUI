@@ -28,7 +28,7 @@ extension Node where Self: ViewProducible {
 public struct ViewReuseIDModifier: NodeModifier {
   let reuseID: AnyHashable
 
-  public func build<T>(node: T, with context: YogaTreeContext) -> [YogaNode] where T : Node {
+  public func build<T>(node: T, with context: FlexTreeContext) -> [FlexNode] where T : Node {
     let contentYogaNodes = node.build(with: context)
     contentYogaNodes.forEach {
       $0.viewProducer?.reuseID = reuseID
@@ -40,7 +40,7 @@ public struct ViewReuseIDModifier: NodeModifier {
 public struct ViewMakerModifier: NodeModifier {
   let maker: () -> UIView
 
-  public func build<T>(node: T, with context: YogaTreeContext) -> [YogaNode] where T : Node {
+  public func build<T>(node: T, with context: FlexTreeContext) -> [FlexNode] where T : Node {
     let contentYogaNodes = node.build(with: context)
     contentYogaNodes.forEach {
       $0.viewProducer?.viewMaker = maker
@@ -52,7 +52,7 @@ public struct ViewMakerModifier: NodeModifier {
 public struct ViewConfigModifier<View: UIView>: NodeModifier {
   let config: (View) -> Void
 
-  public func build<T>(node: T, with context: YogaTreeContext) -> [YogaNode] where T : Node {
+  public func build<T>(node: T, with context: FlexTreeContext) -> [FlexNode] where T : Node {
     let contentYogaNodes = node.build(with: context)
     contentYogaNodes.forEach {
       $0.viewProducer?.appendConfiguration(as: View.self, config: config)

@@ -80,7 +80,7 @@ public struct NodeBuilder {
 public struct EmptyNode: Node {
   public typealias Body = Never
   public init() {}
-  public func build(with context: YogaTreeContext) -> [YogaNode] {
+  public func build(with context: FlexTreeContext) -> [FlexNode] {
     return []
   }
 }
@@ -88,7 +88,7 @@ public struct EmptyNode: Node {
 public struct OptionalNode<T: Node>: Node {
   public typealias Body = Never
   let node: T?
-  public func build(with context: YogaTreeContext) -> [YogaNode] {
+  public func build(with context: FlexTreeContext) -> [FlexNode] {
     return node?.build(with: context) ?? []
   }
 }
@@ -103,7 +103,7 @@ public struct TupleNode1<T0: Node, T1: Node>: Node {
     self.v1 = v1
   }
 
-  public func build(with context: YogaTreeContext) -> [YogaNode] {
+  public func build(with context: FlexTreeContext) -> [FlexNode] {
     [ v0.build(with: context),
       v1.build(with: context) ].flatMap { $0 }
   }
@@ -121,7 +121,7 @@ public struct TupleNode2<T0: Node, T1: Node, T2: Node>: Node {
     self.v2 = v2
   }
 
-  public func build(with context: YogaTreeContext) -> [YogaNode] {
+  public func build(with context: FlexTreeContext) -> [FlexNode] {
     [ v0.build(with: context),
       v1.build(with: context),
       v2.build(with: context),
@@ -143,7 +143,7 @@ public struct TupleNode3<T0: Node, T1: Node, T2: Node, T3: Node>: Node {
     self.v3 = v3
   }
 
-  public func build(with context: YogaTreeContext) -> [YogaNode] {
+  public func build(with context: FlexTreeContext) -> [FlexNode] {
     [ v0.build(with: context),
       v1.build(with: context),
       v2.build(with: context),
@@ -169,7 +169,7 @@ public struct TupleNode4<T0: Node, T1: Node, T2: Node, T3: Node, T4: Node>: Node
     self.v4 = v4
   }
 
-  public func build(with context: YogaTreeContext) -> [YogaNode] {
+  public func build(with context: FlexTreeContext) -> [FlexNode] {
     [ v0.build(with: context),
       v1.build(with: context),
       v2.build(with: context),
@@ -198,7 +198,7 @@ public struct TupleNode5<T0: Node, T1: Node, T2: Node, T3: Node, T4: Node, T5: N
     self.v5 = v5
   }
 
-  public func build(with context: YogaTreeContext) -> [YogaNode] {
+  public func build(with context: FlexTreeContext) -> [FlexNode] {
     [ v0.build(with: context),
       v1.build(with: context),
       v2.build(with: context),
@@ -230,7 +230,7 @@ public struct TupleNode6<T0: Node, T1: Node, T2: Node, T3: Node, T4: Node, T5: N
     self.v6 = v6
   }
 
-  public func build(with context: YogaTreeContext) -> [YogaNode] {
+  public func build(with context: FlexTreeContext) -> [FlexNode] {
     [ v0.build(with: context),
       v1.build(with: context),
       v2.build(with: context),
@@ -265,7 +265,7 @@ public struct TupleNode7<T0: Node, T1: Node, T2: Node, T3: Node, T4: Node, T5: N
     self.v7 = v7
   }
 
-  public func build(with context: YogaTreeContext) -> [YogaNode] {
+  public func build(with context: FlexTreeContext) -> [FlexNode] {
     [ v0.build(with: context),
       v1.build(with: context),
       v2.build(with: context),
@@ -304,7 +304,7 @@ public struct TupleNode8<T0: Node, T1: Node, T2: Node, T3: Node, T4: Node, T5: N
     self.v8 = v8
   }
 
-  public func build(with context: YogaTreeContext) -> [YogaNode] {
+  public func build(with context: FlexTreeContext) -> [FlexNode] {
     [ v0.build(with: context),
       v1.build(with: context),
       v2.build(with: context),
@@ -346,7 +346,7 @@ public struct TupleNode9<T0: Node, T1: Node, T2: Node, T3: Node, T4: Node, T5: N
     self.v9 = v9
   }
 
-  public func build(with context: YogaTreeContext) -> [YogaNode] {
+  public func build(with context: FlexTreeContext) -> [FlexNode] {
     [ v0.build(with: context),
       v1.build(with: context),
       v2.build(with: context),
@@ -375,7 +375,7 @@ public struct _ConditionalContent<True, False>: Node where True: Node, False: No
     self.storage = storage
   }
 
-  public func build(with context: YogaTreeContext) -> [YogaNode] {
+  public func build(with context: FlexTreeContext) -> [FlexNode] {
     switch self.storage {
     case .trueContent(let content): return content.build(with: context)
     case .falseContent(let content): return content.build(with: context)

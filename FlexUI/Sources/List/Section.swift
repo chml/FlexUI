@@ -11,15 +11,27 @@ import DifferenceKit
 public struct Section {
 
   public let id: AnyHashable
-  public let header: Cell?
-  public let footer: Cell?
-  public let cells: [Cell]
+  public let header: AnyNode?
+  public let footer: AnyNode?
+  public let cells: [AnyNode]
 
-  public init(id: AnyHashable, header: Cell? = nil, footer: Cell? = nil, cells: [Cell]) {
+  public init(id: AnyHashable, header: AnyNode? = nil, footer: AnyNode? = nil, cells: [AnyNode]) {
     self.id = id
     self.header = nil
     self.footer = nil
     self.cells = cells
+  }
+
+}
+
+extension AnyNode: Differentiable {
+
+  public var differenceIdentifier: AnyHashable {
+    return id
+  }
+
+  public func isContentEqual(to source: AnyNode) -> Bool {
+    return isEqualTo(source)
   }
 
 }
@@ -30,7 +42,7 @@ extension Section: DifferenceKit.DifferentiableSection {
     return id
   }
 
-  public var elements: [Cell] {
+  public var elements: [AnyNode] {
     return cells
   }
 
@@ -38,7 +50,7 @@ extension Section: DifferenceKit.DifferentiableSection {
     return header.isContentEqual(to: source.header) && footer.isContentEqual(to: source.footer)
   }
 
-  public init<C: Swift.Collection>(source: Self, elements: C) where C.Element == Cell {
+  public init<C: Swift.Collection>(source: Self, elements: C) where C.Element == AnyNode {
     self.init(id: source.id, header: source.header, footer: source.footer, cells: Array(elements))
   }
 

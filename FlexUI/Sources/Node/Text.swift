@@ -99,8 +99,8 @@ extension Text {
 
 
 extension Text {
-  public func build(with context: YogaTreeContext) -> [YogaNode] {
-    let yogaNode = YogaNode()
+  public func build(with context: FlexTreeContext) -> [FlexNode] {
+    let yogaNode = FlexNode()
     let viewProducer = ViewProducer(type: ProductedView.self)
     yogaNode.measureFunc = { (node, width, widthMode, height, heightMode) in
       let attrBuilder = MPITextRenderAttributesBuilder()

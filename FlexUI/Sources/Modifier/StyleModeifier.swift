@@ -226,7 +226,7 @@ public struct SizingModifier: NodeModifier {
     self.value = value
   }
 
-  public func build<T>(node: T, with context: YogaTreeContext) -> [YogaNode] where T : Node {
+  public func build<T>(node: T, with context: FlexTreeContext) -> [FlexNode] where T : Node {
     let contentYogaNodes = node.build(with: context)
     switch dimension {
     case .width: contentYogaNodes.forEach { $0.style.width = value }
@@ -256,7 +256,7 @@ public struct PositioningModifier: NodeModifier {
     self.value = value
   }
 
-  public func build<T>(node: T, with context: YogaTreeContext) -> [YogaNode] where T : Node {
+  public func build<T>(node: T, with context: FlexTreeContext) -> [FlexNode] where T : Node {
     let contentYogaNodes = node.build(with: context)
     switch dimension {
     case .padding: contentYogaNodes.forEach { $0.style.setPadding(of: edge, value: value) }
@@ -282,7 +282,7 @@ public struct FlexModifier: NodeModifier {
     self.demensionValue = demensionValue
   }
 
-  public func build<T>(node: T, with context: YogaTreeContext) -> [YogaNode] where T : Node {
+  public func build<T>(node: T, with context: FlexTreeContext) -> [FlexNode] where T : Node {
     let contentYogaNodes = node.build(with: context)
     switch demensionValue {
     case .flex(let value): contentYogaNodes.forEach { $0.style.flex = value }

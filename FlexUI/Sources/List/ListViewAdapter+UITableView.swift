@@ -20,9 +20,9 @@ import Foundation
 
   public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     let cell = data[indexPath.section].cells[indexPath.item]
-    let reuseID = cell.reuseID
+    let reuseID = cell.typeName
     if let view = tableView.dequeueReusableCell(withIdentifier: reuseID) {
-      cell.tree.makeViews(in: view.contentView)
+      layoutStorage.tree(forCellAt: indexPath).makeViews(in: view.contentView)
       return view
     } else {
       tableView.register(UITableViewCell.self, forCellReuseIdentifier: reuseID)
@@ -38,14 +38,14 @@ import Foundation
     if autoDeselect {
       tableView.deselectRow(at: indexPath, animated: true)
     }
-    onSelect?(data[indexPath.section].cells[indexPath.item].node, indexPath)
+    onSelect?(data[indexPath.section].cells[indexPath.item], indexPath)
   }
 
   public func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
     if let header = data[section].header {
-      let reuseID = header.reuseID
+      let reuseID = header.typeName
       if let view = tableView.dequeueReusableHeaderFooterView(withIdentifier: reuseID) {
-        header.tree.makeViews(in: view.contentView)
+        layoutStorage.tree(forHeaderAt: section).makeViews(in: view.contentView)
         return view
       } else {
         tableView.register(UITableViewHeaderFooterView.self, forHeaderFooterViewReuseIdentifier: reuseID)
@@ -57,9 +57,9 @@ import Foundation
 
   public func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
     if let footer = data[section].footer {
-      let reuseID = footer.reuseID
+      let reuseID = footer.typeName
       if let view = tableView.dequeueReusableHeaderFooterView(withIdentifier: reuseID) {
-        footer.tree.makeViews(in: view.contentView)
+        layoutStorage.tree(forFooterAt: section).makeViews(in: view.contentView)
         return view
       } else {
         tableView.register(UITableViewHeaderFooterView.self, forHeaderFooterViewReuseIdentifier: reuseID)
@@ -70,24 +70,21 @@ import Foundation
   }
 
   public func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-    if let layout = data[section].header?.tree.layout {
-      return layout.contentSize.height
+    if data[section].header != nil {
+      return layoutStorage.tree(forHeaderAt: section).layout?.contentSize.height ?? 0
     }
     return 0
   }
 
   public func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-    if let layout = data[section].footer?.tree.layout {
-      return layout.contentSize.height
+    if data[section].footer != nil {
+      return layoutStorage.tree(forFooterAt: section).layout?.contentSize.height ?? 0
     }
     return 0
   }
 
   public func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-    if let layout = data[indexPath.section].cells[indexPath.item].tree.layout {
-      return layout.contentSize.height
-    }
-    return 40
+    return layoutStorage.tree(forCellAt: indexPath).layout?.contentSize.height ?? 44
   }
 
 

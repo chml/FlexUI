@@ -93,8 +93,8 @@ extension List {
 
 extension List {
 
-  public func build(with context: YogaTreeContext) -> [YogaNode] {
-    let yogaNode = YogaNode()
+  public func build(with context: FlexTreeContext) -> [FlexNode] {
+    let yogaNode = FlexNode()
     let viewProducer = ViewProducer(type: View.self)
     yogaNode.viewProducer = viewProducer
     configureListView(with: viewProducer)
@@ -120,7 +120,6 @@ extension List {
         adapter.render {
           mapper(data, builder)
         }
-      default: break
       }
 
       for modifier in self.modifiers {

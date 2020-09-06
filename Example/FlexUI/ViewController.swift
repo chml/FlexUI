@@ -43,6 +43,8 @@ final class ViewController: UIViewController {
         Section(id: 1, header: Text("Basic")) {
           Cell("Flexbox Layout", FlexboxViewController.self)
           Cell("Diffable TableView", DiffTableViewController.self)
+          Cell("Diffable CollectionView", DiffCollectionViewController.self)
+          Cell("Custom CollectionViewLayout", DiffTableViewController.self)
         }
         Section(id: 2, header: Text("Demo")) {
           Cell("User Profile Demo", UIViewController.self)

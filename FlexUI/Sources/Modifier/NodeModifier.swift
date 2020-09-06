@@ -6,11 +6,11 @@
 //
 
 public protocol NodeModifier {
-  func build<T: Node>(node: T, with context: YogaTreeContext) -> [YogaNode]
+  func build<T: Node>(node: T, with context: FlexTreeContext) -> [FlexNode]
 }
 
 extension NodeModifier {
-  public func build<T: Node>(node: T, with context: YogaTreeContext) -> [YogaNode] {
+  public func build<T: Node>(node: T, with context: FlexTreeContext) -> [FlexNode] {
     return node.build(with: context)
   }
 }

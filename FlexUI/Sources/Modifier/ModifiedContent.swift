@@ -18,7 +18,7 @@ public struct ModifiedContent<Content: Node, Modifier: NodeModifier>: Node {
 extension ModifiedContent {
   public typealias Body = Never
 
-  public func build(with context: YogaTreeContext) -> [YogaNode] {
+  public func build(with context: FlexTreeContext) -> [FlexNode] {
     return modifier.build(node: content, with: context)
   }
 }

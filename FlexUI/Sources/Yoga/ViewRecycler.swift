@@ -54,7 +54,7 @@ final class ViewRecycler {
     unidentifiedViewsByType = recyclingUnidentifiedViewsByType
   }
 
-  func makeOrRecycleView(for node: YogaNode, parentView: UIView? = nil) -> UIView {
+  func makeOrRecycleView(for node: FlexNode, parentView: UIView? = nil) -> UIView {
     guard let viewProducer = node.viewProducer else {
       return UIView()
     }

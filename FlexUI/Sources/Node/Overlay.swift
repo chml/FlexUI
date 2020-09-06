@@ -37,8 +37,8 @@ public struct Overlay<Content: Node, OverlayContent: Node>: Node {
 }
 
 extension Overlay {
-  public func build(with context: YogaTreeContext) -> [YogaNode] {
-    let yogaNode = YogaNode()
+  public func build(with context: FlexTreeContext) -> [FlexNode] {
+    let yogaNode = FlexNode()
     switch overlay {
     case .overlay(let overlayContent):
       overlayContent.build(with: context).forEach {
