@@ -108,13 +108,14 @@ extension Text {
       attrBuilder.maximumNumberOfLines = UInt(self.numberOfLines)
       let attr = MPITextRenderAttributes(builder: attrBuilder)
       let fitSize = CGSize(width: width, height: height).normalized
-      let size = MPITextSuggestFrameSizeForAttributes(attr, fitSize, .zero)
+      var size = MPITextSuggestFrameSizeForAttributes(attr, fitSize, .zero)
+      size.width = ceil(size.width)
+      size.height = ceil(size.height)
       return size
     }
     viewProducer.appendConfiguration(as: ProductedView.self) { [weak yogaNode] label in
       let padding = yogaNode?.style.paddingInsets() ?? .zero
       label.textContainerInset = padding
-      label.attributedText = self.attributedString
       label.numberOfLines = 0
       for modifier in self.modifiers {
         switch modifier {
@@ -125,6 +126,7 @@ extension Text {
         default: break
         }
       }
+      label.attributedText = self.attributedString
     }
     yogaNode.viewProducer = viewProducer
     return [yogaNode]

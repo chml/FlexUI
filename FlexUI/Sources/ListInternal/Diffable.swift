@@ -6,6 +6,7 @@
 //
 
 
+// Use for List Diffing
 public protocol Diffable {
   var id: AnyHashable { get }
   func isContentEqual(to other: Self) -> Bool

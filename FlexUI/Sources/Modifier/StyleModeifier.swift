@@ -73,6 +73,11 @@ extension Node {
   }
 
   @inlinable
+  public func padding(_ insets: UIEdgeInsets) -> ModifiedContent<Self, InsetsModifier> {
+    modifier(InsetsModifier(value: insets))
+  }
+
+  @inlinable
   public func padding(of edge: Edge = .all, _ value: CGFloat) -> ModifiedContent<Self, PositioningModifier> {
     padding(of: edge, .point(value))
   }
@@ -189,6 +194,15 @@ extension Node {
     modifier(FlexModifier(.alignSelf(value)))
   }
 
+  @inlinable
+  public func aspectRatio(_ value: CGFloat) -> ModifiedContent<Self, FlexModifier> {
+    modifier(FlexModifier(.aspectRatio(value)))
+  }
+
+  @inlinable
+  public func baselineFunc(_ thefunc: @escaping FlexNode.BaselineFunc) -> ModifiedContent<Self, BaselineModifier> {
+    modifier(BaselineModifier(thefunc))
+  }
 
 }
 
@@ -240,6 +254,32 @@ public struct SizingModifier: NodeModifier {
   }
 }
 
+public struct InsetsModifier: NodeModifier {
+  let value: UIEdgeInsets
+  public init(value: UIEdgeInsets) {
+    self.value = value;
+  }
+
+  public func build<T>(node: T, with context: FlexTreeContext) -> [FlexNode] where T : Node {
+    let contentYogaNodes = node.build(with: context)
+    contentYogaNodes.forEach { (n) in
+      if value.top > 0 {
+        n.style.setPadding(of: .top, value: .point(value.top))
+      }
+      if value.left > 0 {
+        n.style.setPadding(of: .left, value: .point(value.left))
+      }
+      if value.bottom > 0 {
+        n.style.setPadding(of: .bottom, value: .point(value.bottom))
+      }
+      if value.right > 0 {
+        n.style.setPadding(of: .right, value: .point(value.right))
+      }
+    }
+    return contentYogaNodes
+  }
+}
+
 public struct PositioningModifier: NodeModifier {
   public enum Dimension {
     case padding
@@ -275,6 +315,7 @@ public struct FlexModifier: NodeModifier {
     case flexShrink(CGFloat)
     case flexBasis(Value)
     case alignSelf(Align)
+    case aspectRatio(CGFloat)
   }
   let demensionValue: DemensionValue
 
@@ -290,6 +331,22 @@ public struct FlexModifier: NodeModifier {
     case .flexShrink(let value): contentYogaNodes.forEach { $0.style.flexShrink = value }
     case .flexBasis(let value): contentYogaNodes.forEach { $0.style.flexBasis = value }
     case .alignSelf(let value): contentYogaNodes.forEach { $0.style.alignSelf = value }
+    case .aspectRatio(let value): contentYogaNodes.forEach { $0.style.aspectRatio = value }
+    }
+    return contentYogaNodes
+  }
+}
+
+public struct BaselineModifier: NodeModifier {
+  var `func`: FlexNode.BaselineFunc
+  public init(_ thefunc: @escaping FlexNode.BaselineFunc) {
+    self.func = thefunc
+  }
+
+  public func build<T>(node: T, with context: FlexTreeContext) -> [FlexNode] where T : Node {
+    let contentYogaNodes = node.build(with: context)
+    contentYogaNodes.forEach { (n) in
+      n.baselineFunc = self.func
     }
     return contentYogaNodes
   }

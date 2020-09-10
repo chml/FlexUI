@@ -7,27 +7,18 @@
 //
 
 import UIKit
-//import SwiftUI
+import SwiftUI
 
-//@available(iOS 13.0, *)
-//struct V: View {
-//
-//  @State var count: [Int] = [1, 2, 3]
-//
-//  var body: some View {
-//    List($count) {
-//
-//    }
-//    Text("asdfasdf")
-//    Button(action: {
-//      withAnimation { () -> Result in
-//        count = 2
-//      }
-//    }) {
-//      Text("click\(count)")
-//    }
-//  }
-//}
+@available(iOS 13.0, *)
+struct V: View {
+
+  @State var count: [Int] = [1, 2, 3]
+
+  var body: some View {
+    Text("asdfasdf")
+      .gesture(TapGesture())
+  }
+}
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {

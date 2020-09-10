@@ -61,6 +61,7 @@ public final class FlexNode {
 
   public var asRootNode: Bool = false // for View Recycler
   public var viewProducer: ViewProducer?
+  public var coordinator: AnyComponentCoordinator? = nil
 
   public var isLeaf: Bool {
     return children.count == 0
@@ -74,11 +75,22 @@ public final class FlexNode {
     YGNodeSetContext(yogaRef, Unmanaged.passUnretained(self).toOpaque())
   }
 
+  public func indexOfChild(_ child: FlexNode) -> Int? {
+    return children.firstIndex { (n) -> Bool in
+      return child === n
+    }
+  }
+
   public func insertChild(_ child: FlexNode, at index: Int? = nil) {
     let i = index ?? children.count
     child.parent = self
     children.insert(child, at: i)
     YGNodeInsertChild(yogaRef, child.yogaRef, UInt32(i))
+  }
+
+  public func removeAllChildren() {
+    children = []
+    YGNodeRemoveAllChildren(yogaRef)
   }
 
   public func removeChild(_ child: FlexNode) {

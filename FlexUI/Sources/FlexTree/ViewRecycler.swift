@@ -64,6 +64,7 @@ final class ViewRecycler {
         viewsByID.removeValue(forKey: reuseID)
         recyclingViewsByID[reuseID] = recycled
 //        print("Hit \(reuseID)")
+        recycled.transform = .identity
         return recycled
       } else {
 //        print("Miss \(reuseID)")

@@ -7,6 +7,9 @@
 
 public final class ListViewAdapter: NSObject {
 
+  static let StorageSectionHeaderIndex = -1
+  static let StorageSectionFooterIndex = -2
+
   var data: [Section] = []
   var onSelect: ((AnyNode, IndexPath) -> Void)? = nil
   var autoDeselect: Bool = true
@@ -25,7 +28,9 @@ public final class ListViewAdapter: NSObject {
   }
   var resigteredViews: Set<Registration> = .init()
 
-  let layoutStorage = ListLayoutStorage()
+  var staticLayoutStorage = [Int: [Int: FlexTree]]()
+  var dynamicLayoutStorage = [AnyHashable: FlexTree]()
+  var isStaticLayout = false
 
   weak var listView: ListView? {
     didSet {

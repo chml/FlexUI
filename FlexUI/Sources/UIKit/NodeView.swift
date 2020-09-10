@@ -21,7 +21,7 @@ open class NodeView: UIView {
 
   open override func layoutSubviews() {
     super.layoutSubviews()
-    nodeTree?.makeViews(in: self)
+    nodeTree?.render(in: self)
   }
 
   open override func sizeThatFits(_ size: CGSize) -> CGSize {

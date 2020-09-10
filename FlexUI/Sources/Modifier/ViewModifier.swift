@@ -60,5 +60,5 @@ public struct ViewConfigModifier<View: UIView>: NodeModifier {
     return contentYogaNodes
   }
 
-
 }
+

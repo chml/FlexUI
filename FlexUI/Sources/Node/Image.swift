@@ -8,6 +8,14 @@
 import Nuke
 import FLAnimatedImage
 
+struct NukeConfig {
+  let _i: Int8
+  init() {
+    _i = 0
+  }
+}
+var nukeConfig = NukeConfig()
+
 public struct Image: Node, ViewProducible {
   public typealias ProductedView = FLAnimatedImageView
   public typealias Body = Never
@@ -50,13 +58,15 @@ extension Image {
       viewProducer.appendConfiguration(as: ProductedView.self) { (view) in
         view.image = placehoder
         if let url = url {
-          Nuke.loadImage(with: url, into: view)
+          ImageLoadingOptions.shared.isPrepareForReuseEnabled = false
+          Nuke.loadImage(with: url, options: ImageLoadingOptions.shared, into: view)
         }
       }
     }
     return [yogaNode]
   }
 }
+
 
 extension FLAnimatedImageView {
   @objc open override func nuke_display(image: PlatformImage?) {

@@ -6,10 +6,10 @@
 //
 
 
-
 public struct List<View: ListView, Data, Element>: Node, ViewProducible {
   public typealias Body = Never
   public typealias ProductedView = View
+  typealias ViewMaker = () -> View
 
   enum DataSource {
     case `static`(() -> SectionBuildable)
@@ -17,6 +17,7 @@ public struct List<View: ListView, Data, Element>: Node, ViewProducible {
     case dynamicToSections(data: Data, builder: (Element) -> Section, adapter: (Data, (Element)-> Section)->SectionBuildable)
   }
   let dataSource: DataSource
+  let viewMaker: ViewMaker?
 
   enum Modifier {
     case onSelect(action: (AnyNode, IndexPath) -> Void)
@@ -25,39 +26,95 @@ public struct List<View: ListView, Data, Element>: Node, ViewProducible {
   }
   let modifiers: [Modifier]
 
-  init(of type: View.Type, dataSource: DataSource, modifiers: [Modifier] = []) {
+  init(of type: View.Type, dataSource: DataSource, modifiers: [Modifier] = [], viewMaker: ViewMaker? ) {
     self.dataSource = dataSource
     self.modifiers = modifiers
+    self.viewMaker = viewMaker
   }
 
 }
 
+
 extension List where Data: Collection, Element == Data.Element {
 
-  public init(of type: View.Type, data: Data, sectionBuilder: @escaping (Element) -> Section) {
+  init(of type: View.Type, maker: @escaping ViewMaker, data: Data, sectionBuilder: @escaping (Element) -> Section) {
     self.init(of: type, dataSource: .dynamicToSections(data: data, builder: sectionBuilder, adapter:{ (data, builder) in
       return data.map{ builder($0) } as SectionBuildable
-    }))
+    }), viewMaker: maker)
   }
 
-  public init(of type: View.Type, data: Data, @CellBuilder cellBuilder: @escaping (Element) -> CellBuildable) {
+  init(of type: View.Type, maker: @escaping ViewMaker, data: Data, @CellBuilder cellBuilder: @escaping (Element) -> CellBuildable) {
     self.init(of: type, dataSource: .dynamicToCells(data: data, builder: cellBuilder, adapter: { (data, builder) -> SectionBuildable in
       return Section(id: UniqueIdentifier(), cells: data.map { builder($0).buildCells() }.flatMap { $0 })
-    }))
+    }), viewMaker: maker)
   }
-
 }
 
 extension List where Data == Void, Element == Void {
 
-  public init(of type: View.Type, @SectionBuilder sectionBuilder: @escaping () -> SectionBuildable) {
-    self.init(of: type, dataSource: .static(sectionBuilder))
+  init(of type: View.Type, maker: @escaping ViewMaker, @SectionBuilder sectionBuilder: @escaping () -> SectionBuildable) {
+    self.init(of: type, dataSource: .static(sectionBuilder), viewMaker: maker)
   }
 
-  public init(of type: View.Type, @CellBuilder cellBuilder: @escaping () -> CellBuildable) {
+  init(of type: View.Type, maker: @escaping ViewMaker, @CellBuilder cellBuilder: @escaping () -> CellBuildable) {
     self.init(of: type, dataSource: .static({ () -> SectionBuildable in
       Section(id: UniqueIdentifier(), header: nil, footer: nil, cells: cellBuilder().buildCells())
-    }))
+    }), viewMaker: maker)
+  }
+
+}
+
+import class UIKit.UITableView
+import class UIKit.UICollectionView
+import class UIKit.UICollectionViewLayout
+
+extension List where View: UITableView, Data: Collection, Element == Data.Element {
+
+  public init(data: Data, sectionBuilder: @escaping (Element) -> Section) {
+    self.init(table: .plain, data: data, sectionBuilder: sectionBuilder)
+  }
+
+  public init(table style: View.Style, data: Data, sectionBuilder: @escaping (Element) -> Section) {
+    self.init(of: View.self, maker: { View(frame: .zero, style: style) }, data: data, sectionBuilder:sectionBuilder)
+  }
+
+  public init(data: Data, @CellBuilder cellBuilder: @escaping (Element) -> CellBuildable) {
+    self.init(table: .plain, data: data, cellBuilder: cellBuilder)
+  }
+
+  public init(table style: View.Style, data: Data, @CellBuilder cellBuilder: @escaping (Element) -> CellBuildable) {
+    self.init(of: View.self, maker: { View(frame: .zero, style: style) }, data: data, cellBuilder: cellBuilder)
+  }
+}
+
+extension List where View: UICollectionView, Data: Collection, Element == Data.Element {
+
+  public init(collection layout: UICollectionViewLayout, data: Data, sectionBuilder: @escaping (Element) -> Section) {
+    self.init(of: View.self, maker: { View(frame: .zero, collectionViewLayout: layout) }, data: data, sectionBuilder:sectionBuilder)
+  }
+
+  public init(collection layout: UICollectionViewLayout, data: Data, @CellBuilder cellBuilder: @escaping (Element) -> CellBuildable) {
+    self.init(of: View.self, maker: { View(frame: .zero, collectionViewLayout: layout) }, data: data, cellBuilder: cellBuilder)
+  }
+}
+
+
+extension List where View: UITableView, Data == Void, Element == Void {
+
+  public init(@SectionBuilder sectionBuilder: @escaping () -> SectionBuildable) {
+    self.init(table: .plain, sectionBuilder: sectionBuilder)
+  }
+
+  public init(table style: View.Style, @SectionBuilder sectionBuilder: @escaping () -> SectionBuildable) {
+    self.init(of: View.self, maker: { View(frame: .zero, style: style) }, sectionBuilder: sectionBuilder)
+  }
+
+  public init(@CellBuilder cellBuilder: @escaping () -> CellBuildable) {
+    self.init(table: .plain, cellBuilder: cellBuilder)
+  }
+
+  public init(table style: View.Style, @CellBuilder cellBuilder: @escaping () -> CellBuildable) {
+    self.init(of: View.self, maker: { View(frame: .zero, style: style) }, cellBuilder: cellBuilder)
   }
 
 }
@@ -68,7 +125,7 @@ extension List {
   private func list(with modifier: Modifier) -> Self {
     var modifiers = self.modifiers
     modifiers.append(modifier)
-    return List(of: View.self, dataSource: dataSource, modifiers: modifiers)
+    return List(of: View.self, dataSource: dataSource, modifiers: modifiers, viewMaker: viewMaker)
   }
 
   public func pullToRefresh(_ action: @escaping (_ endRefreshing: @escaping () -> Void) -> Void) -> Self {
@@ -96,6 +153,11 @@ extension List {
   public func build(with context: FlexTreeContext) -> [FlexNode] {
     let yogaNode = FlexNode()
     let viewProducer = ViewProducer(type: View.self)
+    if let maker = viewMaker {
+      viewProducer.viewMaker = {
+        maker()
+      }
+    }
     yogaNode.viewProducer = viewProducer
     configureListView(with: viewProducer)
     return [yogaNode]

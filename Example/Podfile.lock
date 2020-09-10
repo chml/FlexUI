@@ -15,11 +15,19 @@ PODS:
   - MagazineLayout (1.6.1)
   - MPITextKit (0.1.8)
   - Nuke (8.4.1)
+  - RxCocoa (5.1.1):
+    - RxRelay (~> 5)
+    - RxSwift (~> 5)
+  - RxRelay (5.1.1):
+    - RxSwift (~> 5)
+  - RxSwift (5.1.1)
   - Yoga (1.14.0)
 
 DEPENDENCIES:
   - FlexUI (from `../`)
   - MagazineLayout
+  - RxCocoa
+  - RxSwift
 
 SPEC REPOS:
   trunk:
@@ -28,6 +36,9 @@ SPEC REPOS:
     - MagazineLayout
     - MPITextKit
     - Nuke
+    - RxCocoa
+    - RxRelay
+    - RxSwift
     - Yoga
 
 EXTERNAL SOURCES:
@@ -41,8 +52,11 @@ SPEC CHECKSUMS:
   MagazineLayout: 163e04d3ee6b555728f2e79c66ae6aa3f6d661de
   MPITextKit: 475a22b8df57c42c8c040bf95df47427642199ad
   Nuke: d780e3507a86b86c589ab3cc5cd302d5456f06fb
+  RxCocoa: 32065309a38d29b5b0db858819b5bf9ef038b601
+  RxRelay: d77f7d771495f43c556cbc43eebd1bb54d01e8e9
+  RxSwift: 81470a2074fa8780320ea5fe4102807cb7118178
   Yoga: cff67a400f6b74dc38eb0bad4f156673d9aa980c
 
-PODFILE CHECKSUM: 47d5ba26e7d3bd221a665d7f0d3ceaa083b4fa78
+PODFILE CHECKSUM: ab6afbce368700fc3bf8345358fe0a13c627efbe
 
 COCOAPODS: 1.9.3

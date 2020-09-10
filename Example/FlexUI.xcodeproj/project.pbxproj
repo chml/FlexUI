@@ -15,10 +15,15 @@
 		607FACE01AFB9204008FA782 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 607FACDE1AFB9204008FA782 /* LaunchScreen.xib */; };
 		607FACEC1AFB9204008FA782 /* Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607FACEB1AFB9204008FA782 /* Tests.swift */; };
 		65912EF4B4FF8E0EBE9CC313 /* Pods_FlexUI_Example.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8512B5B14A6D44335AF2F8E4 /* Pods_FlexUI_Example.framework */; };
+		CB06273C2508EAE600621727 /* CounterDemoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB06273B2508EAE600621727 /* CounterDemoViewController.swift */; };
+		CB2DAA962508C1D2002E083B /* EditingText.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB2DAA952508C1D2002E083B /* EditingText.swift */; };
 		CB4E69442503A8E300FF782D /* DiffCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB4E69432503A8E300FF782D /* DiffCollectionViewController.swift */; };
+		CB4E694A25050C8B00FF782D /* UserProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB4E694925050C8B00FF782D /* UserProfileViewController.swift */; };
+		CB4E694C250522C900FF782D /* UserProfileTagsEditingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB4E694B250522C900FF782D /* UserProfileTagsEditingViewController.swift */; };
 		CBA9D15F25008F1000A7D1AC /* ColorExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBA9D15E25008F1000A7D1AC /* ColorExt.swift */; };
 		CBA9D1632500A77E00A7D1AC /* FlexboxViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBA9D1622500A77E00A7D1AC /* FlexboxViewController.swift */; };
 		CBA9D1672500EFE600A7D1AC /* DiffTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBA9D1662500EFE600A7D1AC /* DiffTableViewController.swift */; };
+		CBC2DAC725079A55008C56FF /* NodeViewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBC2DAC625079A55008C56FF /* NodeViewViewController.swift */; };
 		CBC6F75C24FFC107009D7A5C /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CBC6F75B24FFC107009D7A5C /* SwiftUI.framework */; };
 		CBC6F75E24FFC1D3009D7A5C /* LivePreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBC6F75D24FFC1D3009D7A5C /* LivePreview.swift */; };
 /* End PBXBuildFile section */
@@ -51,10 +56,15 @@
 		607FACEB1AFB9204008FA782 /* Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tests.swift; sourceTree = "<group>"; };
 		8512B5B14A6D44335AF2F8E4 /* Pods_FlexUI_Example.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_FlexUI_Example.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		86C139698C581F60FA8FE9B6 /* FlexUI.podspec */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = FlexUI.podspec; path = ../FlexUI.podspec; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		CB06273B2508EAE600621727 /* CounterDemoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CounterDemoViewController.swift; sourceTree = "<group>"; };
+		CB2DAA952508C1D2002E083B /* EditingText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditingText.swift; sourceTree = "<group>"; };
 		CB4E69432503A8E300FF782D /* DiffCollectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiffCollectionViewController.swift; sourceTree = "<group>"; };
+		CB4E694925050C8B00FF782D /* UserProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfileViewController.swift; sourceTree = "<group>"; };
+		CB4E694B250522C900FF782D /* UserProfileTagsEditingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfileTagsEditingViewController.swift; sourceTree = "<group>"; };
 		CBA9D15E25008F1000A7D1AC /* ColorExt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorExt.swift; sourceTree = "<group>"; };
 		CBA9D1622500A77E00A7D1AC /* FlexboxViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlexboxViewController.swift; sourceTree = "<group>"; };
 		CBA9D1662500EFE600A7D1AC /* DiffTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiffTableViewController.swift; sourceTree = "<group>"; };
+		CBC2DAC625079A55008C56FF /* NodeViewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NodeViewViewController.swift; sourceTree = "<group>"; };
 		CBC6F75B24FFC107009D7A5C /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
 		CBC6F75D24FFC1D3009D7A5C /* LivePreview.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LivePreview.swift; sourceTree = "<group>"; };
 		D2CA8DB15FEB70D0413C14AB /* Pods-FlexUI_Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FlexUI_Tests.release.xcconfig"; path = "Target Support Files/Pods-FlexUI_Tests/Pods-FlexUI_Tests.release.xcconfig"; sourceTree = "<group>"; };
@@ -106,6 +116,9 @@
 		607FACD21AFB9204008FA782 /* Example for FlexUI */ = {
 			isa = PBXGroup;
 			children = (
+				CB062747250A212A00621727 /* Basic */,
+				CB062746250A211900621727 /* Counter */,
+				CB062745250A211000621727 /* UserProfile */,
 				607FACD51AFB9204008FA782 /* AppDelegate.swift */,
 				CBC6F75D24FFC1D3009D7A5C /* LivePreview.swift */,
 				607FACD71AFB9204008FA782 /* ViewController.swift */,
@@ -114,9 +127,7 @@
 				607FACDE1AFB9204008FA782 /* LaunchScreen.xib */,
 				607FACD31AFB9204008FA782 /* Supporting Files */,
 				CBA9D15E25008F1000A7D1AC /* ColorExt.swift */,
-				CBA9D1622500A77E00A7D1AC /* FlexboxViewController.swift */,
-				CBA9D1662500EFE600A7D1AC /* DiffTableViewController.swift */,
-				CB4E69432503A8E300FF782D /* DiffCollectionViewController.swift */,
+				CB2DAA952508C1D2002E083B /* EditingText.swift */,
 			);
 			name = "Example for FlexUI";
 			path = FlexUI;
@@ -155,6 +166,34 @@
 				05860299DBBB01D62018BDC2 /* LICENSE */,
 			);
 			name = "Podspec Metadata";
+			sourceTree = "<group>";
+		};
+		CB062745250A211000621727 /* UserProfile */ = {
+			isa = PBXGroup;
+			children = (
+				CB4E694925050C8B00FF782D /* UserProfileViewController.swift */,
+				CB4E694B250522C900FF782D /* UserProfileTagsEditingViewController.swift */,
+			);
+			name = UserProfile;
+			sourceTree = "<group>";
+		};
+		CB062746250A211900621727 /* Counter */ = {
+			isa = PBXGroup;
+			children = (
+				CB06273B2508EAE600621727 /* CounterDemoViewController.swift */,
+			);
+			name = Counter;
+			sourceTree = "<group>";
+		};
+		CB062747250A212A00621727 /* Basic */ = {
+			isa = PBXGroup;
+			children = (
+				CBA9D1622500A77E00A7D1AC /* FlexboxViewController.swift */,
+				CBA9D1662500EFE600A7D1AC /* DiffTableViewController.swift */,
+				CB4E69432503A8E300FF782D /* DiffCollectionViewController.swift */,
+				CBC2DAC625079A55008C56FF /* NodeViewViewController.swift */,
+			);
+			name = Basic;
 			sourceTree = "<group>";
 		};
 		CEF818ABF1B91153D6FCE22A /* Frameworks */ = {
@@ -231,10 +270,12 @@
 				TargetAttributes = {
 					607FACCF1AFB9204008FA782 = {
 						CreatedOnToolsVersion = 6.3.1;
+						DevelopmentTeam = 6GASTWWZR6;
 						LastSwiftMigration = 0900;
 					};
 					607FACE41AFB9204008FA782 = {
 						CreatedOnToolsVersion = 6.3.1;
+						DevelopmentTeam = 6GASTWWZR6;
 						LastSwiftMigration = 0900;
 						TestTargetID = 607FACCF1AFB9204008FA782;
 					};
@@ -338,6 +379,9 @@
 				"${BUILT_PRODUCTS_DIR}/MPITextKit/MPITextKit.framework",
 				"${BUILT_PRODUCTS_DIR}/MagazineLayout/MagazineLayout.framework",
 				"${BUILT_PRODUCTS_DIR}/Nuke/Nuke.framework",
+				"${BUILT_PRODUCTS_DIR}/RxCocoa/RxCocoa.framework",
+				"${BUILT_PRODUCTS_DIR}/RxRelay/RxRelay.framework",
+				"${BUILT_PRODUCTS_DIR}/RxSwift/RxSwift.framework",
 				"${BUILT_PRODUCTS_DIR}/Yoga/yoga.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
@@ -348,6 +392,9 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MPITextKit.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MagazineLayout.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Nuke.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxCocoa.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxRelay.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxSwift.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/yoga.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -363,11 +410,16 @@
 			buildActionMask = 2147483647;
 			files = (
 				CB4E69442503A8E300FF782D /* DiffCollectionViewController.swift in Sources */,
+				CB4E694A25050C8B00FF782D /* UserProfileViewController.swift in Sources */,
+				CB06273C2508EAE600621727 /* CounterDemoViewController.swift in Sources */,
 				CBA9D1672500EFE600A7D1AC /* DiffTableViewController.swift in Sources */,
+				CB2DAA962508C1D2002E083B /* EditingText.swift in Sources */,
+				CBC2DAC725079A55008C56FF /* NodeViewViewController.swift in Sources */,
 				CBA9D1632500A77E00A7D1AC /* FlexboxViewController.swift in Sources */,
 				607FACD81AFB9204008FA782 /* ViewController.swift in Sources */,
 				CBA9D15F25008F1000A7D1AC /* ColorExt.swift in Sources */,
 				607FACD61AFB9204008FA782 /* AppDelegate.swift in Sources */,
+				CB4E694C250522C900FF782D /* UserProfileTagsEditingViewController.swift in Sources */,
 				CBC6F75E24FFC1D3009D7A5C /* LivePreview.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -514,6 +566,7 @@
 			baseConfigurationReference = EDBAB5C20DFC97849986A5AA /* Pods-FlexUI_Example.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = 6GASTWWZR6;
 				INFOPLIST_FILE = FlexUI/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -530,6 +583,7 @@
 			baseConfigurationReference = 200A93373E13780E65B250F1 /* Pods-FlexUI_Example.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = 6GASTWWZR6;
 				INFOPLIST_FILE = FlexUI/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -545,6 +599,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 13FDDB6C607D39B429CE1ED1 /* Pods-FlexUI_Tests.debug.xcconfig */;
 			buildSettings = {
+				DEVELOPMENT_TEAM = 6GASTWWZR6;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(PLATFORM_DIR)/Developer/Library/Frameworks",
 					"$(inherited)",
@@ -567,6 +622,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = D2CA8DB15FEB70D0413C14AB /* Pods-FlexUI_Tests.release.xcconfig */;
 			buildSettings = {
+				DEVELOPMENT_TEAM = 6GASTWWZR6;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(PLATFORM_DIR)/Developer/Library/Frameworks",
 					"$(inherited)",

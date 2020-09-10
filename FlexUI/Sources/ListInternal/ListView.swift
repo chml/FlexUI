@@ -110,26 +110,26 @@ extension UITableView: ListView {
   public func performBatchUpdates(_ updates: ListUpdates, completion: (() -> Void)? = nil) {
     func performUpdate() {
       if !updates.insertItems.isEmpty {
-        insertRows(at: updates.insertItems, with: .automatic)
+        insertRows(at: updates.insertItems, with: .fade)
       }
       if !updates.deleteItems.isEmpty {
-        deleteRows(at: updates.deleteItems, with: .automatic)
+        deleteRows(at: updates.deleteItems, with: .fade)
       }
       if !updates.reloadItems.isEmpty {
-        reloadRows(at: updates.reloadItems, with: .automatic)
+        reloadRows(at: updates.reloadItems, with: .none)
       }
       for move in updates.moveItems {
         moveRow(at: move.from, to: move.to)
       }
 
       if !updates.insertSections.isEmpty {
-        insertSections(updates.insertSections, with: .automatic)
+        insertSections(updates.insertSections, with: .fade)
       }
       if !updates.deleteSections.isEmpty {
-        deleteSections(updates.deleteSections, with: .automatic)
+        deleteSections(updates.deleteSections, with: .fade)
       }
       if !updates.reloadSections.isEmpty {
-        reloadSections(updates.reloadSections, with: .automatic)
+        reloadSections(updates.reloadSections, with: .fade)
       }
       for move in updates.moveSections {
         moveSection(move.from, toSection: move.to)

@@ -43,6 +43,9 @@ extension View {
     let node = FlexNode()
     let viewProducer = ViewProducer(type: T.self)
     node.viewProducer = viewProducer
+    children.build(with: context.with(parent: node)).forEach { (n) in
+      node.insertChild(n)
+    }
     return [node]
   }
 

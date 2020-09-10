@@ -28,7 +28,7 @@ extension ListViewAdapter: UICollectionViewDataSource {
       collectionView.registerCell(for: reg.viewClass, reuseID: reg.id)
     }
     let view = collectionView.dequeueReusableCell(withReuseIdentifier: reuseID, for: indexPath)
-    layoutStorage.tree(forCellAt: indexPath).makeViews(in: view.contentView)
+//    layoutStorage[cell]?.makeViews(in: view.contentView)
     return view
   }
 
@@ -43,7 +43,7 @@ extension ListViewAdapter: UICollectionViewDataSource {
           collectionView.registerHeaderFooterView(for: reg.viewClass, reuseID: reg.id)
         }
         let view = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: reuseID, for: indexPath)
-        layoutStorage.tree(forHeaderAt: indexPath.section).makeViews(in: view)
+//        layoutStorage[header]?.makeViews(in: view)
         return view
       }
     case UICollectionView.elementKindSectionFooter:
@@ -55,7 +55,7 @@ extension ListViewAdapter: UICollectionViewDataSource {
           collectionView.registerHeaderFooterView(for: reg.viewClass, reuseID: reg.id)
         }
         let view = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: reuseID, for: indexPath)
-        layoutStorage.tree(forFooterAt: indexPath.section).makeViews(in: view)
+//        layoutStorage[footer]?.makeViews(in: view)
         return view
       }
     default: break
@@ -70,21 +70,25 @@ extension ListViewAdapter: UICollectionViewDataSource {
 extension ListViewAdapter: UICollectionViewDelegateFlowLayout {
 
   public func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-    return layoutStorage.tree(forCellAt: indexPath).layout?.contentSize ?? .zero
+    let cell = data[indexPath.section].cells[indexPath.item]
+    return .zero
+//    return layoutStorage[cell]?.layout?.contentSize ?? .zero
   }
 
   public func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
-    guard data[section].header != nil else {
+    guard let header = data[section].header else {
       return .zero
     }
-    return layoutStorage.tree(forHeaderAt: section).layout?.contentSize ?? .zero
+    return .zero
+//    return layoutStorage[header]?.layout?.contentSize ?? .zero
   }
 
   public func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForFooterInSection section: Int) -> CGSize {
-    guard data[section].footer != nil else {
+    guard let footer = data[section].footer else {
       return .zero
     }
-    return layoutStorage.tree(forFooterAt: section).layout?.contentSize ?? .zero
+    return .zero
+//    return layoutStorage[footer]?.layout?.contentSize ?? .zero
   }
 
   public func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {

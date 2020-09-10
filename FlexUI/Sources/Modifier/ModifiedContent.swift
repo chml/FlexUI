@@ -24,3 +24,25 @@ extension ModifiedContent {
 }
 
 
+extension ModifiedContent: Equatable where Content: Equatable, Modifier: Equatable {
+  public static func == (lhs: Self, rhs: Self) -> Bool {
+    return lhs.content == rhs.content && lhs.modifier == lhs.modifier
+  }
+}
+
+extension ModifiedContent: Hashable where Content: Hashable, Modifier: Hashable {
+
+  public var id: AnyHashable {
+    return self
+  }
+
+  public func isContentEqual(to other: ModifiedContent<Content, Modifier>) -> Bool {
+    return self == other
+  }
+
+  public func hash(into hasher: inout Hasher) {
+    hasher.combine(content)
+    hasher.combine(modifier)
+  }
+}
+

@@ -22,7 +22,11 @@ import Foundation
     let cell = data[indexPath.section].cells[indexPath.item]
     let reuseID = cell.typeName
     if let view = tableView.dequeueReusableCell(withIdentifier: reuseID) {
-      layoutStorage.tree(forCellAt: indexPath).makeViews(in: view.contentView)
+      if isStaticLayout {
+        staticLayoutStorage[indexPath.section]?[indexPath.item]?.render(in: view.contentView)
+      } else {
+        dynamicLayoutStorage[cell.id]?.render(in: view.contentView)
+      }
       return view
     } else {
       tableView.register(UITableViewCell.self, forCellReuseIdentifier: reuseID)
@@ -45,7 +49,11 @@ import Foundation
     if let header = data[section].header {
       let reuseID = header.typeName
       if let view = tableView.dequeueReusableHeaderFooterView(withIdentifier: reuseID) {
-        layoutStorage.tree(forHeaderAt: section).makeViews(in: view.contentView)
+        if isStaticLayout {
+          staticLayoutStorage[section]?[ListViewAdapter.StorageSectionHeaderIndex]?.render(in: view.contentView)
+        } else {
+          dynamicLayoutStorage[header.id]?.render(in: view.contentView)
+        }
         return view
       } else {
         tableView.register(UITableViewHeaderFooterView.self, forHeaderFooterViewReuseIdentifier: reuseID)
@@ -59,7 +67,11 @@ import Foundation
     if let footer = data[section].footer {
       let reuseID = footer.typeName
       if let view = tableView.dequeueReusableHeaderFooterView(withIdentifier: reuseID) {
-        layoutStorage.tree(forFooterAt: section).makeViews(in: view.contentView)
+        if isStaticLayout {
+          staticLayoutStorage[section]?[ListViewAdapter.StorageSectionFooterIndex]?.render(in: view.contentView)
+        } else {
+          dynamicLayoutStorage[footer.id]?.render(in: view.contentView)
+        }
         return view
       } else {
         tableView.register(UITableViewHeaderFooterView.self, forHeaderFooterViewReuseIdentifier: reuseID)
@@ -70,21 +82,34 @@ import Foundation
   }
 
   public func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-    if data[section].header != nil {
-      return layoutStorage.tree(forHeaderAt: section).layout?.contentSize.height ?? 0
+    if let header = data[section].header {
+      if isStaticLayout {
+        return staticLayoutStorage[section]?[ListViewAdapter.StorageSectionHeaderIndex]?.layout?.contentSize.height ?? 0
+      } else {
+        return dynamicLayoutStorage[header.id]?.layout?.contentSize.height ?? 0
+      }
     }
     return 0
   }
 
   public func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-    if data[section].footer != nil {
-      return layoutStorage.tree(forFooterAt: section).layout?.contentSize.height ?? 0
+    if let footer = data[section].header {
+      if isStaticLayout {
+        return staticLayoutStorage[section]?[ListViewAdapter.StorageSectionFooterIndex]?.layout?.contentSize.height ?? 0
+      } else {
+        return dynamicLayoutStorage[footer.id]?.layout?.contentSize.height ?? 0
+      }
     }
     return 0
   }
 
   public func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-    return layoutStorage.tree(forCellAt: indexPath).layout?.contentSize.height ?? 44
+    if isStaticLayout {
+      return staticLayoutStorage[indexPath.section]?[indexPath.item]?.layout?.contentSize.height ?? 0
+    } else {
+      let cell = data[indexPath.section].cells[indexPath.item]
+      return dynamicLayoutStorage[cell.id]?.layout?.contentSize.height ?? 0
+    }
   }
 
 

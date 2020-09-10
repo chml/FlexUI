@@ -1,0 +1,107 @@
+//
+//  Button.swift
+//  FlexUI
+//
+//  Created by 黎昌明 on 2020/9/8.
+//
+
+import UIKit
+import MPITextKit
+
+public struct Button: Node, ViewProducible {
+  public typealias Body = Never
+  public typealias ProductedView = UIButton
+
+  public enum ButtonType {
+    case system(title: String)
+    case custom(image: UIImage? = nil, title: String? = nil, font: UIFont? = nil)
+    case detailDisclosure
+    case infoLight
+    case infoDark
+    case contactAdd
+  }
+
+  let type: ButtonType
+  let action: () -> Void
+
+  public init(type: ButtonType, action: @escaping () -> Void) {
+    self.type = type
+    self.action = action
+  }
+
+  public init(_ title: String, action:  @escaping () -> Void) {
+    self.init(type: .system(title: title), action: action)
+  }
+
+}
+
+extension Button {
+
+  public func build(with context: FlexTreeContext) -> [FlexNode] {
+    let flexNode = FlexNode()
+    let viewProducer = ViewProducer(type: ProductedView.self)
+    flexNode.viewProducer = viewProducer
+    let buttonType: UIButton.ButtonType// = .system
+    let size: CGSize
+    switch self.type {
+    case .system(let title):
+      buttonType = .system
+      let attrBuilder = MPITextRenderAttributesBuilder()
+      attrBuilder.attributedText = NSAttributedString(string: title, attributes: [.font: UIFont.boldSystemFont(ofSize: 15)])
+      let attr = MPITextRenderAttributes(builder: attrBuilder)
+      let titleSize = MPITextSuggestFrameSizeForAttributes(attr, CGSize(width: CGFloat.greatestFiniteMagnitude, height: CGFloat.greatestFiniteMagnitude), UIEdgeInsets(top: 6, left: 2, bottom: 6, right: 2))
+      size = titleSize
+      viewProducer.appendConfiguration(as: ProductedView.self) { (v) in
+        v.setTitle(title, for: .normal)
+      }
+    case .custom(let image, let title, let font):
+      buttonType = .custom
+      var totalSize: CGSize = .zero
+      if let image = image {
+        totalSize = image.size
+      }
+      if let title = title {
+        let attrBuilder = MPITextRenderAttributesBuilder()
+        attrBuilder.attributedText = NSAttributedString(string: title, attributes: [.font: font ?? UIFont.boldSystemFont(ofSize: 15)])
+        let attr = MPITextRenderAttributes(builder: attrBuilder)
+        let titleSize = MPITextSuggestFrameSizeForAttributes(attr, CGSize(width: CGFloat.greatestFiniteMagnitude, height: CGFloat.greatestFiniteMagnitude), UIEdgeInsets(top: 6, left: 2, bottom: 6, right: 2))
+        totalSize.height = max(totalSize.height, titleSize.height)
+        totalSize.width += (titleSize.width + 8)
+      }
+
+      size = totalSize
+      viewProducer.appendConfiguration(as: ProductedView.self) { (v) in
+        if let font = font {
+          v.titleLabel?.font = font
+        }
+        v.setTitle(title, for: .normal)
+        v.setImage(image, for: .normal)
+      }
+    case .detailDisclosure:
+      buttonType = .detailDisclosure
+      size = CGSize(width: 25, height: 25)
+    case .infoLight:
+      buttonType = .infoLight
+      size = CGSize(width: 25, height: 25)
+    case .infoDark:
+      buttonType = .infoDark
+      size = CGSize(width: 25, height: 25)
+    case .contactAdd:
+      buttonType = .contactAdd
+      size = CGSize(width: 25, height: 25)
+    }
+    viewProducer.appendConfiguration(as: ProductedView.self) {
+      $0.flex.action = self.action
+    }
+    viewProducer.viewMaker = { UIButton(type: buttonType) }
+    if size.width > 0 {
+      flexNode.style.width = .point(size.width)
+    }
+    if size.height > 0 {
+      flexNode.style.height = .point(size.height)
+    }
+    return [flexNode]
+  }
+
+
+}

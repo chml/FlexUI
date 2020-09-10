@@ -13,9 +13,11 @@ public struct AnyNode: Node {
   let isEqualTo: (AnyNode) -> Bool
   public let typeName: String
   public let id: AnyHashable
+  public let isDefaultID: Bool
 
   public init<T: Node>(_ baseNode: T) {
     self.id = baseNode.id
+    self.isDefaultID = baseNode.id == AnyHashable(String(describing: type(of: baseNode)))
     self.base = baseNode
     self.typeName = String(describing: type(of: baseNode))
     self.isEqualTo = { (other) -> Bool in
@@ -33,7 +35,12 @@ public struct AnyNode: Node {
     return base as? T
   }
 
+}
 
+extension Node {
+  public var asAnyNode: AnyNode {
+    AnyNode(self)
+  }
 }
 
 extension AnyNode {

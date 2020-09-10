@@ -19,12 +19,13 @@ private func block(color: UIColor = .random, size: CGSize = .init(width: 100, he
 }
 
 final class FlexboxViewController: UIViewController {
+  
 
   override func viewDidLoad() {
     super.viewDidLoad()
     title = "Flexbox Layout"
     view.backgroundColor = .white
-    let body = Flex {
+    let body =
       VStack(spacing: 10) {
         block()
         block()
@@ -73,7 +74,7 @@ final class FlexboxViewController: UIViewController {
       .scrollable()
       .width(.percent(100))
       .height(.percent(100))
-    }
+      .asAnyNode
 
     view.render(node: body)
   }

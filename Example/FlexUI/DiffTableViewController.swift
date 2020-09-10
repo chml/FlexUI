@@ -9,35 +9,44 @@
 import UIKit
 import FlexUI
 
-final class DiffTableViewController: UIViewController {
 
-  var state: [Int] = [1, 2, 3] {
-    didSet {
-      render()
-    }
+fileprivate struct Cell: Node, Hashable {
+  let text: String
+
+  var body: AnyNode {
+    Text(text)
+      .textColor(.random)
+      .padding(20)
+      .asAnyNode
   }
+}
+
+final class DiffTableViewController: UIViewController, Component {
+  typealias Body = AnyNode
+
+  var state: [Int] = Array(0..<10)
 
   override func viewDidLoad() {
     super.viewDidLoad()
-    render()
+    flex.render()
   }
 
-  func render() {
-    view.render(node: Flex {
-      List(of: UITableView.self, data: state) { (i) in
-        Text("Row \(i)")
-          .textColor(.random)
-          .padding(20)
-      }
-      .pullToRefresh({ [weak self] (endRefreshing) in
-        DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(1)) {
-          self?.state = [4, 3, 2, 1]
-        }
+  func body(with coordinator: SimpleCoordinator<DiffTableViewController>) -> AnyNode {
+    List(table: .grouped, data: state) { (i) in
+      Cell(text:  i%2 == 1 ? "Row \(i)\nThat's odd?" : "Row \(i)")
+    }
+    .pullToRefresh({ (endRefreshing) in
+      DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(1)) {
         endRefreshing()
-      })
+        coordinator.update {
+          $0.state.shuffle()
+        }
+      }
+    })
       .width(.percent(100))
       .height(.percent(100))
-      })
+      .asAnyNode
   }
+
 
 }

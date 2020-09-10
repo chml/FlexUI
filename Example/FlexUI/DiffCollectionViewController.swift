@@ -24,8 +24,8 @@ final class DiffCollectionViewController: UIViewController {
   }
 
   func render() {
-    view.render(node: Flex {
-      List(of: UICollectionView.self, data: state) { (i) in
+    view.render(node:
+      List(collection: UICollectionViewFlowLayout(), data: state) { (i) in
         Text("Row \(i)")
           .textColor(.random)
           .padding(20)
@@ -36,16 +36,12 @@ final class DiffCollectionViewController: UIViewController {
         }
         endRefreshing()
       })
-        .viewMaker({
-          let v = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
-          v.backgroundColor = .white
-          return v
-        })
         .viewConfig({ (view) in
         })
         .width(.percent(100))
         .height(.percent(100))
-    })
+        .asAnyNode
+    )
   }
 
 }
