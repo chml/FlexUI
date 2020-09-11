@@ -35,17 +35,17 @@ final class DiffTableViewController: UIViewController, Component {
     List(table: .grouped, data: state) { (i) in
       Cell(text:  i%2 == 1 ? "Row \(i)\nThat's odd?" : "Row \(i)")
     }
-    .pullToRefresh({ (endRefreshing) in
+    .pullToRefresh { (endRefreshing) in
       DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(1)) {
         endRefreshing()
         coordinator.update {
           $0.state.shuffle()
         }
       }
-    })
-      .width(.percent(100))
-      .height(.percent(100))
-      .asAnyNode
+    }
+    .width(.percent(100))
+    .height(.percent(100))
+    .asAnyNode
   }
 
 

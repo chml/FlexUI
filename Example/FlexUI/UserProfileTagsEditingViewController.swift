@@ -9,7 +9,7 @@
 import UIKit
 import FlexUI
 
-private struct TagCell: Component, Hashable {
+private struct TagCell: Component {
 
   typealias Body = AnyNode
 
@@ -17,49 +17,43 @@ private struct TagCell: Component, Hashable {
     return editingText.hashValue
   }
 
+  func isContentEqual(to other: TagCell) -> Bool {
+    return editingText == other.editingText
+  }
+
   var editingText: EditingText
+  var onDelete: ((TagCell)->())
 
   func body(with coordinator: Coordinator) -> AnyNode {
     View(of: UITextField.self)
       .maxWidth(.percent(100))
       .height(40)
-      .viewMaker({ () -> UIView in
+      .viewMaker { () -> UIView in
         let v = UITextField()
         v.borderStyle = .roundedRect
         v.removeTarget(coordinator, action: #selector(Coordinator.textChanged(_:)), for: .editingChanged)
         v.addTarget(coordinator, action: #selector(Coordinator.textChanged(_:)), for: .editingChanged)
         return v
-      })
-      .viewConfig { (v) in
-        v.text = self.editingText.text
     }
-    .overlay({
-      View(of: UIButton.self)
-        .width(20).height(20)
-        .end(-10).top(-10)
-        .viewMaker ({ () -> UIView in
-          UIButton(type: .close)
-        })
-        .viewConfig { (v) in
-          v.removeTarget(coordinator, action: #selector(Coordinator.delete(_:)), for: .touchUpInside)
-          v.addTarget(coordinator, action: #selector(Coordinator.delete(_:)), for: .touchUpInside)
+    .viewConfig { (v) in
+      v.text = self.editingText.text
+    }
+    .overlay {
+      Button("X") {
+        self.onDelete(self)
       }
-    })
-      .margin(12)
-      .asAnyNode
+      .width(25).height(25)
+      .end(-12).top(-12)
+    }
+    .margin(12)
+    .asAnyNode
   }
 
   final class Coordinator: ComponentCoordinator {
     typealias Content = TagCell
     let context: Context
-    var onDelete: ((Content)->())? = nil
     init(with context: Context) {
       self.context = context
-    }
-
-    @objc
-    func delete(_ sender: UIButton) {
-      onDelete?(context.current())
     }
 
     @objc
@@ -70,13 +64,10 @@ private struct TagCell: Component, Hashable {
   }
 }
 
-final class UserProfileTagsEditingViewController: UIViewController {
+final class UserProfileTagsEditingViewController: UIViewController, Component {
+  typealias Body = AnyNode
 
-  var tags: [EditingText] {
-    didSet {
-      render()
-    }
-  }
+  var tags: [EditingText]
   var onSave:((_ tags: [String]) -> Void)? = nil
 
   init(title: String, tags: [String]) {
@@ -95,7 +86,7 @@ final class UserProfileTagsEditingViewController: UIViewController {
     super.viewDidLoad()
     let save = UIBarButtonItem(barButtonSystemItem: .save, target: self, action: #selector(save(_:)))
     navigationItem.rightBarButtonItem = save
-    render()
+    flex.render()
   }
 
   @objc
@@ -104,17 +95,19 @@ final class UserProfileTagsEditingViewController: UIViewController {
     self.dismiss(animated: true, completion: nil)
   }
 
-  private func render() {
-    view.render(node:
-      List(table: .grouped) {
-        ForEach(self.tags) {
-          TagCell(editingText: $0)
+  func body(with coordinator: SimpleCoordinator<UserProfileTagsEditingViewController>) -> AnyNode {
+    List(table: .grouped, data: self.tags) {
+      TagCell(editingText: $0, onDelete: { (tag) in
+        coordinator.update { (vc) in
+          let index = vc.tags.firstIndex(of: tag.editingText)!
+          print("delete \(index)")
+          vc.tags.remove(at: index)
         }
-      }
-      .width(.percent(100))
-      .height(.percent(100))
-      .asAnyNode
-    )
+      })
+    }
+    .width(.percent(100))
+    .height(.percent(100))
+    .asAnyNode
   }
 
 }

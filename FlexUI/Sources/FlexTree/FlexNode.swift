@@ -173,7 +173,7 @@ extension FlexNode: CustomDebugStringConvertible {
     let indentText = (0..<indent).reduce("") { (result, _) -> String in
       result + " |"
     }
-    let content = "\(debugName) (\(layoutFrame)\n"
+    let content = "\(debugName) (\(layoutFrame) reuseID: \(viewProducer?.reuseID?.baseDesc ?? "nil")\n"
     let childrenDesc = children.reduce("") { (result, node) -> String in
       result + node.debugDesc(indent: indent + 1)
     }
@@ -181,30 +181,29 @@ extension FlexNode: CustomDebugStringConvertible {
   }
 
   private var debugName: String {
+    var name = "Div"
     if style.overflow == .scroll {
-      return "ScrollNode"
-    }
-    if parent?.style.overflow == .some(.scroll) {
-      return "ScrollContent"
-    }
-    if children.count > 0 {
+      name = "ScrollNode"
+    } else if parent?.style.overflow == .some(.scroll) {
+      name = "ScrollContent"
+    } else  if children.count > 0 {
       switch style.flexDirection {
-      case .row: return "HStack"
-      case .rowReverse: return "HStackReverse"
-      case .column: return "VStack"
-      case .columnReverse: return "VStackReverse"
+      case .row: name = "HStack"
+      case .rowReverse: name = "HStackReverse"
+      case .column: name = "VStack"
+      case .columnReverse: name = "VStackReverse"
       @unknown default: break
       }
-    }
-    if let view = viewProducer {
+    } else if let view = viewProducer {
       switch view.viewTypeName {
-      case "MPILabel": return "Text"
-      case "FLAnimatedImageView": return "Image"
-      default: return view.viewTypeName
+      case "MPILabel": name = "Text"
+      case "FLAnimatedImageView": name = "Image"
+      default: name = view.viewTypeName
       }
     }
 
-    return "Div"
+    name += " \(Unmanaged.passUnretained(self).toOpaque())"
+    return name
   }
 
 }

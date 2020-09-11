@@ -64,41 +64,29 @@ fileprivate struct AlubmNode: Component, Hashable {
           imageView.removeGestureRecognizer(g)
         }
       }
-      imageView.addGestureRecognizer(longPress())
-      imageView.addGestureRecognizer(UIPanGestureRecognizer(target: self, action: #selector(snapshotPan(_:))))
-    }
-
-    func longPress() -> UILongPressGestureRecognizer {
-      let g = UILongPressGestureRecognizer(target: self, action: #selector(imageLongPress(_:)))
-      g.delegate = self
-      return g
-    }
-
-    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
-      return gestureRecognizer is UILongPressGestureRecognizer && otherGestureRecognizer is UIPanGestureRecognizer
+      imageView.addGestureRecognizer(UILongPressGestureRecognizer(target: self, action: #selector(imageLongPress(_:))))
     }
 
     @objc
     func imageLongPress(_ sender: UILongPressGestureRecognizer)  {
-      print("\(sender.state.rawValue)")
-      if let view = sender.view {
-        view.superview?.bringSubviewToFront(view)
-        UIView.animate(withDuration: 0.2) {
-          view.transform = CGAffineTransform(scaleX: 0.9, y: 0.9)
-          view.alpha = 0.75
-        }
-        self.floatingImage = view
-      }
-    }
-
-    @objc
-    func snapshotPan(_ sender: UIPanGestureRecognizer)  {
       let pos =  sender.location(in: sender.view?.superview)
       switch sender.state {
+      case .began:
+        if let view = sender.view {
+          view.superview?.bringSubviewToFront(view)
+          UIView.animate(withDuration: 0.15) {
+            view.transform = CGAffineTransform(scaleX: 0.9, y: 0.9)
+            view.alpha = 0.75
+          }
+          self.floatingImage = view
+        }
       case .changed:
         self.floatingImage?.center = pos
-      case .ended:
+
+      case .ended: fallthrough
+      case .cancelled:
         if let view = self.floatingImage, let superview = view.superview {
+          view.alpha = 1
           let oldIndex = view.tag
           var newIndex = oldIndex
           for v in superview.subviews {
@@ -121,6 +109,7 @@ fileprivate struct AlubmNode: Component, Hashable {
       default: break
       }
     }
+
   }
 }
 

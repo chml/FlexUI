@@ -29,27 +29,21 @@ public final class ListViewUpdater {
 
   func performUpdate(with listView: ListView, adapter: ListViewAdapter, data: [Section]) {
     let isStatic: Bool = data.first?.cells.first?.isDefaultID ?? false
+
+    func reload() {
+      layout(with: listView, adapter: adapter, updateContent: .reload(data: data, isStatic: isStatic)) { (content) in
+        if case .reload(let data, _) = content {
+          adapter.data = data
+          adapter.reloadData()
+        }
+      }
+    }
+
     adapter.isStaticLayout = isStatic
-    guard listView.window != nil else {
-      layout(with: listView, adapter: adapter, updateContent: .reload(data: data, isStatic: isStatic)) { (content) in
-        if case .reload(let data, _) = content {
-          adapter.data = data
-          adapter.reloadData()
-        }
-      }
+    if isStatic || adapter.data.isEmpty || listView.window == nil {
+      reload()
       return
     }
-
-    if adapter.data.isEmpty {
-      layout(with: listView, adapter: adapter, updateContent: .reload(data: data, isStatic: isStatic)) { (content) in
-        if case .reload(let data, _) = content {
-          adapter.data = data
-          adapter.reloadData()
-        }
-      }
-      return
-    }
-
 
     let stagedChangeset = StagedChangeset(source: adapter.data, target: data)
     if stagedChangeset.isEmpty {
@@ -60,12 +54,7 @@ public final class ListViewUpdater {
       total + next.changeCount
     }
     if totalChangedCound >= self.animatableChangeCount {
-      layout(with: listView, adapter: adapter, updateContent: .reload(data: data, isStatic: isStatic)) { (content) in
-        if case .reload(let data, _) = content {
-          adapter.data = data
-          adapter.reloadData()
-        }
-      }
+      reload()
       return
     }
 
@@ -144,10 +133,10 @@ public final class ListViewUpdater {
               dynamicLayoutStorage[node.id] = tree
             }
           }
-          for index in changeset.sectionDeleted {
+//          for index in changeset.sectionDeleted {
 //            layoutStorage.deleteTrees(forSection: index)
 //              dynamicLayoutStorage[node.id] = tree
-          }
+//          }
 
           for indexPath in changeset.elementInserted {
             let node = data[indexPath.section].cells[indexPath.element]
@@ -159,9 +148,9 @@ public final class ListViewUpdater {
             let tree = node.buildAndCalculateLayout(width: width, direction: direction)
             dynamicLayoutStorage[node.id] = tree
           }
-          for indexPath in changeset.elementDeleted {
+//          for indexPath in changeset.elementDeleted {
 //            layoutStorage.deleteTree(forCellAt: (IndexPath(item: indexPath.element, section: indexPath.section)))
-          }
+//          }
         }
       case .reload(let data, let isStatic):
         if isStatic {
@@ -203,12 +192,32 @@ public final class ListViewUpdater {
       }
       DispatchQueue.main.async {
         switch updateContent {
-        case .changed: 
+        case .changed(_, let stagedChangeset):
+          for changeset in stagedChangeset {
+            for index in changeset.sectionDeleted {
+              let section = adapter.data[index]
+              if let node = section.header {
+                adapter.dynamicLayoutStorage.removeValue(forKey: node.id)
+              }
+              if let node = section.footer {
+                adapter.dynamicLayoutStorage.removeValue(forKey: node.id)
+              }
+              for node in section.cells {
+                adapter.dynamicLayoutStorage.removeValue(forKey: node.id)
+              }
+            }
+            for indexPath in changeset.elementDeleted {
+              let node = adapter.data[indexPath.section].cells[indexPath.element]
+              adapter.dynamicLayoutStorage.removeValue(forKey: node.id)
+            }
+          }
           for (id, tree) in dynamicLayoutStorage {
             adapter.dynamicLayoutStorage[id] = tree
           }
+
         case .reload(_, let isStatic):
           if isStatic {
+            adapter.staticLayoutStorage.removeAll()
             for (sectionIndex, section) in staticLayoutStorage {
               for (cellIndex, tree) in section {
                 adapter.staticLayoutStorage[sectionIndex, default: [:]][cellIndex] = tree

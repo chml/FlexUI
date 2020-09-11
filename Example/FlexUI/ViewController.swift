@@ -22,7 +22,7 @@ private struct Cell: Node {
   var body: AnyNode {
     HStack(spacing: 20, alignItems: .center) {
       Text(title).flexShrink(1).flexGrow(1)
-      Image(UIImage(systemName: "chevron.right")?.withRenderingMode(.alwaysOriginal))
+//      Image(UIImage(systemName: "chevron.right")?.withRenderingMode(.alwaysOriginal))
     }
     .padding(20)
     .asAnyNode

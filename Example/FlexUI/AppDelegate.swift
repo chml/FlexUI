@@ -7,18 +7,18 @@
 //
 
 import UIKit
-import SwiftUI
-
-@available(iOS 13.0, *)
-struct V: View {
-
-  @State var count: [Int] = [1, 2, 3]
-
-  var body: some View {
-    Text("asdfasdf")
-      .gesture(TapGesture())
-  }
-}
+//import SwiftUI
+//
+//@available(iOS 13.0, *)
+//struct V: View {
+//
+//  @State var count: [Int] = [1, 2, 3]
+//
+//  var body: some View {
+//    Text("asdfasdf")
+//      .gesture(TapGesture())
+//  }
+//}
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {

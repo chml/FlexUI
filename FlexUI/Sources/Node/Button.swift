@@ -24,13 +24,13 @@ public struct Button: Node, ViewProducible {
   let type: ButtonType
   let action: () -> Void
 
-  public init(type: ButtonType, action: @escaping () -> Void) {
+  public init(_ type: ButtonType, action: @escaping () -> Void) {
     self.type = type
     self.action = action
   }
 
   public init(_ title: String, action:  @escaping () -> Void) {
-    self.init(type: .system(title: title), action: action)
+    self.init(.system(title: title), action: action)
   }
 
 }
