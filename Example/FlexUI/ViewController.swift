@@ -19,10 +19,16 @@ private struct Cell: Node {
     self.viewController = { VC() }
   }
 
+  init<VC: UIViewController>(_ title: String, _ vc: @escaping () -> VC) {
+    self.title = title
+    self.viewController = vc
+  }
+
   var body: AnyNode {
     HStack(spacing: 20, alignItems: .center) {
-      Text(title).flexShrink(1).flexGrow(1)
-//      Image(UIImage(systemName: "chevron.right")?.withRenderingMode(.alwaysOriginal))
+        Text(title).flexShrink(1).flexGrow(1)
+//        Image(UIImage(systemName: "chevron.right")?.withRenderingMode(.alwaysOriginal))
+      Text(">")
     }
     .padding(20)
     .asAnyNode
@@ -34,23 +40,47 @@ final class ViewController: UIViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     title = "FlexUI"
+//    flex.render {
+//      List(collection: UICollectionViewFlowLayout(), data: Array(0..<10)) {
+//        Text("COOLLLL\($0)")
+//      }
+//      .viewConfig({ (v) in
+//        v.backgroundColor = .white
+//      })
+//      .width(self.view.bounds.width)
+//      .height(self.view.bounds.height)
+////      .width(.percent(100))
+////      .height(.percent(100))
+//    }
     flex.render {
       List {
-        Section(id: 0, header: Text("Basic")) {
+        Section(id: AnyHashable(0), header: Text("Basic")) {
           Cell("Flexbox Layout", FlexboxViewController.self)
           Cell("Diffable TableView", DiffTableViewController.self)
           Cell("Diffable CollectionView", DiffCollectionViewController.self)
           Cell("Custom CollectionViewLayout", DiffTableViewController.self)
           Cell("NodeView && AutoLayout", NodeViewViewController.self)
         }
-        Section(id: 1, header: Text("Demo")) {
+        Section(id: AnyHashable(1), header: Text("Demo")) {
           Cell("Counter", CounterDemoViewController.self)
           Cell("User Profile ", UserProfileViewController.self)
           Cell("Timeline", UIViewController.self)
+          Cell("Benchmark") {
+            FlexUICollectionViewController(data: FeedItemData.generate(count: 100))
+          }
         }
       }
       .onSelect {[weak self] (item) in
         if let cell = item.unwrap(as: Cell.self) {
+//          if cell.title == "Benchmark" {
+//            let viewControllerData = ViewControllerData(title: cell.title) {
+//            FlexUICollectionViewController(data: FeedItemData.generate(count: $0))
+//            }
+//            self?.runBenchmark(viewControllerData: viewControllerData, logResults: true, completed: { [weak self] (results) in
+//              self?.printResults(name: viewControllerData.title, results: results)
+//            })
+//            return
+//          }
           self?.navigationController?.pushViewController(cell.viewController(), animated: true)
         }
       }
@@ -59,4 +89,61 @@ final class ViewController: UIViewController {
     }
   }
 
+  private func printResults(name: String, results: [Result]) {
+    var resultsString = "\(name)\t"
+    results.forEach { (result) in
+      resultsString += "\(result.secondsPerOperation)\t"
+    }
+    print(resultsString)
+  }
+
+  private func runBenchmark(viewControllerData: ViewControllerData, logResults: Bool, completed: ((_ results: [Result]) -> Void)?) {
+    guard let viewController = viewControllerData.factoryBlock(20) else {
+      return
+    }
+
+    benchmark(viewControllerData, logResults: logResults, completed: completed)
+
+    viewController.title = viewControllerData.title
+    navigationController?.pushViewController(viewController, animated: logResults)
+  }
+
+  private func benchmark(_ viewControllerData: ViewControllerData, logResults: Bool, completed: ((_ results: [Result]) -> Void)?) {
+    //        let iterations = [1]
+    let iterations = [10, 20, 30, 40, 50, 60, 70, 80, 90, 100]
+    var results: [Result] = []
+
+    for i in iterations {
+      let description = "\(i)\tsubviews\t\(viewControllerData.title)"
+      let result = Stopwatch.benchmark(description, logResults: logResults, block: { (stopwatch: Stopwatch) -> Void in
+        let vc = viewControllerData.factoryBlock(i)
+        stopwatch.resume()
+        vc?.view.layoutIfNeeded()
+        stopwatch.pause()
+      })
+
+      results.append(result)
+    }
+
+    completed?(results)
+  }
+
 }
+
+private struct ViewControllerData {
+  let title: String
+  let factoryBlock: (_ viewCount: Int) -> UIViewController?
+}
+
+//#if canImport(SwiftUI)
+//import SwiftUI
+//@available(iOS 13.0, *)
+//struct _LayoutKitTableViewController_Preview: PreviewProvider {
+//  typealias Previews = LiveView<UINavigationController>
+//
+//  static var previews: LiveView<UINavigationController> {
+//    return LiveView(UINavigationController(rootViewController:ViewController()))
+//  }
+//
+//}
+//#endif

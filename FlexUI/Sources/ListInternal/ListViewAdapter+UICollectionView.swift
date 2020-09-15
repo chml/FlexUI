@@ -28,7 +28,11 @@ extension ListViewAdapter: UICollectionViewDataSource {
       collectionView.registerCell(for: reg.viewClass, reuseID: reg.id)
     }
     let view = collectionView.dequeueReusableCell(withReuseIdentifier: reuseID, for: indexPath)
-//    layoutStorage[cell]?.makeViews(in: view.contentView)
+    if isStaticLayout {
+      staticLayoutStorage[indexPath.section]?[indexPath.item]?.render(in: view.contentView)
+    } else {
+      dynamicLayoutStorage[cell.id]?.render(in: view.contentView)
+    }
     return view
   }
 
@@ -43,7 +47,11 @@ extension ListViewAdapter: UICollectionViewDataSource {
           collectionView.registerHeaderFooterView(for: reg.viewClass, reuseID: reg.id)
         }
         let view = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: reuseID, for: indexPath)
-//        layoutStorage[header]?.makeViews(in: view)
+        if isStaticLayout {
+          staticLayoutStorage[indexPath.section]?[ListViewAdapter.StorageSectionHeaderIndex]?.render(in: view)
+        } else {
+          dynamicLayoutStorage[header.id]?.render(in: view)
+        }
         return view
       }
     case UICollectionView.elementKindSectionFooter:
@@ -55,7 +63,11 @@ extension ListViewAdapter: UICollectionViewDataSource {
           collectionView.registerHeaderFooterView(for: reg.viewClass, reuseID: reg.id)
         }
         let view = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: reuseID, for: indexPath)
-//        layoutStorage[footer]?.makeViews(in: view)
+        if isStaticLayout {
+          staticLayoutStorage[indexPath.section]?[ListViewAdapter.StorageSectionFooterIndex]?.render(in: view)
+        } else {
+          dynamicLayoutStorage[footer.id]?.render(in: view)
+        }
         return view
       }
     default: break
@@ -70,25 +82,34 @@ extension ListViewAdapter: UICollectionViewDataSource {
 extension ListViewAdapter: UICollectionViewDelegateFlowLayout {
 
   public func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-    let cell = data[indexPath.section].cells[indexPath.item]
-    return .zero
-//    return layoutStorage[cell]?.layout?.contentSize ?? .zero
+    if isStaticLayout {
+      return staticLayoutStorage[indexPath.section]?[indexPath.item]?.layout?.contentSize ?? .zero
+    } else {
+      let cell = data[indexPath.section].cells[indexPath.item]
+      return dynamicLayoutStorage[cell.id]?.layout?.contentSize ?? .zero
+    }
   }
 
   public func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
     guard let header = data[section].header else {
       return .zero
     }
-    return .zero
-//    return layoutStorage[header]?.layout?.contentSize ?? .zero
+    if isStaticLayout {
+      return staticLayoutStorage[section]?[ListViewAdapter.StorageSectionHeaderIndex]?.layout?.contentSize ?? .zero
+    } else {
+      return dynamicLayoutStorage[header.id]?.layout?.contentSize ?? .zero
+    }
   }
 
   public func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForFooterInSection section: Int) -> CGSize {
     guard let footer = data[section].footer else {
       return .zero
     }
-    return .zero
-//    return layoutStorage[footer]?.layout?.contentSize ?? .zero
+    if isStaticLayout {
+      return staticLayoutStorage[section]?[ListViewAdapter.StorageSectionHeaderIndex]?.layout?.contentSize ?? .zero
+    } else {
+      return dynamicLayoutStorage[footer.id]?.layout?.contentSize ?? .zero
+    }
   }
 
   public func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {

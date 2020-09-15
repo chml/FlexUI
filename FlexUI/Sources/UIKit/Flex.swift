@@ -13,17 +13,17 @@ public final class Flex<Base> {
   }
 }
 
-public protocol FlexExComatible {
+public protocol FlexComatible {
 
-  associatedtype FlexExBase
+  associatedtype FlexBase
 
-  static var flex: Flex<FlexExBase>.Type { get }
+  static var flex: Flex<FlexBase>.Type { get }
 
-  var flex: Flex<FlexExBase> { get }
+  var flex: Flex<FlexBase> { get }
 
 }
 
-extension FlexExComatible {
+extension FlexComatible {
 
   public static var flex: Flex<Self>.Type {
     Flex<Self>.self
@@ -36,4 +36,4 @@ extension FlexExComatible {
 }
 
 import class Foundation.NSObject
-extension NSObject: FlexExComatible {}
+extension NSObject: FlexComatible {}

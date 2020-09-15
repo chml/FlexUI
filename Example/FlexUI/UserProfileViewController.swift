@@ -155,7 +155,7 @@ final class UserProfileViewController: UIViewController, Component {
     URL(string:"https://s3.ifanr.com/wp-content/uploads/2020/09/1080ti.jpg!720")!,
   ]
   var tags1: [String] = ["刚买来新电脑的你", "是不是", "马上就迫不及", "待地装上了各种软件，如", "微信、Office、浏览器等，却忽略了许多电脑的自带软件。" ]
-  var tags2: [String] = [ "是不是", "马上就", "迫不及", "待地"]
+  var tags2: [String] = ["是不是", "马上就", "迫不及", "待地"]
 
   typealias Body = AnyNode
   func body(with coordinator: SimpleCoordinator<UserProfileViewController>) -> AnyNode {

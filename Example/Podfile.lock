@@ -12,9 +12,9 @@ PODS:
     - MPITextKit
     - Nuke
     - Yoga
-  - MagazineLayout (1.6.1)
+  - MagazineLayout (1.6.2)
   - MPITextKit (0.1.8)
-  - Nuke (8.4.1)
+  - Nuke (9.1.2)
   - RxCocoa (5.1.1):
     - RxRelay (~> 5)
     - RxSwift (~> 5)
@@ -48,15 +48,15 @@ EXTERNAL SOURCES:
 SPEC CHECKSUMS:
   DifferenceKit: 516f12e336ed65a3a0665847b5c3cb5cad4bd4ea
   FLAnimatedImage: 4a0b56255d9b05f18b6dd7ee06871be5d3b89e31
-  FlexUI: d477a0c79483e68950ebfe44bf0ec0d41be30d61
-  MagazineLayout: 163e04d3ee6b555728f2e79c66ae6aa3f6d661de
+  FlexUI: 7b2dacfca50c87d1e6ba6b18ce76084f02b3da2b
+  MagazineLayout: 8e995730bc2b1ff8f11f44cb7d7926ab9640892f
   MPITextKit: 475a22b8df57c42c8c040bf95df47427642199ad
-  Nuke: d780e3507a86b86c589ab3cc5cd302d5456f06fb
+  Nuke: dd2e6be6a34c042a7861e190632781d11f253026
   RxCocoa: 32065309a38d29b5b0db858819b5bf9ef038b601
   RxRelay: d77f7d771495f43c556cbc43eebd1bb54d01e8e9
   RxSwift: 81470a2074fa8780320ea5fe4102807cb7118178
   Yoga: cff67a400f6b74dc38eb0bad4f156673d9aa980c
 
-PODFILE CHECKSUM: ab6afbce368700fc3bf8345358fe0a13c627efbe
+PODFILE CHECKSUM: 5636c839201a0eee8b8b28253255cb413a333af6
 
 COCOAPODS: 1.9.3

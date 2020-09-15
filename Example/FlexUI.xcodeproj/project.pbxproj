@@ -20,6 +20,10 @@
 		CB4E69442503A8E300FF782D /* DiffCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB4E69432503A8E300FF782D /* DiffCollectionViewController.swift */; };
 		CB4E694A25050C8B00FF782D /* UserProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB4E694925050C8B00FF782D /* UserProfileViewController.swift */; };
 		CB4E694C250522C900FF782D /* UserProfileTagsEditingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB4E694B250522C900FF782D /* UserProfileTagsEditingViewController.swift */; };
+		CB6CA03D2510AD1C00A4D8C6 /* FeedItemFlexUINode.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB6CA03B2510AD1C00A4D8C6 /* FeedItemFlexUINode.swift */; };
+		CB6CA03E2510AD1C00A4D8C6 /* FlexUICollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB6CA03C2510AD1C00A4D8C6 /* FlexUICollectionViewController.swift */; };
+		CB6CA0412510AE9D00A4D8C6 /* DataBinder.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB6CA03F2510AE9D00A4D8C6 /* DataBinder.swift */; };
+		CB6CA0422510AE9D00A4D8C6 /* Stopwatch.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB6CA0402510AE9D00A4D8C6 /* Stopwatch.swift */; };
 		CBA9D15F25008F1000A7D1AC /* ColorExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBA9D15E25008F1000A7D1AC /* ColorExt.swift */; };
 		CBA9D1632500A77E00A7D1AC /* FlexboxViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBA9D1622500A77E00A7D1AC /* FlexboxViewController.swift */; };
 		CBA9D1672500EFE600A7D1AC /* DiffTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBA9D1662500EFE600A7D1AC /* DiffTableViewController.swift */; };
@@ -60,6 +64,10 @@
 		CB4E69432503A8E300FF782D /* DiffCollectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiffCollectionViewController.swift; sourceTree = "<group>"; };
 		CB4E694925050C8B00FF782D /* UserProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfileViewController.swift; sourceTree = "<group>"; };
 		CB4E694B250522C900FF782D /* UserProfileTagsEditingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfileTagsEditingViewController.swift; sourceTree = "<group>"; };
+		CB6CA03B2510AD1C00A4D8C6 /* FeedItemFlexUINode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedItemFlexUINode.swift; sourceTree = "<group>"; };
+		CB6CA03C2510AD1C00A4D8C6 /* FlexUICollectionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FlexUICollectionViewController.swift; sourceTree = "<group>"; };
+		CB6CA03F2510AE9D00A4D8C6 /* DataBinder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataBinder.swift; sourceTree = "<group>"; };
+		CB6CA0402510AE9D00A4D8C6 /* Stopwatch.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Stopwatch.swift; sourceTree = "<group>"; };
 		CBA9D15E25008F1000A7D1AC /* ColorExt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorExt.swift; sourceTree = "<group>"; };
 		CBA9D1622500A77E00A7D1AC /* FlexboxViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlexboxViewController.swift; sourceTree = "<group>"; };
 		CBA9D1662500EFE600A7D1AC /* DiffTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiffTableViewController.swift; sourceTree = "<group>"; };
@@ -114,6 +122,7 @@
 		607FACD21AFB9204008FA782 /* Example for FlexUI */ = {
 			isa = PBXGroup;
 			children = (
+				CB6CA1AF2510B8C700A4D8C6 /* Benchmark */,
 				CB062747250A212A00621727 /* Basic */,
 				CB062746250A211900621727 /* Counter */,
 				CB062745250A211000621727 /* UserProfile */,
@@ -192,6 +201,17 @@
 				CBC2DAC625079A55008C56FF /* NodeViewViewController.swift */,
 			);
 			name = Basic;
+			sourceTree = "<group>";
+		};
+		CB6CA1AF2510B8C700A4D8C6 /* Benchmark */ = {
+			isa = PBXGroup;
+			children = (
+				CB6CA03B2510AD1C00A4D8C6 /* FeedItemFlexUINode.swift */,
+				CB6CA03C2510AD1C00A4D8C6 /* FlexUICollectionViewController.swift */,
+				CB6CA03F2510AE9D00A4D8C6 /* DataBinder.swift */,
+				CB6CA0402510AE9D00A4D8C6 /* Stopwatch.swift */,
+			);
+			name = Benchmark;
 			sourceTree = "<group>";
 		};
 		CEF818ABF1B91153D6FCE22A /* Frameworks */ = {
@@ -412,6 +432,9 @@
 				CB06273C2508EAE600621727 /* CounterDemoViewController.swift in Sources */,
 				CBA9D1672500EFE600A7D1AC /* DiffTableViewController.swift in Sources */,
 				CB2DAA962508C1D2002E083B /* EditingText.swift in Sources */,
+				CB6CA0412510AE9D00A4D8C6 /* DataBinder.swift in Sources */,
+				CB6CA03E2510AD1C00A4D8C6 /* FlexUICollectionViewController.swift in Sources */,
+				CB6CA0422510AE9D00A4D8C6 /* Stopwatch.swift in Sources */,
 				CBC2DAC725079A55008C56FF /* NodeViewViewController.swift in Sources */,
 				CBA9D1632500A77E00A7D1AC /* FlexboxViewController.swift in Sources */,
 				607FACD81AFB9204008FA782 /* ViewController.swift in Sources */,
@@ -419,6 +442,7 @@
 				607FACD61AFB9204008FA782 /* AppDelegate.swift in Sources */,
 				CB4E694C250522C900FF782D /* UserProfileTagsEditingViewController.swift in Sources */,
 				CBC6F75E24FFC1D3009D7A5C /* LivePreview.swift in Sources */,
+				CB6CA03D2510AD1C00A4D8C6 /* FeedItemFlexUINode.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -566,7 +590,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = 6GASTWWZR6;
 				INFOPLIST_FILE = FlexUI/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MODULE_NAME = ExampleApp;
 				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.demo.$(PRODUCT_NAME:rfc1034identifier)";
@@ -583,7 +607,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = 6GASTWWZR6;
 				INFOPLIST_FILE = FlexUI/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MODULE_NAME = ExampleApp;
 				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.demo.$(PRODUCT_NAME:rfc1034identifier)";
