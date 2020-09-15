@@ -9,39 +9,38 @@
 import UIKit
 import FlexUI
 
-final class DiffCollectionViewController: UIViewController {
+final class DiffCollectionViewController: UIViewController, Component {
 
-  var state: [Int] = [1, 2, 3] {
-    didSet {
-      render()
-    }
-  }
+  typealias Body = AnyNode
+
+  var state: [Int] = Array(0..<99)
 
   override func viewDidLoad() {
     super.viewDidLoad()
     view.backgroundColor = .white
-    render()
+    flex.render()
   }
 
-  func render() {
-    view.render(node:
-      List(collection: UICollectionViewFlowLayout(), data: state) { (i) in
-        Text("Row \(i)")
-          .textColor(.random)
-          .padding(20)
-      }
-      .pullToRefresh({ [weak self] (endRefreshing) in
-        DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(1)) {
-          self?.state = [4, 3, 2, 1]
+  func body(with coordinator: SimpleCoordinator<DiffCollectionViewController>) -> AnyNode {
+    List(collection: UICollectionViewFlowLayout(), data: state) { (i) in
+      Text("Row \(i)")
+        .textColor(.random)
+        .padding(20)
+    }
+    .pullToRefresh({ (endRefreshing) in
+      DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(1)) {
+        coordinator.update {
+          $0.state.shuffle()
         }
-        endRefreshing()
+      }
+      endRefreshing()
+    })
+      .viewConfig({ (v) in
+        v.backgroundColor = .white
       })
-        .viewConfig({ (view) in
-        })
-        .width(.percent(100))
-        .height(.percent(100))
-        .asAnyNode
-    )
+      .width(.percent(100))
+      .height(.percent(100))
+      .asAnyNode
   }
 
 }
