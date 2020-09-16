@@ -48,3 +48,26 @@ struct LiveRoomMessagesNode: Component {
   }
 
 }
+
+#if DEBUG
+extension LiveRoomMessage {
+  static func generateMessages() -> [LiveRoomMessage] {
+    return Array(0..<10).map { n in
+      LiveRoomMessage(id: n, user: "User\(n)", message: "long long message \(n)")
+    }
+  }
+}
+#endif
+//
+//#if canImport(SwiftUI)
+//import SwiftUI
+//@available(iOS 13.0, *)
+//struct _LiveRoomMessageCell_Preview: PreviewProvider {
+//  typealias Previews = LiveView<NodeView>
+//
+//  static var previews: LiveView<NodeView> {
+//    return LiveView(NodeView(LiveRoomMessageCell(message: LiveRoomMessage.generateMessages().first!).asAnyNode))
+//  }
+//
+//}
+//#endif

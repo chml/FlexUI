@@ -19,6 +19,15 @@ open class NodeView: UIView {
   }
   var nodeTree: FlexTree?
 
+  public init(_ node: AnyNode) {
+    self.node = node
+    super.init(frame: .zero)
+  }
+
+  required public init?(coder: NSCoder) {
+    fatalError("init(coder:) has not been implemented")
+  }
+  
   open override func layoutSubviews() {
     super.layoutSubviews()
     nodeTree?.render(in: self)

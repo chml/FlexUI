@@ -7,7 +7,6 @@
 
 import UIKit
 
-
 public protocol ListView: UIView {
 
   var contentOffset: CGPoint { get }

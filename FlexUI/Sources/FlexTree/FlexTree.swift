@@ -90,6 +90,7 @@ public class FlexTree {
       var recycler = current.recycler
       if let viewProducer = node.viewProducer {
         let view = recycler.makeOrRecycleView(for: node)
+        view.removeFromSuperview()
         view.frame = node.convertedLayoutFrame
         if node.parent?.style.overflow == .some(.scroll) {
           var frame = view.frame

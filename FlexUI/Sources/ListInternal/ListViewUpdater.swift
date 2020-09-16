@@ -8,8 +8,9 @@
 import Foundation
 import DifferenceKit
 
+
 public final class ListViewUpdater {
-  public var animatableChangeCount:Int = 300
+  public var animatableChangeCount:Int = 50
   public var keepsContentOffset: Bool = true
 
   fileprivate enum UpdateContent {
@@ -93,7 +94,7 @@ public final class ListViewUpdater {
   }
 
   private func layout(with listView: ListView, adapter: ListViewAdapter, updateContent: UpdateContent, completion: @escaping (UpdateContent) -> Void) {
-    let width = listView.bounds.width
+    let boundsSize = listView.bounds.size
     let direction = (listView as UIView).flex.direction
     let oldDynamicLayoutStorage = adapter.dynamicLayoutStorage
     layoutQueue.addOperation {
@@ -105,16 +106,16 @@ public final class ListViewUpdater {
           let section = data[sectionIndex]
 
           if let node = section.header {
-            let tree = oldDynamicLayoutStorage[node] ?? node.buildAndCalculateLayout(width: width, direction: direction)
+            let tree = oldDynamicLayoutStorage[node] ?? buildAndCalculateLayout(with: node, boundsSize: boundsSize, direction: direction)
             dynamicLayoutStorage[node] = tree
           }
           if let node = section.footer {
-            let tree = oldDynamicLayoutStorage[node] ?? node.buildAndCalculateLayout(width: width, direction: direction)
+            let tree = oldDynamicLayoutStorage[node] ?? buildAndCalculateLayout(with: node, boundsSize: boundsSize, direction: direction)
             dynamicLayoutStorage[node] = tree
           }
           for cellIndex in 0..<section.cells.count {
             let node = section.cells[cellIndex]
-            let tree =  oldDynamicLayoutStorage[node] ?? node.buildAndCalculateLayout(width: width, direction: direction)
+            let tree =  oldDynamicLayoutStorage[node] ?? buildAndCalculateLayout(with: node, boundsSize: boundsSize, direction: direction)
             dynamicLayoutStorage[node] = tree
           }
         }
@@ -123,16 +124,16 @@ public final class ListViewUpdater {
           for sectionIndex in 0..<data.count {
             let section = data[sectionIndex]
             if let node = section.header {
-              let tree = node.buildAndCalculateLayout(width: width, direction: direction)
+              let tree = buildAndCalculateLayout(with: node, boundsSize: boundsSize, direction: direction)
               staticLayoutStorage[sectionIndex, default: [:]][ListViewAdapter.StorageSectionHeaderIndex] = tree
             }
             if let node = section.footer {
-              let tree = node.buildAndCalculateLayout(width: width, direction: direction)
+              let tree = buildAndCalculateLayout(with: node, boundsSize: boundsSize, direction: direction)
               staticLayoutStorage[sectionIndex, default: [:]][ListViewAdapter.StorageSectionFooterIndex] = tree
             }
             for cellIndex in 0..<section.cells.count {
               let node = section.cells[cellIndex]
-              let tree = node.buildAndCalculateLayout(width: width, direction: direction)
+              let tree = buildAndCalculateLayout(with: node, boundsSize: boundsSize, direction: direction)
               staticLayoutStorage[sectionIndex, default: [:]][cellIndex] = tree
             }
           }
@@ -141,16 +142,16 @@ public final class ListViewUpdater {
             let section = data[sectionIndex]
 
             if let node = section.header {
-              let tree = oldDynamicLayoutStorage[node] ?? node.buildAndCalculateLayout(width: width, direction: direction)
+              let tree = oldDynamicLayoutStorage[node] ?? buildAndCalculateLayout(with: node, boundsSize: boundsSize, direction: direction)
               dynamicLayoutStorage[node] = tree
             }
             if let node = section.footer {
-              let tree = oldDynamicLayoutStorage[node] ?? node.buildAndCalculateLayout(width: width, direction: direction)
+              let tree = oldDynamicLayoutStorage[node] ?? buildAndCalculateLayout(with: node, boundsSize: boundsSize, direction: direction)
               dynamicLayoutStorage[node] = tree
             }
             for cellIndex in 0..<section.cells.count {
               let node = section.cells[cellIndex]
-              let tree = oldDynamicLayoutStorage[node] ?? node.buildAndCalculateLayout(width: width, direction: direction)
+              let tree = oldDynamicLayoutStorage[node] ?? buildAndCalculateLayout(with: node, boundsSize: boundsSize, direction: direction)
               dynamicLayoutStorage[node] = tree
             }
           }
@@ -173,10 +174,59 @@ public final class ListViewUpdater {
 
   }
 
+
 }
 
-extension AnyNode {
-  fileprivate func buildAndCalculateLayout(width: CGFloat = .greatestFiniteMagnitude, height: CGFloat = .greatestFiniteMagnitude, direction: Direction) -> FlexTree {
-    return buildFlexTree().calculateLayout(width: width, height: height, direction: direction)
+private func buildAndCalculateLayout(with node: AnyNode, boundsSize: CGSize, direction: Direction) -> FlexTree {
+  let tree = node.buildFlexTree()
+  var width: CGFloat = .greatestFiniteMagnitude
+  var height: CGFloat = .greatestFiniteMagnitude
+  if let  wrappedNode = tree.node.children.first {
+    let nodeMaxWidth = wrappedNode.style.maxWidth
+    if nodeMaxWidth.unit != .undefined {
+      if nodeMaxWidth.unit == .point {
+        width = nodeMaxWidth.value.cgFloat
+      } else if nodeMaxWidth.unit == .percent {
+        width = boundsSize.width * nodeMaxWidth.value.cgFloat / 100
+      }
+    }
+    let nodeWidth = wrappedNode.style.width
+    if nodeWidth.unit != .auto {
+      if nodeWidth.unit == .point {
+        width = nodeWidth.value.cgFloat
+      } else if nodeWidth.unit == .percent {
+        width = boundsSize.width * nodeWidth.value.cgFloat / 100
+      }
+    }
+
+    let nodeMaxHeight = wrappedNode.style.maxHeight
+    if nodeMaxHeight.unit != .undefined {
+      if nodeMaxHeight.unit == .point {
+        height = nodeMaxHeight.value.cgFloat
+      } else if nodeMaxHeight.unit == .percent {
+        height = boundsSize.height * nodeMaxHeight.value.cgFloat / 100
+      }
+    }
+
+    let nodeHeight = wrappedNode.style.height
+    if nodeHeight.unit != .auto {
+      if nodeHeight.unit == .point {
+        height = nodeHeight.value.cgFloat
+      } else if nodeHeight.unit == .percent {
+        height = boundsSize.height * nodeHeight.value.cgFloat / 100
+      }
+    }
+
+    if width == .greatestFiniteMagnitude && height == .greatestFiniteMagnitude {
+      width = boundsSize.width
+    }
   }
+
+  return tree.calculateLayout(width: width, height: height, direction: direction)
 }
+
+//extension AnyNode {
+//  fileprivate func buildAndCalculateLayout(width: CGFloat = .greatestFiniteMagnitude, height: CGFloat = .greatestFiniteMagnitude, direction: Direction) -> FlexTree {
+//    return buildFlexTree().calculateLayout(width: width, height: height, direction: direction)
+//  }
+//}

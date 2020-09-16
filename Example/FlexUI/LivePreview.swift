@@ -10,13 +10,11 @@
 import SwiftUI
 import FlexUI
 
-@_exported import protocol SwiftUI.PreviewProvider
-
 public protocol LiveViewContent {
   func makeView() -> UIView
 }
 
-//extension Node: LiveViewContent where Node {
+//extension Node: LiveViewContent where Body != Never {
 //  public func makeView() -> UIView {
 //    let view = NodeView()
 //    view.node = AnyNode(self)

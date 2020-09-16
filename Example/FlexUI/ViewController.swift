@@ -137,15 +137,15 @@ private struct ViewControllerData {
   let factoryBlock: (_ viewCount: Int) -> UIViewController?
 }
 
-//#if canImport(SwiftUI)
-//import SwiftUI
-//@available(iOS 13.0, *)
-//struct _LayoutKitTableViewController_Preview: PreviewProvider {
-//  typealias Previews = LiveView<UINavigationController>
-//
-//  static var previews: LiveView<UINavigationController> {
-//    return LiveView(UINavigationController(rootViewController:ViewController()))
-//  }
-//
-//}
-//#endif
+#if canImport(SwiftUI)
+import SwiftUI
+@available(iOS 13.0, *)
+struct _LayoutKitTableViewController_Preview: PreviewProvider {
+  typealias Previews = LiveView<UINavigationController>
+
+  static var previews: LiveView<UINavigationController> {
+    return LiveView(UINavigationController(rootViewController:ViewController()))
+  }
+
+}
+#endif

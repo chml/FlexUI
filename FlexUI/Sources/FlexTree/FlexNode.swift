@@ -112,6 +112,10 @@ public final class FlexNode {
     YGNodeGetHasNewLayout(yogaRef)
   }
 
+  public func copySytle(from other: FlexNode) {
+    YGNodeCopyStyle(yogaRef, other.yogaRef)
+  }
+
   public func calculateLayout(width: CGFloat, height: CGFloat, direction: Direction) -> YogaNodeLayout {
     var dir = direction
     if dir == .inherit {
