@@ -53,7 +53,11 @@ extension Component {
 
   public func build(with context: FlexTreeContext) -> [FlexNode] {
     let flexNode = FlexNode()
+    let viewProducer = ViewProducer(type: ComponentView<Self>.self)
+    viewProducer.reuseID = id
+    flexNode.viewProducer = viewProducer
     flexNode.asRootNode = true
+
     let coordinatorContext = CoordinatorContext<Self, Coordinator>(current: {
       return self as Self
     }, updated: { [weak flexNode] (content, coordinator, animated) in

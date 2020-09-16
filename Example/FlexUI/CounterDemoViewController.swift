@@ -42,7 +42,11 @@ private struct Counter: Component {
 
 final class CounterDemoViewController: UIViewController {
 
-  var counter: Int = 0
+  var counter: Int = 0 {
+    didSet {
+      print("Counter: \(counter)")
+    }
+  }
 
   override func viewDidLoad() {
     super.viewDidLoad()

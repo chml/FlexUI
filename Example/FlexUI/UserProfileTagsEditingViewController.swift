@@ -13,7 +13,6 @@ import FlexUI
 @propertyWrapper
 struct EqualableClosure<Value> {
 
-
   final class Storage<T>: Equatable {
     static func == (lhs: EqualableClosure<Value>.Storage<T>, rhs: EqualableClosure<Value>.Storage<T>) -> Bool {
       return lhs === rhs
@@ -69,12 +68,12 @@ private struct TagCell: Component {
       .viewMaker { () -> UIView in
         let v = UITextField()
         v.borderStyle = .roundedRect
-        v.removeTarget(coordinator, action: #selector(Coordinator.textChanged(_:)), for: .editingChanged)
-        v.addTarget(coordinator, action: #selector(Coordinator.textChanged(_:)), for: .editingChanged)
         return v
     }
     .viewConfig { (v) in
       v.text = self.editingText.text
+      v.removeTarget(coordinator, action: #selector(Coordinator.textChanged(_:)), for: .editingChanged)
+      v.addTarget(coordinator, action: #selector(Coordinator.textChanged(_:)), for: .editingChanged)
     }
     .overlay {
       Button("X") {

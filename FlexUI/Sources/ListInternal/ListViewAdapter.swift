@@ -11,9 +11,18 @@ public final class ListViewAdapter: NSObject {
   static let StorageSectionFooterIndex = -2
 
   var data: [Section] = []
+  lazy var updater: ListViewUpdater = ListViewUpdater()
   var onSelect: ((AnyNode, IndexPath) -> Void)? = nil
   var autoDeselect: Bool = true
-  lazy var updater: ListViewUpdater = ListViewUpdater()
+  var reversed: Bool = false {
+    didSet {
+      listView?.transform = CGAffineTransform(scaleX: 1, y: reversed ? -1 : 1)
+      if let scrollView = listView as? UIScrollView {
+        scrollView.scrollIndicatorInsets = reversed ? UIEdgeInsets(top: 0, left: 0, bottom: 0, right: scrollView.bounds.size.width - 8) : .zero
+      }
+      listView?.reloadData()
+    }
+  }
 
   struct Registration: Hashable {
     let id: String

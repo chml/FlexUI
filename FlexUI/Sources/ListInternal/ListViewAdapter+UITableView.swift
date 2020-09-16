@@ -27,6 +27,7 @@ import Foundation
       } else {
         dynamicLayoutStorage[cell]?.render(in: view.contentView)
       }
+      view.transform = CGAffineTransform(scaleX: 1, y: reversed ? -1 : 1)
       return view
     } else {
       tableView.register(UITableViewCell.self, forCellReuseIdentifier: reuseID)
@@ -54,6 +55,7 @@ import Foundation
         } else {
           dynamicLayoutStorage[header]?.render(in: view.contentView)
         }
+        view.transform = CGAffineTransform(scaleX: 1, y: reversed ? -1 : 1)
         return view
       } else {
         tableView.register(UITableViewHeaderFooterView.self, forHeaderFooterViewReuseIdentifier: reuseID)
@@ -72,6 +74,7 @@ import Foundation
         } else {
           dynamicLayoutStorage[footer]?.render(in: view.contentView)
         }
+        view.transform = CGAffineTransform(scaleX: 1, y: reversed ? -1 : 1)
         return view
       } else {
         tableView.register(UITableViewHeaderFooterView.self, forHeaderFooterViewReuseIdentifier: reuseID)

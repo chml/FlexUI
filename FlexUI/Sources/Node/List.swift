@@ -23,6 +23,7 @@ public struct List<View: ListView, Data, Element>: Node, ViewProducible {
     case onSelect(action: (AnyNode, IndexPath) -> Void)
     case pullToRefresh(action: (_ endRefreshing: @escaping () -> Void) -> Void)
     case infiniteScroll(action: (_ endRefreshing: @escaping () -> Void) -> Void)
+    case reversed(Bool)
   }
   let modifiers: [Modifier]
 
@@ -146,6 +147,10 @@ extension List {
     }))
   }
 
+  public func reversed(_ reversed: Bool) -> Self {
+    return list(with: .reversed(reversed))
+  }
+
 }
 
 extension List {
@@ -191,7 +196,10 @@ extension List {
         case .pullToRefresh(let action):
           adapter.setRefreshControl(UIRefreshControl())
           adapter.refreshAction = action
-        case .infiniteScroll(let action): break
+        case .infiniteScroll(let action):
+          break
+        case .reversed(let reversed):
+          adapter.reversed = reversed
         } // switch modifier
       } // for modifier
     }

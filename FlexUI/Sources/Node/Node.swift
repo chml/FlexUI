@@ -15,16 +15,27 @@ public protocol Node: YogaTreeBuildable, Diffable, CellBuildable {
 }
 
 extension Node {
-  public var isComponent: Bool { false }
+  public var isComponent: Bool { true }
 
   public func build(with context: FlexTreeContext) -> [FlexNode] {
-    let flexNodes = body.build(with: context)
-    flexNodes.forEach { (n) in
-      n.asRootNode = true
+    if isComponent {
+      let flexNode = FlexNode()
+      let viewProducer = ViewProducer(type: ComponentView<Self>.self)
+      viewProducer.reuseID = id
+      flexNode.viewProducer = viewProducer
+      flexNode.asRootNode = true
+      let bodyNodes = body.build(with: context)
+      bodyNodes.forEach { (n) in
+        flexNode.insertChild(n)
+      }
+      return [flexNode]
+    } else{
+      return body.build(with: context)
     }
-    return flexNodes
   }
 }
+
+final class ComponentView<T>: UIView { }
 
 public struct Never: Node {
   public typealias Body = Never
