@@ -119,6 +119,18 @@ extension List where View: UITableView, Data == Void, Element == Void {
 
 }
 
+extension List where View: UICollectionView, Data == Void, Element == Void {
+
+  public init(collection layout: UICollectionViewLayout, @SectionBuilder sectionBuilder: @escaping () -> SectionBuildable) {
+    self.init(of: View.self, maker: { View(frame: .zero, collectionViewLayout: layout) }, sectionBuilder: sectionBuilder)
+  }
+
+  public init(collection layout: UICollectionViewLayout, @CellBuilder cellBuilder: @escaping () -> CellBuildable) {
+    self.init(of: View.self, maker: { View(frame: .zero, collectionViewLayout: layout) }, cellBuilder: cellBuilder)
+  }
+
+}
+
 
 extension List {
 

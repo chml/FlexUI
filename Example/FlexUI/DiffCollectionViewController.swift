@@ -23,10 +23,12 @@ final class DiffCollectionViewController: UIViewController, Component {
 
   func body(with coordinator: SimpleCoordinator<DiffCollectionViewController>) -> AnyNode {
     return List(collection: UICollectionViewFlowLayout(), data: state) { (i) in
-      Text("Row \(i)")
-        .textColor(.random)
-        .padding(20)
-        .maxWidth(.percent(45))
+      Section(id: 0, header: Text("header")) {
+        Text("Row \(i)")
+          .textColor(.random)
+          .padding(20)
+          .maxWidth(.percent(45))
+      }
     }
     .pullToRefresh({ (endRefreshing) in
       DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(1)) {
