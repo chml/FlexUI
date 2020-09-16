@@ -28,7 +28,7 @@ public final class ListViewAdapter: NSObject {
     let id: String
     let viewClass: AnyClass
     static func == (lhs: ListViewAdapter.Registration, rhs: ListViewAdapter.Registration) -> Bool {
-      return lhs.id == rhs.id && lhs.viewClass == lhs.viewClass
+      return lhs.id == rhs.id && lhs.viewClass == rhs.viewClass
     }
     func hash(into hasher: inout Hasher) {
       hasher.combine(id)
