@@ -56,9 +56,7 @@ private struct TagCell: Component {
   }
 
   func isContentEqual(to other: TagCell) -> Bool {
-    let equal = editingText === other.editingText && $onDelete === other.$onDelete
-    print("equal \(equal) \(self) || \(other)")
-    return equal
+    return editingText === other.editingText && $onDelete === other.$onDelete
   }
 
   var editingText: EditingText
