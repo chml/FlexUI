@@ -31,7 +31,7 @@ extension ListViewAdapter: UICollectionViewDataSource {
     if isStaticLayout {
       staticLayoutStorage[indexPath.section]?[indexPath.item]?.render(in: view.contentView)
     } else {
-      dynamicLayoutStorage[cell.id]?.render(in: view.contentView)
+      dynamicLayoutStorage[cell]?.render(in: view.contentView)
     }
     return view
   }
@@ -50,7 +50,7 @@ extension ListViewAdapter: UICollectionViewDataSource {
         if isStaticLayout {
           staticLayoutStorage[indexPath.section]?[ListViewAdapter.StorageSectionHeaderIndex]?.render(in: view)
         } else {
-          dynamicLayoutStorage[header.id]?.render(in: view)
+          dynamicLayoutStorage[header]?.render(in: view)
         }
         return view
       }
@@ -66,7 +66,7 @@ extension ListViewAdapter: UICollectionViewDataSource {
         if isStaticLayout {
           staticLayoutStorage[indexPath.section]?[ListViewAdapter.StorageSectionFooterIndex]?.render(in: view)
         } else {
-          dynamicLayoutStorage[footer.id]?.render(in: view)
+          dynamicLayoutStorage[footer]?.render(in: view)
         }
         return view
       }
@@ -86,7 +86,7 @@ extension ListViewAdapter: UICollectionViewDelegateFlowLayout {
       return staticLayoutStorage[indexPath.section]?[indexPath.item]?.layout?.contentSize ?? .zero
     } else {
       let cell = data[indexPath.section].cells[indexPath.item]
-      return dynamicLayoutStorage[cell.id]?.layout?.contentSize ?? .zero
+      return dynamicLayoutStorage[cell]?.layout?.contentSize ?? .zero
     }
   }
 
@@ -97,7 +97,7 @@ extension ListViewAdapter: UICollectionViewDelegateFlowLayout {
     if isStaticLayout {
       return staticLayoutStorage[section]?[ListViewAdapter.StorageSectionHeaderIndex]?.layout?.contentSize ?? .zero
     } else {
-      return dynamicLayoutStorage[header.id]?.layout?.contentSize ?? .zero
+      return dynamicLayoutStorage[header]?.layout?.contentSize ?? .zero
     }
   }
 
@@ -108,7 +108,7 @@ extension ListViewAdapter: UICollectionViewDelegateFlowLayout {
     if isStaticLayout {
       return staticLayoutStorage[section]?[ListViewAdapter.StorageSectionHeaderIndex]?.layout?.contentSize ?? .zero
     } else {
-      return dynamicLayoutStorage[footer.id]?.layout?.contentSize ?? .zero
+      return dynamicLayoutStorage[footer]?.layout?.contentSize ?? .zero
     }
   }
 

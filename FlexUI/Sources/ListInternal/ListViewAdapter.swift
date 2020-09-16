@@ -70,3 +70,14 @@ public final class ListViewAdapter: NSObject {
   }
 
 }
+
+extension AnyNode: Hashable {
+
+  public static func == (lhs: AnyNode, rhs: AnyNode) -> Bool {
+    return lhs.isContentEqual(to: rhs)
+  }
+  public func hash(into hasher: inout Hasher) {
+    hasher.combine(self.id)
+  }
+
+}

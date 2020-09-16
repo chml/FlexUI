@@ -5,19 +5,25 @@
 //  Created by 黎昌明 on 2020/8/27.
 //
 
+extension Node {
+  public var asAnyNode: AnyNode {
+    AnyNode(self)
+  }
+}
 
 public struct AnyNode: Node {
   public typealias Body = Never
   fileprivate let base: Any
   fileprivate let build: (FlexTreeContext) -> [FlexNode]
-  let isEqualTo: (AnyNode) -> Bool
   public let typeName: String
-  public let id: AnyHashable
-  public let isDefaultID: Bool
+  internal let baseID: AnyHashable
+  internal let isEqualTo: (AnyNode) -> Bool
+  internal var baseIDIsDefault: Bool {
+    return self.id == AnyHashable(String(describing: type(of: base))) // NodeDiffalbe.swift
+  }
 
   public init<T: Node>(_ baseNode: T) {
-    self.id = baseNode.id
-    self.isDefaultID = baseNode.id == AnyHashable(String(describing: type(of: baseNode)))
+    self.baseID = baseNode.id
     self.base = baseNode
     self.typeName = String(describing: type(of: baseNode))
     self.isEqualTo = { (other) -> Bool in
@@ -31,16 +37,11 @@ public struct AnyNode: Node {
     }
   }
 
+
   public func unwrap<T>(as _: T.Type) -> T? {
     return base as? T
   }
 
-}
-
-extension Node {
-  public var asAnyNode: AnyNode {
-    AnyNode(self)
-  }
 }
 
 extension AnyNode {

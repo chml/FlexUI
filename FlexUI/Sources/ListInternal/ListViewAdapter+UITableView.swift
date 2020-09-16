@@ -25,7 +25,7 @@ import Foundation
       if isStaticLayout {
         staticLayoutStorage[indexPath.section]?[indexPath.item]?.render(in: view.contentView)
       } else {
-        dynamicLayoutStorage[cell.id]?.render(in: view.contentView)
+        dynamicLayoutStorage[cell]?.render(in: view.contentView)
       }
       return view
     } else {
@@ -52,7 +52,7 @@ import Foundation
         if isStaticLayout {
           staticLayoutStorage[section]?[ListViewAdapter.StorageSectionHeaderIndex]?.render(in: view.contentView)
         } else {
-          dynamicLayoutStorage[header.id]?.render(in: view.contentView)
+          dynamicLayoutStorage[header]?.render(in: view.contentView)
         }
         return view
       } else {
@@ -70,7 +70,7 @@ import Foundation
         if isStaticLayout {
           staticLayoutStorage[section]?[ListViewAdapter.StorageSectionFooterIndex]?.render(in: view.contentView)
         } else {
-          dynamicLayoutStorage[footer.id]?.render(in: view.contentView)
+          dynamicLayoutStorage[footer]?.render(in: view.contentView)
         }
         return view
       } else {
@@ -86,7 +86,7 @@ import Foundation
       if isStaticLayout {
         return staticLayoutStorage[section]?[ListViewAdapter.StorageSectionHeaderIndex]?.layout?.contentSize.height ?? 0
       } else {
-        return dynamicLayoutStorage[header.id]?.layout?.contentSize.height ?? 0
+        return dynamicLayoutStorage[header]?.layout?.contentSize.height ?? 0
       }
     }
     return 0
@@ -97,7 +97,7 @@ import Foundation
       if isStaticLayout {
         return staticLayoutStorage[section]?[ListViewAdapter.StorageSectionFooterIndex]?.layout?.contentSize.height ?? 0
       } else {
-        return dynamicLayoutStorage[footer.id]?.layout?.contentSize.height ?? 0
+        return dynamicLayoutStorage[footer]?.layout?.contentSize.height ?? 0
       }
     }
     return 0
@@ -108,7 +108,7 @@ import Foundation
       return staticLayoutStorage[indexPath.section]?[indexPath.item]?.layout?.contentSize.height ?? 0
     } else {
       let cell = data[indexPath.section].cells[indexPath.item]
-      return dynamicLayoutStorage[cell.id]?.layout?.contentSize.height ?? 0
+      return dynamicLayoutStorage[cell]?.layout?.contentSize.height ?? 0
     }
   }
 

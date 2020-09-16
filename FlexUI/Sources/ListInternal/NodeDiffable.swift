@@ -7,7 +7,6 @@
 
 
 extension Node {
-
   public var id: AnyHashable {
     return String(describing: type(of: self))
   }
@@ -15,12 +14,19 @@ extension Node {
   public func isContentEqual(to other: Self) -> Bool {
     return false
   }
-  
+}
+
+extension Node where Self == AnyNode {
+  public var id: AnyHashable {
+    return self.baseID
+  }
+  public func isContentEqual(to other: Self) -> Bool {
+    return self.isEqualTo(other)
+  }
 }
 
 
 extension Node where Self: Hashable {
-
   public var id: AnyHashable {
     return self
   }
@@ -28,5 +34,4 @@ extension Node where Self: Hashable {
   public func isContentEqual(to other: Self) -> Bool {
     return self == other
   }
-
 }

@@ -28,7 +28,7 @@ public final class ListViewUpdater {
   }
 
   func performUpdate(with listView: ListView, adapter: ListViewAdapter, data: [Section]) {
-    let isStatic: Bool = data.first?.cells.first?.isDefaultID ?? false
+    let isStatic: Bool = data.first?.cells.first?.baseIDIsDefault ?? false
 
     func reload() {
       layout(with: listView, adapter: adapter, updateContent: .reload(data: data, isStatic: isStatic)) { (content) in
@@ -95,62 +95,28 @@ public final class ListViewUpdater {
   private func layout(with listView: ListView, adapter: ListViewAdapter, updateContent: UpdateContent, completion: @escaping (UpdateContent) -> Void) {
     let width = listView.bounds.width
     let direction = listView.direction
+    let oldDynamicLayoutStorage = adapter.dynamicLayoutStorage
     layoutQueue.addOperation {
       var staticLayoutStorage = [Int : [Int : FlexTree]]()
       var dynamicLayoutStorage = [AnyHashable: FlexTree]()
       switch updateContent {
-      case .changed(let data, let stagedChangeset):
-        for changeset in stagedChangeset {
-          for index in changeset.sectionInserted {
-            let section = data[index]
-            if let node = section.header {
-              let tree = node.buildAndCalculateLayout(width: width, direction: direction)
-              dynamicLayoutStorage[node.id] = tree
-            }
-            if let node = section.footer {
-              let tree = node.buildAndCalculateLayout(width: width, direction: direction)
-              dynamicLayoutStorage[node.id] = tree
-            }
-            for cellIndex in 0..<section.cells.count {
-              let node = section.cells[cellIndex]
-              let tree = node.buildAndCalculateLayout(width: width, direction: direction)
-              dynamicLayoutStorage[node.id] = tree
-            }
-          }
-          for index in changeset.sectionUpdated {
-            let section = data[index]
-            if let node = section.header {
-              let tree = node.buildAndCalculateLayout(width: width, direction: direction)
-              dynamicLayoutStorage[node.id] = tree
-            }
-            if let node = section.footer {
-              let tree = node.buildAndCalculateLayout(width: width, direction: direction)
-              dynamicLayoutStorage[node.id] = tree
-            }
-            for cellIndex in 0..<section.cells.count {
-              let node = section.cells[cellIndex]
-              let tree = node.buildAndCalculateLayout(width: width, direction: direction)
-              dynamicLayoutStorage[node.id] = tree
-            }
-          }
-//          for index in changeset.sectionDeleted {
-//            layoutStorage.deleteTrees(forSection: index)
-//              dynamicLayoutStorage[node.id] = tree
-//          }
+      case .changed(let data, _):
+        for sectionIndex in 0..<data.count {
+          let section = data[sectionIndex]
 
-          for indexPath in changeset.elementInserted {
-            let node = data[indexPath.section].cells[indexPath.element]
-            let tree = node.buildAndCalculateLayout(width: width, direction: direction)
-            dynamicLayoutStorage[node.id] = tree
+          if let node = section.header {
+            let tree = oldDynamicLayoutStorage[node] ?? node.buildAndCalculateLayout(width: width, direction: direction)
+            dynamicLayoutStorage[node] = tree
           }
-          for indexPath in changeset.elementUpdated {
-            let node = data[indexPath.section].cells[indexPath.element]
-            let tree = node.buildAndCalculateLayout(width: width, direction: direction)
-            dynamicLayoutStorage[node.id] = tree
+          if let node = section.footer {
+            let tree = oldDynamicLayoutStorage[node] ?? node.buildAndCalculateLayout(width: width, direction: direction)
+            dynamicLayoutStorage[node] = tree
           }
-//          for indexPath in changeset.elementDeleted {
-//            layoutStorage.deleteTree(forCellAt: (IndexPath(item: indexPath.element, section: indexPath.section)))
-//          }
+          for cellIndex in 0..<section.cells.count {
+            let node = section.cells[cellIndex]
+            let tree =  oldDynamicLayoutStorage[node] ?? node.buildAndCalculateLayout(width: width, direction: direction)
+            dynamicLayoutStorage[node] = tree
+          }
         }
       case .reload(let data, let isStatic):
         if isStatic {
@@ -175,58 +141,30 @@ public final class ListViewUpdater {
             let section = data[sectionIndex]
 
             if let node = section.header {
-              let tree = node.buildAndCalculateLayout(width: width, direction: direction)
-              dynamicLayoutStorage[node.id] = tree
+              let tree = oldDynamicLayoutStorage[node] ?? node.buildAndCalculateLayout(width: width, direction: direction)
+              dynamicLayoutStorage[node] = tree
             }
             if let node = section.footer {
-              let tree = node.buildAndCalculateLayout(width: width, direction: direction)
-              dynamicLayoutStorage[node.id] = tree
+              let tree = oldDynamicLayoutStorage[node] ?? node.buildAndCalculateLayout(width: width, direction: direction)
+              dynamicLayoutStorage[node] = tree
             }
             for cellIndex in 0..<section.cells.count {
               let node = section.cells[cellIndex]
-              let tree = node.buildAndCalculateLayout(width: width, direction: direction)
-              dynamicLayoutStorage[node.id] = tree
+              let tree = oldDynamicLayoutStorage[node] ?? node.buildAndCalculateLayout(width: width, direction: direction)
+              dynamicLayoutStorage[node] = tree
             }
           }
         }
       }
       DispatchQueue.main.async {
         switch updateContent {
-        case .changed(_, let stagedChangeset):
-          for changeset in stagedChangeset {
-            for index in changeset.sectionDeleted {
-              let section = adapter.data[index]
-              if let node = section.header {
-                adapter.dynamicLayoutStorage.removeValue(forKey: node.id)
-              }
-              if let node = section.footer {
-                adapter.dynamicLayoutStorage.removeValue(forKey: node.id)
-              }
-              for node in section.cells {
-                adapter.dynamicLayoutStorage.removeValue(forKey: node.id)
-              }
-            }
-            for indexPath in changeset.elementDeleted {
-              let node = adapter.data[indexPath.section].cells[indexPath.element]
-              adapter.dynamicLayoutStorage.removeValue(forKey: node.id)
-            }
-          }
-          for (id, tree) in dynamicLayoutStorage {
-            adapter.dynamicLayoutStorage[id] = tree
-          }
-
+        case .changed:
+          adapter.dynamicLayoutStorage = dynamicLayoutStorage
         case .reload(_, let isStatic):
           if isStatic {
-            adapter.staticLayoutStorage.removeAll()
-            for (sectionIndex, section) in staticLayoutStorage {
-              for (cellIndex, tree) in section {
-                adapter.staticLayoutStorage[sectionIndex, default: [:]][cellIndex] = tree
-              }
-            }
+            adapter.staticLayoutStorage = staticLayoutStorage
           } else {
-            for (id, tree) in dynamicLayoutStorage {
-              adapter.dynamicLayoutStorage[id] = tree
-            }
+            adapter.dynamicLayoutStorage = dynamicLayoutStorage
           }
         }
         completion(updateContent)

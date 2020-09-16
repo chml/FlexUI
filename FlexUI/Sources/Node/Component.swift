@@ -54,13 +54,9 @@ extension Component {
   public func build(with context: FlexTreeContext) -> [FlexNode] {
     let flexNode = FlexNode()
     flexNode.asRootNode = true
-//    print("build flexNode: \(flexNode)")
     let coordinatorContext = CoordinatorContext<Self, Coordinator>(current: {
       return self as Self
     }, updated: { [weak flexNode] (content, coordinator, animated) in
-//      print("update flexNode: \(flexNode)")
-//      print("update flexNode parent: \(flexNode?.parent)")
-//      print("tree: \(context.tree)")
       guard let flexNode = flexNode, let parent = flexNode.parent else { return }
       if let index = parent.indexOfChild(flexNode) {
         parent.removeChild(flexNode)

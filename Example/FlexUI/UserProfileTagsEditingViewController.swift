@@ -9,6 +9,44 @@
 import UIKit
 import FlexUI
 
+
+@propertyWrapper
+struct EqualableClosure<Value> {
+
+
+  final class Storage<T>: Equatable {
+    static func == (lhs: EqualableClosure<Value>.Storage<T>, rhs: EqualableClosure<Value>.Storage<T>) -> Bool {
+      return lhs === rhs
+    }
+
+    var value: T
+
+    init(value: T) {
+      self.value = value
+    }
+  }
+  private let storage: Storage<Value>
+
+  init(wrappedValue value: Value) {
+    self.storage = .init(value: value)
+  }
+
+  public init(initialValue value: Value) {
+    self.storage = .init(value: value)
+  }
+
+  public var wrappedValue: Value {
+    get { return storage.value }
+    nonmutating set { storage.value = newValue }
+  }
+
+  public var projectedValue: Storage<Value> {
+    return self.storage
+  }
+
+}
+
+
 private struct TagCell: Component {
 
   typealias Body = AnyNode
@@ -18,11 +56,13 @@ private struct TagCell: Component {
   }
 
   func isContentEqual(to other: TagCell) -> Bool {
-    return editingText == other.editingText
+    let equal = editingText === other.editingText && $onDelete === other.$onDelete
+    print("equal \(equal) \(self) || \(other)")
+    return equal
   }
 
   var editingText: EditingText
-  var onDelete: ((TagCell)->())
+  @EqualableClosure var onDelete: ((TagCell)->())
 
   func body(with coordinator: Coordinator) -> AnyNode {
     View(of: UITextField.self)
@@ -98,9 +138,9 @@ final class UserProfileTagsEditingViewController: UIViewController, Component {
   func body(with coordinator: SimpleCoordinator<UserProfileTagsEditingViewController>) -> AnyNode {
     List(table: .grouped, data: self.tags) {
       TagCell(editingText: $0, onDelete: { (tag) in
+        print("onDelete \(Unmanaged.passUnretained(coordinator).toOpaque())")
         coordinator.update { (vc) in
           let index = vc.tags.firstIndex(of: tag.editingText)!
-          print("delete \(index)")
           vc.tags.remove(at: index)
         }
       })

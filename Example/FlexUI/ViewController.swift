@@ -72,15 +72,15 @@ final class ViewController: UIViewController {
       }
       .onSelect {[weak self] (item) in
         if let cell = item.unwrap(as: Cell.self) {
-//          if cell.title == "Benchmark" {
-//            let viewControllerData = ViewControllerData(title: cell.title) {
-//            FlexUICollectionViewController(data: FeedItemData.generate(count: $0))
-//            }
-//            self?.runBenchmark(viewControllerData: viewControllerData, logResults: true, completed: { [weak self] (results) in
-//              self?.printResults(name: viewControllerData.title, results: results)
-//            })
-//            return
-//          }
+          if cell.title == "Benchmark" {
+            let viewControllerData = ViewControllerData(title: cell.title) {
+            FlexUICollectionViewController(data: FeedItemData.generate(count: $0))
+            }
+            self?.runBenchmark(viewControllerData: viewControllerData, logResults: true, completed: { [weak self] (results) in
+              self?.printResults(name: viewControllerData.title, results: results)
+            })
+            return
+          }
           self?.navigationController?.pushViewController(cell.viewController(), animated: true)
         }
       }
@@ -118,8 +118,10 @@ final class ViewController: UIViewController {
       let result = Stopwatch.benchmark(description, logResults: logResults, block: { (stopwatch: Stopwatch) -> Void in
         let vc = viewControllerData.factoryBlock(i)
         stopwatch.resume()
-        vc?.view.layoutIfNeeded()
+//        vc?.view.layoutIfNeeded()
+        self.navigationController?.pushViewController(vc!, animated: false)
         stopwatch.pause()
+        self.navigationController?.popViewController(animated: false)
       })
 
       results.append(result)

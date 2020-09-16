@@ -7,9 +7,7 @@ target 'FlexUI_Example' do
   pod 'RxSwift'
   pod 'RxCocoa'
 
-  target 'FlexUI_Tests' do
-    inherit! :search_paths
-
-    
-  end
+#target 'FlexUI_Tests' do
+#inherit! :search_paths
+#end
 end
