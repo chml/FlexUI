@@ -9,15 +9,15 @@ import class UIKit.UIViewController
 
 extension Flex where Base: UIViewController, Base: Component {
   public func render() {
-    base.view.render(node: base)
+    base.view.flex.render(base)
   }
 }
 
 extension Flex where Base: UIViewController {
 
   public func render<Content: Node>(@NodeBuilder _ content: @escaping () -> Content) {
-    base.view.render(
-      node: VCComponent(content: {
+    base.view.flex.render(
+      VCComponent(content: {
         AnyNode(content())
       }))
   }

@@ -7,23 +7,6 @@
 
 import UIKit
 
-extension UIView {
-
-  var userInterfaceLayoutDirection: UIUserInterfaceLayoutDirection {
-    return UIView.userInterfaceLayoutDirection(for: semanticContentAttribute)
-  }
-
-  var direction: Direction {
-    switch userInterfaceLayoutDirection {
-    case .leftToRight: return .LTR
-    case .rightToLeft: return .RTL
-    @unknown default:
-      return .LTR
-    }
-  }
-
-}
-
 extension UIScrollView {
 
   var isScrolling: Bool {
@@ -64,7 +47,7 @@ extension UIScrollView {
       size.height = max(size.height, v.frame.maxY)
     }
     self.contentSize = size
-    if userInterfaceLayoutDirection == .rightToLeft && contentOffset.x == 0 {
+    if UIView.userInterfaceLayoutDirection(for: semanticContentAttribute) == .rightToLeft && contentOffset.x == 0 {
       contentOffset = .init(x: size.width - bounds.width, y: contentOffset.y)
     }
   }

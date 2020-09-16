@@ -70,7 +70,7 @@ public class FlexTree {
       return
     }
     view = rootView
-    rootView.flexTree = self
+    rootView.flex.tree = self
     rootView.adjustSizeForTreeIfNeed()
     struct LayoutNode {
       let node: FlexNode

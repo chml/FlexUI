@@ -25,7 +25,7 @@ open class NodeView: UIView {
   }
 
   open override func sizeThatFits(_ size: CGSize) -> CGSize {
-    nodeTree?.calculateLayout(width: size.width, height: size.height, direction: direction)
+    nodeTree?.calculateLayout(width: size.width, height: size.height, direction: flex.direction)
     return nodeTree?.layout?.contentSize ?? .zero
   }
 

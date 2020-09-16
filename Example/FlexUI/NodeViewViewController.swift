@@ -53,7 +53,7 @@ final class NodeViewViewController: UIViewController {
   }
 
   func render() {
-    view.render(node:
+    view.flex.render(
       List {
         ForEach(0..<200) {
           Header(text: "hello world")

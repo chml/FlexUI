@@ -76,7 +76,7 @@ final class FlexboxViewController: UIViewController {
       .height(.percent(100))
       .asAnyNode
 
-    view.render(node: body)
+    view.flex.render(body)
   }
 
 }

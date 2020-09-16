@@ -94,7 +94,7 @@ public final class ListViewUpdater {
 
   private func layout(with listView: ListView, adapter: ListViewAdapter, updateContent: UpdateContent, completion: @escaping (UpdateContent) -> Void) {
     let width = listView.bounds.width
-    let direction = listView.direction
+    let direction = (listView as UIView).flex.direction
     let oldDynamicLayoutStorage = adapter.dynamicLayoutStorage
     layoutQueue.addOperation {
       var staticLayoutStorage = [Int : [Int : FlexTree]]()

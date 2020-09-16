@@ -115,7 +115,7 @@ public final class FlexNode {
   public func calculateLayout(width: CGFloat, height: CGFloat, direction: Direction) -> YogaNodeLayout {
     var dir = direction
     if dir == .inherit {
-      dir = UIApplication.shared.delegate?.window??.direction ?? .LTR
+      dir = UIApplication.shared.delegate?.window??.flex.direction ?? .LTR
     }
     let container = FlexNode()
     container.insertChild(self)
