@@ -57,6 +57,7 @@ extension Component {
     viewProducer.reuseID = id
     flexNode.viewProducer = viewProducer
     flexNode.asRootNode = true
+    flexNode.isWrapperNode = true
 
     let coordinatorContext = CoordinatorContext<Self, Coordinator>(current: {
       return self as Self

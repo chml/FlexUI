@@ -9,6 +9,7 @@
 extension Node {
   public func buildFlexTree() -> FlexTree {
     let root = FlexNode()
+    root.isWrapperNode = true
     let tree = FlexTree(root: root)
     let context = FlexTreeContext(tree: tree, parent: root)
     let children = build(with: context)

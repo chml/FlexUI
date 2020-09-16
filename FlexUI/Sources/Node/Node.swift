@@ -20,6 +20,7 @@ extension Node {
   public func build(with context: FlexTreeContext) -> [FlexNode] {
     if isComponent {
       let flexNode = FlexNode()
+      flexNode.isWrapperNode = true
       let viewProducer = ViewProducer(type: ComponentView<Self>.self)
       viewProducer.reuseID = id
       flexNode.viewProducer = viewProducer

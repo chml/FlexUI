@@ -30,7 +30,17 @@ public final class FlexNode {
   public lazy var style = { FlexStyle(nodeRef: yogaRef) }()
   public private(set) lazy var children: [FlexNode] = []
   public private(set) weak var parent: FlexNode? = nil
-
+  var isWrapperNode: Bool = false
+  func findWrappedContentChild() -> FlexNode? {
+    var node: FlexNode? = self
+    while let n = node, n.isWrapperNode {
+      node = n.children.first
+    }
+    if let n = node, n.isWrapperNode == false {
+      return n
+    }
+    return nil
+  }
 
   public var nodeType: NodeType {
     get { YGNodeGetNodeType(yogaRef) }
@@ -122,6 +132,7 @@ public final class FlexNode {
       dir = UIApplication.shared.delegate?.window??.flex.direction ?? .LTR
     }
     let container = FlexNode()
+    container.isWrapperNode = true
     container.insertChild(self)
     YGNodeCalculateLayout(container.yogaRef, Float(width), Float(height), dir)
     return YogaNodeLayout(root: self, container: container)

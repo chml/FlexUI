@@ -181,45 +181,43 @@ private func buildAndCalculateLayout(with node: AnyNode, boundsSize: CGSize, dir
   let tree = node.buildFlexTree()
   var width: CGFloat = .greatestFiniteMagnitude
   var height: CGFloat = .greatestFiniteMagnitude
-  if let  wrappedNode = tree.node.children.first {
-    let nodeMaxWidth = wrappedNode.style.maxWidth
-    if nodeMaxWidth.unit != .undefined {
-      if nodeMaxWidth.unit == .point {
-        width = nodeMaxWidth.value.cgFloat
-      } else if nodeMaxWidth.unit == .percent {
-        width = boundsSize.width * nodeMaxWidth.value.cgFloat / 100
-      }
+  let wrappedNode = tree.node.findWrappedContentChild() ?? tree.node
+  let nodeMaxWidth = wrappedNode.style.maxWidth
+  if nodeMaxWidth.unit != .undefined {
+    if nodeMaxWidth.unit == .point {
+      width = nodeMaxWidth.value.cgFloat
+    } else if nodeMaxWidth.unit == .percent {
+      width = boundsSize.width * nodeMaxWidth.value.cgFloat / 100
     }
-    let nodeWidth = wrappedNode.style.width
-    if nodeWidth.unit != .auto {
-      if nodeWidth.unit == .point {
-        width = nodeWidth.value.cgFloat
-      } else if nodeWidth.unit == .percent {
-        width = boundsSize.width * nodeWidth.value.cgFloat / 100
-      }
+  }
+  let nodeWidth = wrappedNode.style.width
+  if nodeWidth.unit != .auto {
+    if nodeWidth.unit == .point {
+      width = nodeWidth.value.cgFloat
+    } else if nodeWidth.unit == .percent {
+      width = boundsSize.width * nodeWidth.value.cgFloat / 100
     }
+  }
 
-    let nodeMaxHeight = wrappedNode.style.maxHeight
-    if nodeMaxHeight.unit != .undefined {
-      if nodeMaxHeight.unit == .point {
-        height = nodeMaxHeight.value.cgFloat
-      } else if nodeMaxHeight.unit == .percent {
-        height = boundsSize.height * nodeMaxHeight.value.cgFloat / 100
-      }
+  let nodeMaxHeight = wrappedNode.style.maxHeight
+  if nodeMaxHeight.unit != .undefined {
+    if nodeMaxHeight.unit == .point {
+      height = nodeMaxHeight.value.cgFloat
+    } else if nodeMaxHeight.unit == .percent {
+      height = boundsSize.height * nodeMaxHeight.value.cgFloat / 100
     }
+  }
 
-    let nodeHeight = wrappedNode.style.height
-    if nodeHeight.unit != .auto {
-      if nodeHeight.unit == .point {
-        height = nodeHeight.value.cgFloat
-      } else if nodeHeight.unit == .percent {
-        height = boundsSize.height * nodeHeight.value.cgFloat / 100
-      }
+  let nodeHeight = wrappedNode.style.height
+  if nodeHeight.unit != .auto {
+    if nodeHeight.unit == .point {
+      height = nodeHeight.value.cgFloat
+    } else if nodeHeight.unit == .percent {
+      height = boundsSize.height * nodeHeight.value.cgFloat / 100
     }
-
-    if width == .greatestFiniteMagnitude && height == .greatestFiniteMagnitude {
-      width = boundsSize.width
-    }
+  }
+  if width == .greatestFiniteMagnitude && height == .greatestFiniteMagnitude {
+    width = boundsSize.width
   }
 
   return tree.calculateLayout(width: width, height: height, direction: direction)

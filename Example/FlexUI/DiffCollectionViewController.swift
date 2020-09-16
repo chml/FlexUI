@@ -8,12 +8,42 @@
 
 import UIKit
 import FlexUI
+private struct Header: Node {
+  let id: AnyHashable
+  func isContentEqual(to other: Header) -> Bool {
+    return text == other.text
+  }
+  let text: String
+  var body: AnyNode {
+    Text(text)
+      .textColor(.random)
+      .padding(20)
+      .asAnyNode
+  }
+
+}
+
+private struct Cell: Node {
+  let id: AnyHashable
+  func isContentEqual(to other: Cell) -> Bool {
+    return text == other.text
+  }
+  let text: String
+  var body: AnyNode {
+    Text(text)
+      .textColor(.random)
+      .padding(20)
+      .maxWidth(.percent(45))
+      .asAnyNode
+  }
+
+}
 
 final class DiffCollectionViewController: UIViewController, Component {
 
   typealias Body = AnyNode
 
-  var state: [Int] = Array(0..<99)
+  var state: [Int] = Array(0..<10)
 
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -23,11 +53,10 @@ final class DiffCollectionViewController: UIViewController, Component {
 
   func body(with coordinator: SimpleCoordinator<DiffCollectionViewController>) -> AnyNode {
     return List(collection: UICollectionViewFlowLayout(), data: state) { (i) in
-      Section(id: 0, header: Text("header")) {
-        Text("Row \(i)")
-          .textColor(.random)
-          .padding(20)
-          .maxWidth(.percent(45))
+      Section(id: i, header: Header(id: i, text: "header \(i)")) {
+        ForEach(0..<i) {
+          Cell(id: "\(i)-\($0)", text: "section\(i) item\($0)")
+        }
       }
     }
     .pullToRefresh({ (endRefreshing) in
