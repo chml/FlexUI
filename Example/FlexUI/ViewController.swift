@@ -64,7 +64,7 @@ final class ViewController: UIViewController {
         Section(id: AnyHashable(1), header: Text("Demo")) {
           Cell("Counter", CounterDemoViewController.self)
           Cell("User Profile ", UserProfileViewController.self)
-          Cell("Timeline", UIViewController.self)
+          Cell("Live Room", LiveRoomsListViewController.self)
           Cell("Benchmark") {
             FlexUICollectionViewController(data: FeedItemData.generate(count: 100))
           }

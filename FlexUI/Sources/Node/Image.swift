@@ -59,6 +59,8 @@ extension Image {
         view.image = placehoder
         if let url = url {
           ImageLoadingOptions.shared.isPrepareForReuseEnabled = false
+          ImagePipeline.Configuration.isAnimatedImageDataEnabled = true
+
           Nuke.loadImage(with: url, options: ImageLoadingOptions.shared, into: view)
         }
       }

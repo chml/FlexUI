@@ -12,6 +12,7 @@ public final class YogaNodeLayout {
   public let root: FlexNode
 
   var contentSize: CGSize {
+//    return root.findWrappedContentChild()?.layoutFrame.size ?? root.layoutFrame.size
     return root.layoutFrame.size
   }
 

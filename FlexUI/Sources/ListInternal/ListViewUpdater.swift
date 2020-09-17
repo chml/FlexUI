@@ -186,16 +186,20 @@ private func buildAndCalculateLayout(with node: AnyNode, boundsSize: CGSize, dir
   if nodeMaxWidth.unit != .undefined {
     if nodeMaxWidth.unit == .point {
       width = nodeMaxWidth.value.cgFloat
+      wrappedNode.style.maxWidth = .undefined
     } else if nodeMaxWidth.unit == .percent {
       width = boundsSize.width * nodeMaxWidth.value.cgFloat / 100
+      wrappedNode.style.maxWidth = .undefined
     }
   }
   let nodeWidth = wrappedNode.style.width
   if nodeWidth.unit != .auto {
     if nodeWidth.unit == .point {
       width = nodeWidth.value.cgFloat
+      wrappedNode.style.width = .auto
     } else if nodeWidth.unit == .percent {
       width = boundsSize.width * nodeWidth.value.cgFloat / 100
+      wrappedNode.style.width = .auto
     }
   }
 
@@ -203,8 +207,10 @@ private func buildAndCalculateLayout(with node: AnyNode, boundsSize: CGSize, dir
   if nodeMaxHeight.unit != .undefined {
     if nodeMaxHeight.unit == .point {
       height = nodeMaxHeight.value.cgFloat
+      wrappedNode.style.maxHeight = .undefined
     } else if nodeMaxHeight.unit == .percent {
       height = boundsSize.height * nodeMaxHeight.value.cgFloat / 100
+      wrappedNode.style.maxHeight = .undefined
     }
   }
 
@@ -212,15 +218,18 @@ private func buildAndCalculateLayout(with node: AnyNode, boundsSize: CGSize, dir
   if nodeHeight.unit != .auto {
     if nodeHeight.unit == .point {
       height = nodeHeight.value.cgFloat
+      wrappedNode.style.height = .auto
     } else if nodeHeight.unit == .percent {
       height = boundsSize.height * nodeHeight.value.cgFloat / 100
+      wrappedNode.style.height = .auto
     }
   }
   if width == .greatestFiniteMagnitude && height == .greatestFiniteMagnitude {
     width = boundsSize.width
   }
 
-  return tree.calculateLayout(width: width, height: height, direction: direction)
+  tree.calculateLayout(width: width, height: height, direction: direction)
+  return tree
 }
 
 //extension AnyNode {
