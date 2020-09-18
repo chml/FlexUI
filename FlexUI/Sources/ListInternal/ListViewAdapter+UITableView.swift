@@ -30,7 +30,7 @@ import Foundation
       view.transform = CGAffineTransform(scaleX: 1, y: reversed ? -1 : 1)
       return view
     } else {
-      tableView.register(UITableViewCell.self, forCellReuseIdentifier: reuseID)
+      tableView.register(customCellClass ?? UITableViewCell.self, forCellReuseIdentifier: reuseID)
       return self.tableView(tableView, cellForRowAt: indexPath)
     }
   }
@@ -58,7 +58,7 @@ import Foundation
         view.transform = CGAffineTransform(scaleX: 1, y: reversed ? -1 : 1)
         return view
       } else {
-        tableView.register(UITableViewHeaderFooterView.self, forHeaderFooterViewReuseIdentifier: reuseID)
+        tableView.register(customReusableViewClass ?? UITableViewHeaderFooterView.self, forHeaderFooterViewReuseIdentifier: reuseID)
         return self.tableView(tableView, viewForHeaderInSection: section)
       }
     }
@@ -77,7 +77,7 @@ import Foundation
         view.transform = CGAffineTransform(scaleX: 1, y: reversed ? -1 : 1)
         return view
       } else {
-        tableView.register(UITableViewHeaderFooterView.self, forHeaderFooterViewReuseIdentifier: reuseID)
+        tableView.register(customReusableViewClass ?? UITableViewHeaderFooterView.self, forHeaderFooterViewReuseIdentifier: reuseID)
         return self.tableView(tableView, viewForHeaderInSection: section)
       }
     }

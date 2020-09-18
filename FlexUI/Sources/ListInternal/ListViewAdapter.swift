@@ -7,10 +7,10 @@
 
 public final class ListViewAdapter: NSObject {
 
-  static let StorageSectionHeaderIndex = -1
-  static let StorageSectionFooterIndex = -2
+  public static let StorageSectionHeaderIndex = -1
+  public static let StorageSectionFooterIndex = -2
 
-  var data: [Section] = []
+  public internal(set) var data: [Section] = []
   lazy var updater: ListViewUpdater = ListViewUpdater()
   var onSelect: ((AnyNode, IndexPath) -> Void)? = nil
   var autoDeselect: Bool = true
@@ -24,22 +24,31 @@ public final class ListViewAdapter: NSObject {
     }
   }
 
-  struct Registration: Hashable {
-    let id: String
-    let viewClass: AnyClass
-    static func == (lhs: ListViewAdapter.Registration, rhs: ListViewAdapter.Registration) -> Bool {
+  public struct Registration: Hashable {
+    public let id: String
+    public let viewClass: AnyClass
+    public init(id: String, viewClass: AnyClass) {
+      self.id = id
+      self.viewClass = viewClass
+    }
+    public static func == (lhs: ListViewAdapter.Registration, rhs: ListViewAdapter.Registration) -> Bool {
       return lhs.id == rhs.id && lhs.viewClass == rhs.viewClass
     }
-    func hash(into hasher: inout Hasher) {
+    public func hash(into hasher: inout Hasher) {
       hasher.combine(id)
       hasher.combine(ObjectIdentifier(viewClass))
     }
   }
-  var resigteredViews: Set<Registration> = .init()
+  public var resigteredViews: Set<Registration> = .init()
 
-  var staticLayoutStorage = [Int: [Int: FlexTree]]()
-  var dynamicLayoutStorage = [AnyHashable: FlexTree]()
-  var isStaticLayout = false
+  public internal(set) var staticLayoutStorage = [Int: [Int: FlexTree]]()
+  public internal(set) var dynamicLayoutStorage = [AnyHashable: FlexTree]()
+  public internal(set) var isStaticLayout = false
+  public weak var customLayoutInfo: AnyObject? = nil
+  public var customCellClass: AnyClass? = nil
+  public var customReusableViewClass: AnyClass? = nil
+  public var sectionHeaderKind: String = UICollectionView.elementKindSectionHeader
+  public var sectionFooterKind: String = UICollectionView.elementKindSectionFooter
 
   weak var listView: ListView? {
     didSet {

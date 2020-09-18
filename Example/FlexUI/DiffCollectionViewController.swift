@@ -32,8 +32,10 @@ private struct Cell: Node {
   var body: AnyNode {
     Text(text)
       .textColor(.random)
-      .padding(20)
-      .maxWidth(.percent(45))
+      .width(.percent(45))
+      .viewConfig({ (v) in
+        v.backgroundColor = .gray
+      })
       .asAnyNode
   }
 

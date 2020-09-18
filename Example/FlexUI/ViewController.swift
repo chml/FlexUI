@@ -40,30 +40,18 @@ final class ViewController: UIViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     title = "FlexUI"
-//    flex.render {
-//      List(collection: UICollectionViewFlowLayout(), data: Array(0..<10)) {
-//        Text("COOLLLL\($0)")
-//      }
-//      .viewConfig({ (v) in
-//        v.backgroundColor = .white
-//      })
-//      .width(self.view.bounds.width)
-//      .height(self.view.bounds.height)
-////      .width(.percent(100))
-////      .height(.percent(100))
-//    }
     flex.render {
       List {
         Section(id: AnyHashable(0), header: Text("Basic")) {
           Cell("Flexbox Layout", FlexboxViewController.self)
           Cell("Diffable TableView", DiffTableViewController.self)
           Cell("Diffable CollectionView", DiffCollectionViewController.self)
-          Cell("Custom CollectionViewLayout", DiffTableViewController.self)
           Cell("NodeView && AutoLayout", NodeViewViewController.self)
         }
         Section(id: AnyHashable(1), header: Text("Demo")) {
           Cell("Counter", CounterDemoViewController.self)
           Cell("User Profile ", UserProfileViewController.self)
+          Cell("AirBnB/MagazineLayout", MagazineLayoutViewController.self)
           Cell("Live Room", LiveRoomsListViewController.self)
           Cell("Benchmark") {
             FlexUICollectionViewController(data: FeedItemData.generate(count: 100))

@@ -44,6 +44,11 @@ extension Image {
   public func build(with context: FlexTreeContext) -> [FlexNode] {
     let yogaNode = FlexNode()
     let viewProducer = ViewProducer(type: ProductedView.self)
+    viewProducer.viewMaker = {
+      let v = ProductedView()
+      v.clipsToBounds = true
+      return v;
+    }
     yogaNode.viewProducer = viewProducer
     switch source {
     case .image(let image):

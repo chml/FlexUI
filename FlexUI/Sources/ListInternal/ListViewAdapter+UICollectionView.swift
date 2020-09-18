@@ -22,7 +22,7 @@ extension ListViewAdapter: UICollectionViewDataSource {
   public func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
     let cell = data[indexPath.section].cells[indexPath.item]
     let reuseID = cell.typeName
-    let reg = Registration(id: reuseID, viewClass: UICollectionViewCell.self)
+    let reg = Registration(id: reuseID, viewClass: customCellClass ??  UICollectionViewCell.self)
     if !resigteredViews.contains(reg) {
       resigteredViews.insert(reg)
       collectionView.registerCell(for: reg.viewClass, reuseID: reg.id)
@@ -38,13 +38,13 @@ extension ListViewAdapter: UICollectionViewDataSource {
 
   public func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
     switch kind {
-    case UICollectionView.elementKindSectionHeader:
+    case sectionHeaderKind:
       if let header = data[indexPath.section].header {
         let reuseID = header.typeName
-        let reg = Registration(id: reuseID, viewClass: UICollectionReusableView.self)
+        let reg = Registration(id: reuseID, viewClass: customReusableViewClass ?? UICollectionReusableView.self)
         if !resigteredViews.contains(reg) {
           resigteredViews.insert(reg)
-          collectionView.registerHeaderFooterView(for: reg.viewClass, reuseID: reg.id)
+          collectionView.registerHeaderFooterView(for: reg.viewClass, kind: kind, reuseID: reg.id)
         }
         let view = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: reuseID, for: indexPath)
         if isStaticLayout {
@@ -54,13 +54,13 @@ extension ListViewAdapter: UICollectionViewDataSource {
         }
         return view
       }
-    case UICollectionView.elementKindSectionFooter:
+    case sectionFooterKind:
       if let footer = data[indexPath.section].footer {
         let reuseID = footer.typeName
-        let reg = Registration(id: reuseID, viewClass: UICollectionReusableView.self)
+        let reg = Registration(id: reuseID, viewClass: customReusableViewClass ?? UICollectionReusableView.self)
         if !resigteredViews.contains(reg) {
           resigteredViews.insert(reg)
-          collectionView.registerHeaderFooterView(for: reg.viewClass, reuseID: reg.id)
+          collectionView.registerHeaderFooterView(for: reg.viewClass, kind: kind, reuseID: reg.id)
         }
         let view = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: reuseID, for: indexPath)
         if isStaticLayout {
@@ -72,7 +72,7 @@ extension ListViewAdapter: UICollectionViewDataSource {
       }
     default: break
     }
-    return UICollectionReusableView()
+    return  UICollectionReusableView()
   }
 
 }

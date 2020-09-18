@@ -15,6 +15,7 @@ let imageURLs:[URL] = [
   URL(string: "https://s3.ifanr.com/wp-content/uploads/2020/08/wukong.jpg!720")!,
   URL(string: "https://s3.ifanr.com/wp-content/uploads/2020/08/IMB_ZX07DS.gif")!,
   URL(string: "https://s3.ifanr.com/wp-content/uploads/2020/08/p2544088909.jpg!720")!,
+//  Bundle.main.url(forResource: "IMB_ZX07DS", withExtension: "gif")!,
 ]
 
 func randomImageURL() -> URL {

@@ -26,7 +26,7 @@ public protocol ListView: UIView {
   func setup(with adapter: ListViewAdapter)
 
   func registerCell(for viewClass: AnyClass?, reuseID: String)
-  func registerHeaderFooterView(for viewClass: AnyClass?, reuseID: String)
+  func registerHeaderFooterView(for viewClass: AnyClass?, kind: String?, reuseID: String)
 
   func adjustContentOffsetIfNeeded(_ offset: CGPoint)
 
@@ -102,7 +102,7 @@ extension UITableView: ListView {
     register(viewClass, forCellReuseIdentifier: reuseID)
   }
 
-  public func registerHeaderFooterView(for viewClass: AnyClass?, reuseID: String) {
+  public func registerHeaderFooterView(for viewClass: AnyClass?, kind: String? = nil, reuseID: String) {
     register(viewClass, forHeaderFooterViewReuseIdentifier: reuseID)
   }
 
@@ -157,9 +157,9 @@ extension UICollectionView: ListView {
     register(viewClass, forCellWithReuseIdentifier: reuseID)
   }
 
-  public func registerHeaderFooterView(for viewClass: AnyClass?, reuseID: String) {
-    register(viewClass, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: reuseID)
-    register(viewClass, forSupplementaryViewOfKind: UICollectionView.elementKindSectionFooter, withReuseIdentifier: reuseID)
+  public func registerHeaderFooterView(for viewClass: AnyClass?, kind: String? = nil, reuseID: String) {
+    register(viewClass, forSupplementaryViewOfKind: kind ?? UICollectionView.elementKindSectionHeader, withReuseIdentifier: reuseID)
+    register(viewClass, forSupplementaryViewOfKind: kind ?? UICollectionView.elementKindSectionFooter, withReuseIdentifier: reuseID)
   }
 
   public func performBatchUpdates(_ updates: ListUpdates, completion: (() -> Void)? = nil) {

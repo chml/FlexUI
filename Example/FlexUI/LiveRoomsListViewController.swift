@@ -10,7 +10,7 @@ import UIKit
 import FlexUI
 
 
-fileprivate struct LiveRoom: Hashable {
+struct LiveRoom: Hashable {
   let id: Int
   let imageURL: URL
   let title: String
@@ -18,29 +18,34 @@ fileprivate struct LiveRoom: Hashable {
   let point: Int
 }
 
-fileprivate extension LiveRoom {
+extension LiveRoom {
   static func generate(_ seed: Int, count: Int = 20) -> [LiveRoom] {
     (seed..<seed + count).map { i in
-      LiveRoom(id: i, imageURL: randomImageURL(), title: "Room0000000000000000000000 Title \(i)", host: "Host\(i)", point: i * 12)
+      LiveRoom(id: i, imageURL: randomImageURL(), title: "Room\(i%2==0 ? "": "0000000000000000000000000") Title \(i)", host: "Host\(i)", point: i * 12)
     }
   }
 }
 
-fileprivate struct Header: Node, Hashable {
+struct LiveRoomHeader: Node, Hashable {
   let id: AnyHashable
   let text: String
   var body: AnyNode {
     HStack {
       Text(text).flexGrow(1).flexShrink(1)
-      .padding(20)
+        .padding(of: .vertical, 12)
     }
     .asAnyNode
   }
 }
 
-fileprivate struct Cell: Node, Hashable {
+struct LiveRoomCell: Node, Hashable {
   let room: LiveRoom
   var id: AnyHashable { room.id }
+  let widthPercent: CGFloat
+  init(room: LiveRoom, widthPercent: CGFloat = 45) {
+    self.room = room
+    self.widthPercent = widthPercent
+  }
   var body: AnyNode {
     VStack(alignItems: .stretch) {
       Image(room.imageURL)
@@ -50,16 +55,16 @@ fileprivate struct Cell: Node, Hashable {
           v.clipsToBounds = true
           v.contentMode = .scaleAspectFill
         })
-      .flexGrow(1)
+        .flexGrow(1)
         .overlay {
           Text(self.room.host).textColor(.white).bottom(10).start(10)
           Text("\(self.room.point)").textColor(.white).bottom(10).end(10)
-      }
+        }
       Text(room.title)
         .numberOfLines(2)
         .flexShrink(1).flexGrow(1)
     }
-    .width(.percent(45))
+    .width(.percent(widthPercent))
     .asAnyNode
   }
 
@@ -83,12 +88,18 @@ final class LiveRoomsListViewController: UIViewController, Component {
 
   func body(with coordinator: SimpleCoordinator<LiveRoomsListViewController>) -> AnyNode {
     List(collection: layout, data: [("Online", online), ("Offline", offline)]) { data in
-      Section(id: data.0, header: Header(id: data.0, text: data.0)) {
+      Section(id: data.0, header: LiveRoomHeader(id: data.0, text: data.0)) {
         ForEach(data.1) {
-          Cell(room: $0)
+          LiveRoomCell(room: $0)
         }
       }
     }
+    .onSelect({[weak self] (item) in
+      if let cell = item.unwrap(as: LiveRoomCell.self) {
+        print("\(cell.room)")
+        self?.navigationController?.pushViewController(LiveRoomViewController(), animated: true)
+      }
+    })
     .viewConfig({ (v) in
       v.backgroundColor = .white
     })

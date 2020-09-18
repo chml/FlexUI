@@ -13,6 +13,11 @@ final class LiveRoomViewController: UIViewController, Component {
 
   typealias Body = AnyNode
 
+  override func viewDidLoad() {
+    super.viewDidLoad()
+    view.backgroundColor = .white
+  }
+
   func body(with coordinator: SimpleCoordinator<LiveRoomViewController>) -> AnyNode {
     EmptyNode().asAnyNode
   }

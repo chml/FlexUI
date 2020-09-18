@@ -15,13 +15,10 @@ struct LiveRoomMessage: Hashable {
   let message: String
 }
 
-struct LiveRoomMessageCell: Node {
+struct LiveRoomMessageCell: Node, Hashable {
   let message: LiveRoomMessage
 
   var id: AnyHashable { message.id }
-  func isContentEqual(to other: LiveRoomMessageCell) -> Bool {
-    return message == other.message
-  }
 
   var body: AnyNode {
     HStack(spacing: 8, wrap: .wrap, lineSpacing: 8) {

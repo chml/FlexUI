@@ -23,6 +23,11 @@ public struct List<View: ListView, Data, Element>: Node, ViewProducible {
     case pullToRefresh(action: (_ endRefreshing: @escaping () -> Void) -> Void)
     case infiniteScroll(action: (_ endRefreshing: @escaping () -> Void) -> Void)
     case reversed(Bool)
+    case customLayoutInfo(AnyObject)
+    case customCellClass(AnyClass)
+    case customReusableViewClass(AnyClass)
+    case sectionHeaerKind(String)
+    case sectionFooterKind(String)
   }
   let modifiers: [Modifier]
 
@@ -162,6 +167,25 @@ extension List {
     return list(with: .reversed(reversed))
   }
 
+  public func customLayoutInfo(_ info: AnyObject) -> Self {
+    return list(with: .customLayoutInfo(info))
+  }
+
+  public func customCellClass(_ cls: AnyClass) -> Self {
+    return list(with: .customCellClass(cls))
+  }
+
+  public func customReusableViewClass(_ cls: AnyClass) -> Self {
+    return list(with: .customReusableViewClass(cls))
+  }
+
+  public func sectionHeaderKind(_ kind: String) -> Self {
+    return list(with: .sectionHeaerKind(kind))
+  }
+
+  public func sectionFooterKind(_ kind: String) -> Self {
+    return list(with: .sectionFooterKind(kind))
+  }
 }
 
 extension List {
@@ -211,6 +235,16 @@ extension List {
           break
         case .reversed(let reversed):
           adapter.reversed = reversed
+        case .customLayoutInfo(let info):
+          adapter.customLayoutInfo = info
+        case .customCellClass(let cls):
+          adapter.customCellClass = cls
+        case .customReusableViewClass(let cls):
+          adapter.customReusableViewClass = cls
+        case .sectionHeaerKind(let kind):
+          adapter.sectionHeaderKind = kind
+        case .sectionFooterKind(let kind):
+          adapter.sectionFooterKind = kind
         } // switch modifier
       } // for modifier
     }

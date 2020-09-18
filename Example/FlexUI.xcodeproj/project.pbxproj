@@ -27,11 +27,14 @@
 		CB6CA1B62511BCEC00A4D8C6 /* LiveRoomMessagesNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB6CA1B52511BCEC00A4D8C6 /* LiveRoomMessagesNode.swift */; };
 		CB6CA1BD2513142600A4D8C6 /* LiveRoomsListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB6CA1BC2513142600A4D8C6 /* LiveRoomsListViewController.swift */; };
 		CB6CA1BF251318C400A4D8C6 /* Data.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB6CA1BE251318C400A4D8C6 /* Data.swift */; };
+		CB7D71422513656200B4B9AF /* IMB_ZX07DS.gif in Resources */ = {isa = PBXBuildFile; fileRef = CB7D71412513656200B4B9AF /* IMB_ZX07DS.gif */; };
 		CBA9D15F25008F1000A7D1AC /* ColorExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBA9D15E25008F1000A7D1AC /* ColorExt.swift */; };
 		CBA9D1632500A77E00A7D1AC /* FlexboxViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBA9D1622500A77E00A7D1AC /* FlexboxViewController.swift */; };
 		CBA9D1672500EFE600A7D1AC /* DiffTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBA9D1662500EFE600A7D1AC /* DiffTableViewController.swift */; };
 		CBC2DAC725079A55008C56FF /* NodeViewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBC2DAC625079A55008C56FF /* NodeViewViewController.swift */; };
 		CBC6F75E24FFC1D3009D7A5C /* LivePreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBC6F75D24FFC1D3009D7A5C /* LivePreview.swift */; };
+		CBDBC1E3251465DA00D7955D /* MagazineLayoutViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBDBC1E2251465DA00D7955D /* MagazineLayoutViewController.swift */; };
+		CBDBC1E7251466E600D7955D /* ListViewAdapter+MagazineLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBDBC1E6251466E600D7955D /* ListViewAdapter+MagazineLayout.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -73,12 +76,15 @@
 		CB6CA1B52511BCEC00A4D8C6 /* LiveRoomMessagesNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveRoomMessagesNode.swift; sourceTree = "<group>"; };
 		CB6CA1BC2513142600A4D8C6 /* LiveRoomsListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveRoomsListViewController.swift; sourceTree = "<group>"; };
 		CB6CA1BE251318C400A4D8C6 /* Data.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Data.swift; sourceTree = "<group>"; };
+		CB7D71412513656200B4B9AF /* IMB_ZX07DS.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = IMB_ZX07DS.gif; sourceTree = "<group>"; };
 		CBA9D15E25008F1000A7D1AC /* ColorExt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorExt.swift; sourceTree = "<group>"; };
 		CBA9D1622500A77E00A7D1AC /* FlexboxViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlexboxViewController.swift; sourceTree = "<group>"; };
 		CBA9D1662500EFE600A7D1AC /* DiffTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiffTableViewController.swift; sourceTree = "<group>"; };
 		CBC2DAC625079A55008C56FF /* NodeViewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NodeViewViewController.swift; sourceTree = "<group>"; };
 		CBC6F75B24FFC107009D7A5C /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
 		CBC6F75D24FFC1D3009D7A5C /* LivePreview.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LivePreview.swift; sourceTree = "<group>"; };
+		CBDBC1E2251465DA00D7955D /* MagazineLayoutViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MagazineLayoutViewController.swift; sourceTree = "<group>"; };
+		CBDBC1E6251466E600D7955D /* ListViewAdapter+MagazineLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ListViewAdapter+MagazineLayout.swift"; sourceTree = "<group>"; };
 		EDBAB5C20DFC97849986A5AA /* Pods-FlexUI_Example.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FlexUI_Example.debug.xcconfig"; path = "Target Support Files/Pods-FlexUI_Example/Pods-FlexUI_Example.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -125,6 +131,7 @@
 		607FACD21AFB9204008FA782 /* Example for FlexUI */ = {
 			isa = PBXGroup;
 			children = (
+				CBDBC1E1251465C200D7955D /* Custom CollectionView Layout */,
 				CB6CA1B22511BC2500A4D8C6 /* LiveRoom */,
 				CB6CA1AF2510B8C700A4D8C6 /* Benchmark */,
 				CB062747250A212A00621727 /* Basic */,
@@ -135,6 +142,7 @@
 				607FACD71AFB9204008FA782 /* ViewController.swift */,
 				607FACD91AFB9204008FA782 /* Main.storyboard */,
 				607FACDC1AFB9204008FA782 /* Images.xcassets */,
+				CB7D71412513656200B4B9AF /* IMB_ZX07DS.gif */,
 				607FACDE1AFB9204008FA782 /* LaunchScreen.xib */,
 				607FACD31AFB9204008FA782 /* Supporting Files */,
 				CBA9D15E25008F1000A7D1AC /* ColorExt.swift */,
@@ -227,6 +235,15 @@
 				CB6CA1BC2513142600A4D8C6 /* LiveRoomsListViewController.swift */,
 			);
 			name = LiveRoom;
+			sourceTree = "<group>";
+		};
+		CBDBC1E1251465C200D7955D /* Custom CollectionView Layout */ = {
+			isa = PBXGroup;
+			children = (
+				CBDBC1E2251465DA00D7955D /* MagazineLayoutViewController.swift */,
+				CBDBC1E6251466E600D7955D /* ListViewAdapter+MagazineLayout.swift */,
+			);
+			name = "Custom CollectionView Layout";
 			sourceTree = "<group>";
 		};
 		CEF818ABF1B91153D6FCE22A /* Frameworks */ = {
@@ -336,6 +353,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				607FACDB1AFB9204008FA782 /* Main.storyboard in Resources */,
+				CB7D71422513656200B4B9AF /* IMB_ZX07DS.gif in Resources */,
 				607FACE01AFB9204008FA782 /* LaunchScreen.xib in Resources */,
 				607FACDD1AFB9204008FA782 /* Images.xcassets in Resources */,
 			);
@@ -416,6 +434,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CBDBC1E7251466E600D7955D /* ListViewAdapter+MagazineLayout.swift in Sources */,
 				CB6CA1B62511BCEC00A4D8C6 /* LiveRoomMessagesNode.swift in Sources */,
 				CB4E69442503A8E300FF782D /* DiffCollectionViewController.swift in Sources */,
 				CB4E694A25050C8B00FF782D /* UserProfileViewController.swift in Sources */,
@@ -433,6 +452,7 @@
 				CBA9D15F25008F1000A7D1AC /* ColorExt.swift in Sources */,
 				607FACD61AFB9204008FA782 /* AppDelegate.swift in Sources */,
 				CB4E694C250522C900FF782D /* UserProfileTagsEditingViewController.swift in Sources */,
+				CBDBC1E3251465DA00D7955D /* MagazineLayoutViewController.swift in Sources */,
 				CBC6F75E24FFC1D3009D7A5C /* LivePreview.swift in Sources */,
 				CB6CA1B42511BC4700A4D8C6 /* LiveRoomViewController.swift in Sources */,
 				CB6CA03D2510AD1C00A4D8C6 /* FeedItemFlexUINode.swift in Sources */,
