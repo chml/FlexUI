@@ -10,8 +10,13 @@ import UIKit
 import FlexUI
 
 
-private struct Cell: Node {
+private struct Cell: Component {
+  typealias Body = AnyNode
   let title: String
+
+  var isHighlightable: Bool { true }
+  var isHighlighted: Bool = false
+
   let viewController: () -> UIViewController
 
   init<VC: UIViewController>(_ title: String, _ vc: VC.Type) {
@@ -24,11 +29,13 @@ private struct Cell: Node {
     self.viewController = vc
   }
 
-  var body: AnyNode {
+  func body(with coordinator: SimpleCoordinator<Cell>) -> AnyNode {
     HStack(spacing: 20, alignItems: .center) {
-        Text(title).flexShrink(1).flexGrow(1)
-//        Image(UIImage(systemName: "chevron.right")?.withRenderingMode(.alwaysOriginal))
-      Text(">")
+      Text(title)
+        .textColor(isHighlighted ? .red : .darkText)
+        .flexShrink(1).flexGrow(1)
+      Text("->")
+        .textColor(isHighlighted ? .red : .darkText)
     }
     .padding(20)
     .asAnyNode

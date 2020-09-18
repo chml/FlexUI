@@ -15,9 +15,19 @@ public protocol Component: Node {
   func body(with coordinator: Coordinator) -> Body
 
   func coordinator(with context: CoordinatorContext<Self, Coordinator>) -> Coordinator
+
+  var isHighlightable: Bool { get }
+  var isHighlighted: Bool { get set }
 }
 
 extension Component where Body == AnyNode {
+
+  public var isHighlightable: Bool { false }
+
+  public var isHighlighted: Bool {
+    get { false }
+    set {}
+  }
 
   public func body(with coordinator: SimpleCoordinator<Self>) -> AnyNode {
     fatalError()
@@ -37,7 +47,7 @@ extension Component where Coordinator == SimpleCoordinator<Self>{
     SimpleCoordinator(with: context)
   }
 
-  func body(with coordinator: SimpleCoordinator<Self>) -> AnyNode {
+  func body(with coordinator: Coordinator) -> AnyNode {
     return AnyNode(EmptyNode())
   }
 

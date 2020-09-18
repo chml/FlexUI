@@ -43,6 +43,14 @@ public final class FlexNode {
     return nil
   }
 
+  func findFirstCoodinator() -> AnyComponentCoordinator? {
+    var node: FlexNode? = self
+    while let n = node, n.coordinator == nil {
+      node = n.children.first
+    }
+    return node?.coordinator
+  }
+
   public var nodeType: NodeType {
     get { YGNodeGetNodeType(yogaRef) }
     set { YGNodeSetNodeType(yogaRef, newValue) }

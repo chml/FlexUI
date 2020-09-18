@@ -38,32 +38,55 @@ struct LiveRoomHeader: Node, Hashable {
   }
 }
 
-struct LiveRoomCell: Node, Hashable {
+struct LiveRoomCell: Component  {
+  typealias Body = AnyNode
   let room: LiveRoom
   var id: AnyHashable { room.id }
   let widthPercent: CGFloat
+
+  func isContentEqual(to other: LiveRoomCell) -> Bool {
+    return self.room == other.room
+  }
+
+  var isHighlightable: Bool { true }
+  var isHighlighted: Bool = false
+
   init(room: LiveRoom, widthPercent: CGFloat = 45) {
     self.room = room
     self.widthPercent = widthPercent
   }
-  var body: AnyNode {
-    VStack(alignItems: .stretch) {
-      Image(room.imageURL)
-        .aspectRatio(1)
-        .width(.percent(100))
-        .viewConfig({ (v) in
-          v.clipsToBounds = true
-          v.contentMode = .scaleAspectFill
-        })
-        .flexGrow(1)
-        .overlay {
-          Text(self.room.host).textColor(.white).bottom(10).start(10)
-          Text("\(self.room.point)").textColor(.white).bottom(10).end(10)
-        }
-      Text(room.title)
-        .numberOfLines(2)
-        .flexShrink(1).flexGrow(1)
+  func body(with coordinator: SimpleCoordinator<LiveRoomCell>) -> AnyNode {
+    View {
+      VStack(alignItems: .stretch) {
+        Image(room.imageURL)
+          .aspectRatio(1)
+          .width(.percent(100))
+          .viewReuseID("image")
+          .viewConfig({ (v) in
+            v.clipsToBounds = true
+            v.contentMode = .scaleAspectFill
+          })
+          .flexGrow(1)
+          .overlay {
+            Text(self.room.host)
+              .textColor(.white)
+              .viewReuseID("host")
+              .bottom(10).start(10)
+            Text("\(self.room.point)")
+              .textColor(.white)
+              .viewReuseID("point")
+              .bottom(10).end(10)
+          }
+        Text(room.title)
+          .numberOfLines(2)
+          .viewReuseID("title")
+          .flexShrink(1).flexGrow(1)
+      }
     }
+    .viewReuseID("wrapper")
+    .viewConfig({ (v) in
+      v.transform = isHighlighted ? CGAffineTransform(scaleX: 0.9, y: 0.9) : .identity
+    })
     .width(.percent(widthPercent))
     .asAnyNode
   }

@@ -37,10 +37,11 @@ public protocol YogaTreeBuildable {
 public class FlexTree {
   public let node: FlexNode
   public var layout: YogaNodeLayout?
-  var width: CGFloat = .greatestFiniteMagnitude
-  var height: CGFloat = .greatestFiniteMagnitude
-  var direction: Direction = .inherit
-  weak var view: UIView? = nil
+  private var width: CGFloat = .greatestFiniteMagnitude
+  private var height: CGFloat = .greatestFiniteMagnitude
+  private var direction: Direction = .inherit
+  public weak var view: UIView? = nil
+  internal var ignoreWrappedSizing: Bool = false
 
   public init(root: FlexNode) {
     self.node = root
@@ -61,8 +62,15 @@ public class FlexTree {
     if let layout = self.layout {
       layout.container.removeAllChildren()
     }
+    if ignoreWrappedSizing {
+      if let wrappedNode = node.findWrappedContentChild() {
+        wrappedNode.style.width = .auto
+        wrappedNode.style.maxWidth = .undefined
+        wrappedNode.style.height = .auto
+        wrappedNode.style.maxHeight = .undefined
+      }
+    }
     layout = node.calculateLayout(width: width, height: height, direction: direction)
-//    print("\(node)")
     return self
   }
 

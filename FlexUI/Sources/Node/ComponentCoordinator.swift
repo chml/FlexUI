@@ -5,7 +5,7 @@
 //  Created by 黎昌明 on 2020/9/8.
 //
 
-public final class CoordinatorContext<Content: Node, Coordinator> {
+public final class CoordinatorContext<Content: Component, Coordinator> {
 
   public let current: () -> Content
   public let updated: (Content, Coordinator, Bool) -> Void
@@ -25,16 +25,21 @@ public final class CoordinatorContext<Content: Node, Coordinator> {
 
 }
 
-public protocol AnyComponentCoordinator: AnyObject { }
+public protocol AnyComponentCoordinator: AnyObject {
+
+  func setHighlighted(_ highlighted: Bool, animated: Bool)
+
+}
 
 public protocol ComponentCoordinator: AnyComponentCoordinator {
-  associatedtype Content: Node
+  associatedtype Content: Component
   typealias Context = CoordinatorContext<Content, Self>
   var context: Context { get }
 
   init(with context: Context)
 
   func update(animated: Bool, _ action:(inout Content) -> Void)
+
 }
 
 extension ComponentCoordinator {
@@ -43,9 +48,18 @@ extension ComponentCoordinator {
     context.update(with: self, animated: animated, action)
   }
 
+  public func setHighlighted(_ highlighted: Bool, animated: Bool) {
+    let current = context.current()
+    if current.isHighlightable && current.isHighlighted != highlighted {
+      context.update(with: self, animated: animated) {
+        $0.isHighlighted = highlighted
+      }
+    }
+  }
+
 }
 
-public final class SimpleCoordinator<Content: Node>: ComponentCoordinator {
+public final class SimpleCoordinator<Content: Component>: ComponentCoordinator {
   public typealias Context = CoordinatorContext<Content, SimpleCoordinator<Content>>
   public let context: Context
   public init(with context: Context) {

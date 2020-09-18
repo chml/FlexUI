@@ -77,6 +77,7 @@ final class ViewRecycler {
     let viewType = viewProducer.viewTypeName
     if let view = getViewFromTypeMap(&unidentifiedViewsByType, for: viewType) {
       insertViewToTypeMap(&recyclingUnidentifiedViewsByType, for: viewType, view: view)
+      view.transform = .identity
       return view
     } else {
       let view = viewProducer.viewMaker()
