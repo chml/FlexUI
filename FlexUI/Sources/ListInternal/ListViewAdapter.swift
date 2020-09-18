@@ -73,8 +73,8 @@ public final class ListViewAdapter: NSObject {
     if isStaticLayout {
       return staticLayoutStorage[section]?[ListViewAdapter.StorageSectionFooterIndex]
     } else {
-      if let header =  data[section].header {
-        return dynamicLayoutStorage[header]
+      if let footer =  data[section].footer {
+        return dynamicLayoutStorage[footer]
       }
     }
     return nil
