@@ -21,14 +21,8 @@ extension ListViewAdapter: UICollectionViewDelegateMagazineLayout {
       fatalError()
     }
     let mode = delegate.collectionView(collectionView, layout: collectionViewLayout, sizeModeForItemAt: indexPath)
-    if isStaticLayout {
-      if let tree = staticLayoutStorage[indexPath.section]?[indexPath.item] {
-        return .init(widthMode: mode.widthMode, heightMode: .static(height: tree.layout?.contentSize.height ?? 0))
-      }
-    } else {
-      if let tree = dynamicLayoutStorage[data[indexPath.section].cells[indexPath.item]] {
-        return .init(widthMode: mode.widthMode, heightMode: .static(height: tree.layout?.contentSize.height ?? 0))
-      }
+    if let tree = treeForItem(at: indexPath) {
+      return .init(widthMode: mode.widthMode, heightMode: .static(height: tree.layout?.contentSize.height ?? 0))
     }
     return mode
   }

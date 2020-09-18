@@ -7,8 +7,8 @@
 
 public final class ListViewAdapter: NSObject {
 
-  public static let StorageSectionHeaderIndex = -1
-  public static let StorageSectionFooterIndex = -2
+  static let StorageSectionHeaderIndex = -1
+  static let StorageSectionFooterIndex = -2
 
   public internal(set) var data: [Section] = []
   lazy var updater: ListViewUpdater = ListViewUpdater()
@@ -41,14 +41,44 @@ public final class ListViewAdapter: NSObject {
   }
   public var resigteredViews: Set<Registration> = .init()
 
-  public internal(set) var staticLayoutStorage = [Int: [Int: FlexTree]]()
-  public internal(set) var dynamicLayoutStorage = [AnyHashable: FlexTree]()
-  public internal(set) var isStaticLayout = false
+  var staticLayoutStorage = [Int: [Int: FlexTree]]()
+  var dynamicLayoutStorage = [AnyHashable: FlexTree]()
+  var isStaticLayout = false
   public weak var customLayoutInfo: AnyObject? = nil
-  public var customCellClass: AnyClass? = nil
-  public var customReusableViewClass: AnyClass? = nil
-  public var sectionHeaderKind: String = UICollectionView.elementKindSectionHeader
-  public var sectionFooterKind: String = UICollectionView.elementKindSectionFooter
+  var customCellClass: AnyClass? = nil
+  var customReusableViewClass: AnyClass? = nil
+  var sectionHeaderKind: String = UICollectionView.elementKindSectionHeader
+  var sectionFooterKind: String = UICollectionView.elementKindSectionFooter
+
+  public func treeForItem(at indexPath: IndexPath) -> FlexTree? {
+    if isStaticLayout {
+      return staticLayoutStorage[indexPath.section]?[indexPath.item]
+    } else {
+      return dynamicLayoutStorage[data[indexPath.section].cells[indexPath.item]]
+    }
+  }
+
+  public func treeForHeader(at section: Int) -> FlexTree? {
+    if isStaticLayout {
+      return staticLayoutStorage[section]?[ListViewAdapter.StorageSectionHeaderIndex]
+    } else {
+      if let header =  data[section].header {
+        return dynamicLayoutStorage[header]
+      }
+    }
+    return nil
+  }
+
+  public func treeForFooter(at section: Int) -> FlexTree? {
+    if isStaticLayout {
+      return staticLayoutStorage[section]?[ListViewAdapter.StorageSectionFooterIndex]
+    } else {
+      if let header =  data[section].header {
+        return dynamicLayoutStorage[header]
+      }
+    }
+    return nil
+  }
 
   weak var listView: ListView? {
     didSet {
