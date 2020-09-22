@@ -30,6 +30,8 @@ public protocol ListView: UIView {
 
   func adjustContentOffsetIfNeeded(_ offset: CGPoint)
 
+  var infiniteScrollFooter: InfiniteScrollFooter { get }
+
 }
 
 public class ListUpdates {

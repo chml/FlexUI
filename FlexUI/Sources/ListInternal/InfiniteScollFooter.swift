@@ -7,36 +7,64 @@
 
 import UIKit
 
-final class InfiniteScrollFooter: UIView {
+public final class InfiniteScrollFooter: UIView {
 
-  var loading: Bool = false {
+  let triggerDistance: CGFloat = 300
+  var offsetObseration: NSKeyValueObservation? = nil
+  lazy var loadingView: UIActivityIndicatorView = {
+    let v = UIActivityIndicatorView()
+    addSubview(v)
+    return v
+  } ()
+
+  weak var scrollView: UIScrollView? = nil {
+    didSet {
+      offsetObseration?.invalidate()
+      offsetObseration = scrollView?.observe(\.contentOffset, changeHandler: { [weak self] (view, value) in
+        guard let self = self,
+              self.isLoading == false,
+              let action = self.action
+        else {
+          return
+        }
+        let offset = view.contentOffset
+        let bounds = view.bounds
+        let contentSize = view.contentSize
+        let distance = contentSize.height - offset.y - bounds.height
+        if distance < 0 || distance > self.triggerDistance {
+          return
+        }
+        self.isLoading = true
+        action ({ isAllLoaded in
+          self.isLoading = false
+        })
+
+      })
+    }
+  }
+
+  var isLoading: Bool = false {
     didSet {
       setNeedsLayout()
     }
   }
+  var action: ((_ endRefreshing: @escaping (_ isAllLoaded: Bool) -> Void) -> Void)? = nil
 
-  override func layoutSubviews() {
+  public override func layoutSubviews() {
     super.layoutSubviews()
-    flex.render(
-      VStack(alignItems: .center) {
-        View(of: UIActivityIndicatorView.self)
-          .width(30)
-          .height(30)
-          .padding(10)
-          .viewConfig { [weak self] (v) in
-            guard let self = self else { return }
-            if self.loading {
-              v.startAnimating()
-            } else {
-              v.stopAnimating()
-            }
-        }
-      }
-    )
+    loadingView.center = CGPoint(x: bounds.midX, y: bounds.midY)
+    if isLoading {
+      loadingView.startAnimating()
+    } else {
+      loadingView.stopAnimating()
+    }
   }
 
   func adjustFrame(for scrollView: UIScrollView) {
     frame = CGRect(x: 0, y: max(scrollView.contentSize.height, scrollView.bounds.height), width: scrollView.bounds.width, height: 50)
+    var inset = scrollView.contentInset
+    inset.bottom = frame.height
+    scrollView.contentInset = inset
     setNeedsLayout()
   }
 }
@@ -46,7 +74,7 @@ private struct Keys {
 }
 
 extension UIScrollView {
-  var infiniteScrollFooter: InfiniteScrollFooter? {
+  public var infiniteScrollFooter: InfiniteScrollFooter {
     get {
       if let footer = objc_getAssociatedObject(self, &Keys.infiniteScrollFooter) as? InfiniteScrollFooter {
         footer.adjustFrame(for: self)
@@ -56,6 +84,7 @@ extension UIScrollView {
       footer.adjustFrame(for: self)
       addSubview(footer)
       objc_setAssociatedObject(self, &Keys.infiniteScrollFooter, footer, .OBJC_ASSOCIATION_RETAIN)
+      footer.scrollView = self
       return footer
     }
   }

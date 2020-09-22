@@ -39,16 +39,18 @@ public final class ListViewAdapter: NSObject {
       hasher.combine(ObjectIdentifier(viewClass))
     }
   }
+  // For CollectionView
   public var resigteredViews: Set<Registration> = .init()
-
-  var staticLayoutStorage = [Int: [Int: FlexTree]]()
-  var dynamicLayoutStorage = [AnyHashable: FlexTree]()
-  var isStaticLayout = false
   public weak var customLayoutInfo: AnyObject? = nil
   var customCellClass: AnyClass? = nil
   var customReusableViewClass: AnyClass? = nil
   var sectionHeaderKind: String = UICollectionView.elementKindSectionHeader
   var sectionFooterKind: String = UICollectionView.elementKindSectionFooter
+
+  var staticLayoutStorage = [Int: [Int: FlexTree]]()
+  var dynamicLayoutStorage = [AnyHashable: FlexTree]()
+  var isStaticLayout = false
+
 
   public func treeForItem(at indexPath: IndexPath) -> FlexTree? {
     if isStaticLayout {
@@ -115,6 +117,12 @@ public final class ListViewAdapter: NSObject {
     refreshAction?({
       control.endRefreshing()
     })
+  }
+
+  var infinateScrollAction: ((_ endRefreshing: @escaping (_ isAllLoaded: Bool) -> Void) -> Void)? = nil {
+    didSet {
+      listView?.infiniteScrollFooter.action = infinateScrollAction
+    }
   }
 
 }

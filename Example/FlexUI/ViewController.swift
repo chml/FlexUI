@@ -53,7 +53,7 @@ final class ViewController: UIViewController {
           Cell("Flexbox Layout", FlexboxViewController.self)
           Cell("Diffable TableView", DiffTableViewController.self)
           Cell("Diffable CollectionView", DiffCollectionViewController.self)
-          Cell("NodeView && AutoLayout", NodeViewViewController.self)
+//          Cell("NodeView && AutoLayout", NodeViewViewController.self)
         }
         Section(id: AnyHashable(1), header: Text("Demo")) {
           Cell("Counter", CounterDemoViewController.self)

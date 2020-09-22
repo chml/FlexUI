@@ -4,8 +4,8 @@ target 'FlexUI_Example' do
   platform :ios, '11.0'
   pod 'FlexUI', :path => '../'
   pod 'MagazineLayout'
-  pod 'RxSwift'
-  pod 'RxCocoa'
+  pod 'SnapKit'
+
 
 #target 'FlexUI_Tests' do
 #inherit! :search_paths

@@ -21,6 +21,7 @@ open class NodeView: UIView {
 
   public init(_ node: AnyNode) {
     self.node = node
+    self.nodeTree = node.buildFlexTree()
     super.init(frame: .zero)
   }
 
@@ -34,12 +35,16 @@ open class NodeView: UIView {
   }
 
   open override func sizeThatFits(_ size: CGSize) -> CGSize {
-    nodeTree?.calculateLayout(width: size.width, height: size.height, direction: flex.direction)
+    if size == .zero {
+      nodeTree?.calculateLayout(width: .greatestFiniteMagnitude, height: .greatestFiniteMagnitude, direction: flex.direction)
+    } else {
+      nodeTree?.calculateLayout(width: size.width, height: size.height, direction: flex.direction)
+    }
     return nodeTree?.layout?.contentSize ?? .zero
   }
 
   open override var intrinsicContentSize: CGSize {
-    return sizeThatFits(CGSize(width: CGFloat.greatestFiniteMagnitude, height: CGFloat.greatestFiniteMagnitude))
+    return sizeThatFits(CGSize(width: UIScreen.main.bounds.width, height: CGFloat.greatestFiniteMagnitude))
   }
 
 }

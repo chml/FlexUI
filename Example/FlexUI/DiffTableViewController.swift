@@ -24,7 +24,7 @@ fileprivate struct Cell: Node, Hashable {
 final class DiffTableViewController: UIViewController, Component {
   typealias Body = AnyNode
 
-  var state: [Int] = Array(0..<10)
+  var state: [Int] = Array(0..<20)
 
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -43,6 +43,19 @@ final class DiffTableViewController: UIViewController, Component {
         }
       }
     }
+    .infiniteScroll({ (endRefreshing) in
+      DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(2)) {
+        coordinator.update {
+          let count = $0.state.count
+          if count > 200 {
+            endRefreshing(true)
+          } else {
+            $0.state.append(contentsOf: (count..<20+count))
+            endRefreshing(false)
+          }
+        }
+      }
+    })
     .width(.percent(100))
     .height(.percent(100))
     .asAnyNode
