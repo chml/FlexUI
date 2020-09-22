@@ -25,6 +25,10 @@ public final class InfiniteScrollFooter: UIView {
 
       contentSizeObseration = scrollView?.observe(\.contentSize, changeHandler: { [weak self] (view, _) in
         guard let self = self else { return }
+        self.frame = CGRect(x: 0, y: max(view.contentSize.height, view.bounds.height), width: view.bounds.width, height: 50)
+        var inset = view.contentInset
+        inset.bottom = self.frame.height
+        view.contentInset = inset
         self.setNeedsLayout()
       })
 
@@ -60,7 +64,7 @@ public final class InfiniteScrollFooter: UIView {
 
   public override func layoutSubviews() {
     super.layoutSubviews()
-    loadingView.center = CGPoint(x: bounds.midX, y: bounds.midY)
+    loadingView.center = CGPoint(x: bounds.width/2, y: bounds.height/2)
     if isLoading {
       loadingView.startAnimating()
     } else {
@@ -68,13 +72,6 @@ public final class InfiniteScrollFooter: UIView {
     }
   }
 
-  func adjustFrame(for scrollView: UIScrollView) {
-    frame = CGRect(x: 0, y: max(scrollView.contentSize.height, scrollView.bounds.height), width: scrollView.bounds.width, height: 50)
-    var inset = scrollView.contentInset
-    inset.bottom = frame.height
-    scrollView.contentInset = inset
-    setNeedsLayout()
-  }
 }
 
 private struct Keys {
@@ -85,14 +82,13 @@ extension UIScrollView {
   public var infiniteScrollFooter: InfiniteScrollFooter {
     get {
       if let footer = objc_getAssociatedObject(self, &Keys.infiniteScrollFooter) as? InfiniteScrollFooter {
-        footer.adjustFrame(for: self)
+        footer.setNeedsLayout()
         return footer
       }
       let footer = InfiniteScrollFooter()
-      footer.adjustFrame(for: self)
+      footer.scrollView = self
       addSubview(footer)
       objc_setAssociatedObject(self, &Keys.infiniteScrollFooter, footer, .OBJC_ASSOCIATION_RETAIN)
-      footer.scrollView = self
       return footer
     }
   }
