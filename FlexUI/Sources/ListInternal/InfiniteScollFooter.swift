@@ -11,6 +11,7 @@ public final class InfiniteScrollFooter: UIView {
 
   let triggerDistance: CGFloat = 300
   var offsetObseration: NSKeyValueObservation? = nil
+  var contentSizeObseration: NSKeyValueObservation? = nil
   lazy var loadingView: UIActivityIndicatorView = {
     let v = UIActivityIndicatorView()
     addSubview(v)
@@ -19,8 +20,15 @@ public final class InfiniteScrollFooter: UIView {
 
   weak var scrollView: UIScrollView? = nil {
     didSet {
+      contentSizeObseration?.invalidate()
       offsetObseration?.invalidate()
-      offsetObseration = scrollView?.observe(\.contentOffset, changeHandler: { [weak self] (view, value) in
+
+      contentSizeObseration = scrollView?.observe(\.contentSize, changeHandler: { [weak self] (view, _) in
+        guard let self = self else { return }
+        self.setNeedsLayout()
+      })
+
+      offsetObseration = scrollView?.observe(\.contentOffset, changeHandler: { [weak self] (view, _) in
         guard let self = self,
               self.isLoading == false,
               let action = self.action
