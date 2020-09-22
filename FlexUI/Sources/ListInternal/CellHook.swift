@@ -8,14 +8,6 @@
 import UIKit
 
 
-//class Cel: UICollectionViewCell {
-//  override var isHighlighted: Bool {
-//
-//  }
-//  override func setHighlighted(_ highlighted: Bool, animated: Bool) {
-//  }
-//}
-
 extension UITableViewCell {
   @objc static func _flexSwiftLoad() {
     if let m1 = class_getInstanceMethod(self, #selector(setHighlighted(_:animated:))),

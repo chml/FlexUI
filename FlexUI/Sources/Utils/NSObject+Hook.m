@@ -8,6 +8,8 @@
 #import "NSObject+Hook.h"
 
 #define IMPL_HOOK_LOADABLE(cls) \
+@interface cls(FlexSwiftHook)<_NSObjectLoadable> \
+@end\
 @implementation cls(FlexHook) \
 + (void)load { \
   [self _flexSwiftLoad]; \

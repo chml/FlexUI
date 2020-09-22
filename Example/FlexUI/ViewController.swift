@@ -61,21 +61,22 @@ final class ViewController: UIViewController {
           Cell("AirBnB/MagazineLayout", MagazineLayoutViewController.self)
           Cell("Live Room", LiveRoomsListViewController.self)
           Cell("Benchmark") {
-            FlexUICollectionViewController(data: FeedItemData.generate(count: 100))
+            FlexUICollectionViewController(data: FeedItemData.generate(count: 200))
           }
         }
       }
       .onSelect {[weak self] (item) in
         if let cell = item.unwrap(as: Cell.self) {
-          if cell.title == "Benchmark" {
-            let viewControllerData = ViewControllerData(title: cell.title) {
-            FlexUICollectionViewController(data: FeedItemData.generate(count: $0))
-            }
-            self?.runBenchmark(viewControllerData: viewControllerData, logResults: true, completed: { [weak self] (results) in
-              self?.printResults(name: viewControllerData.title, results: results)
-            })
-            return
-          }
+//          if cell.title == "Benchmark" {
+//            let viewControllerData = ViewControllerData(title: cell.title) {
+////              print("ViewControllerData \($0)")
+//              return FlexUICollectionViewController(data: FeedItemData.generate(count: $0))
+//            }
+//            self?.runBenchmark(viewControllerData: viewControllerData, logResults: true, completed: { [weak self] (results) in
+//              self?.printResults(name: viewControllerData.title, results: results)
+//            })
+//            return
+//          }
           self?.navigationController?.pushViewController(cell.viewController(), animated: true)
         }
       }
@@ -93,7 +94,7 @@ final class ViewController: UIViewController {
   }
 
   private func runBenchmark(viewControllerData: ViewControllerData, logResults: Bool, completed: ((_ results: [Result]) -> Void)?) {
-    guard let viewController = viewControllerData.factoryBlock(20) else {
+    guard let viewController = viewControllerData.factoryBlock(100) else {
       return
     }
 

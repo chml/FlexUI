@@ -8,14 +8,6 @@
 import Nuke
 import FLAnimatedImage
 
-struct NukeConfig {
-  let _i: Int8
-  init() {
-    _i = 0
-  }
-}
-var nukeConfig = NukeConfig()
-
 public struct Image: Node, ViewProducible {
   public typealias ProductedView = FLAnimatedImageView
   public typealias Body = Never
@@ -73,7 +65,6 @@ extension Image {
     return [yogaNode]
   }
 }
-
 
 extension FLAnimatedImageView {
   @objc open override func nuke_display(image: PlatformImage?) {

@@ -15,8 +15,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 #define DECL_HOOK_LOADABLE(cls) \
 @interface cls(FlexHook) \
-@end \
-@interface cls(FlexSwiftHook)<_NSObjectLoadable> \
 @end
 
 

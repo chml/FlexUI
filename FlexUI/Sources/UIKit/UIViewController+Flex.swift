@@ -8,18 +8,18 @@
 import class UIKit.UIViewController
 
 extension Flex where Base: UIViewController, Base: Component {
-  public func render() {
-    base.view.flex.render(base)
+  public func render(_ direction: Direction? = nil) {
+    base.view.flex.render(base, direction: direction)
   }
 }
 
 extension Flex where Base: UIViewController {
 
-  public func render<Content: Node>(@NodeBuilder _ content: @escaping () -> Content) {
+  public func render<Content: Node>(_ direction: Direction? = nil, @NodeBuilder _ content: @escaping () -> Content) {
     base.view.flex.render(
       VCComponent(content: {
         AnyNode(content())
-      }))
+      }), direction: direction)
   }
 
 }
