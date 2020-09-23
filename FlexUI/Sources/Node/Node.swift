@@ -21,6 +21,7 @@ extension Node {
     if isComponent {
       let flexNode = FlexNode()
       flexNode.isWrapperNode = true
+      flexNode.style.flex = 0
       let viewProducer = ViewProducer(type: ComponentView<Self>.self)
       viewProducer.reuseID = id
       flexNode.viewProducer = viewProducer

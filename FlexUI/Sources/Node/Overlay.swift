@@ -50,10 +50,10 @@ extension Overlay {
       }
     case .background(let backgroundContent):
       content.build(with: context).forEach {
-        $0.style.postionType = .absolute
         yogaNode.insertChild($0)
       }
       backgroundContent.build(with: context).forEach {
+        $0.style.postionType = .absolute
         yogaNode.insertChild($0)
       }
     }

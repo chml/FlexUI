@@ -32,7 +32,7 @@ struct LiveRoomHeader: Node, Hashable {
   var body: AnyNode {
     HStack {
       Text(text).flexGrow(1).flexShrink(1)
-        .padding(of: .vertical, 12)
+        .padding(12)
     }
     .asAnyNode
   }
@@ -93,12 +93,35 @@ struct LiveRoomCell: Component  {
 
 }
 
+final class LiveRoomLayout: UICollectionViewFlowLayout {
+  override func layoutAttributesForElements(in rect: CGRect) -> [UICollectionViewLayoutAttributes]? {
+    let attributes = super.layoutAttributesForElements(in: rect)?
+      .map { $0.copy() } as? [UICollectionViewLayoutAttributes]
+
+    attributes?
+      .reduce([CGFloat: (CGFloat, [UICollectionViewLayoutAttributes])]()) {
+        guard $1.representedElementCategory == .cell else { return $0 }
+        return $0.merging([ceil($1.center.y): ($1.frame.origin.y, [$1])]) {
+          ($0.0 < $1.0 ? $0.0 : $1.0, $0.1 + $1.1)
+        }
+      }
+      .values.forEach { minY, line in
+        line.forEach {
+          $0.frame = $0.frame.offsetBy(dx: 0, dy: minY - $0.frame.origin.y)
+        }
+      }
+
+    return attributes
+  }
+}
+
+
 final class LiveRoomsListViewController: UIViewController, Component {
   typealias Body = AnyNode
 
-  fileprivate var online: [LiveRoom] = LiveRoom.generate(0, count: 21)
-  fileprivate var offline: [LiveRoom] = LiveRoom.generate(100, count: 20)
-  let layout = UICollectionViewFlowLayout()
+  fileprivate var banners: [URL] = (0..<5).map { _ in randomImageURL() }
+  fileprivate var rooms: [LiveRoom] = LiveRoom.generate(0, count: 21)
+  let layout = LiveRoomLayout()
 
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -110,17 +133,37 @@ final class LiveRoomsListViewController: UIViewController, Component {
   }
 
   func body(with coordinator: SimpleCoordinator<LiveRoomsListViewController>) -> AnyNode {
-    List(collection: layout, data: [("Online", online), ("Offline", offline)]) { data in
-      Section(id: data.0, header: LiveRoomHeader(id: data.0, text: data.0)) {
-        ForEach(data.1) {
+    List(collection: layout) {
+      Section(id: "banners") {
+        BannerNode(bannerImageURLs: self.banners) { (index) in
+        }
+      }
+      Section(id: "rooms", header: LiveRoomHeader(id: "room Header", text: "Online")) {
+        ForEach(self.rooms) {
           LiveRoomCell(room: $0)
         }
       }
     }
+    .pullToRefresh({ (endRefreshing) in
+      DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(2)) {
+        coordinator.update { (vc) in
+          vc.banners = (0..<5).map { _ in randomImageURL() }
+          vc.rooms = vc.rooms.shuffled()
+        }
+        endRefreshing()
+      }
+    })
+    .infiniteScroll({ (endRefreshing) in
+      DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(2)) {
+        coordinator.update { (vc) in
+          vc.rooms.append(contentsOf: LiveRoom.generate(vc.rooms.count, count: 21))
+        }
+        endRefreshing(false)
+      }
+    })
     .onSelect({[weak self] (item) in
       if let cell = item.unwrap(as: LiveRoomCell.self) {
-        print("\(cell.room)")
-        self?.navigationController?.pushViewController(LiveRoomViewController(), animated: true)
+        self?.navigationController?.pushViewController(LiveRoomViewController(liveURL: cell.room.imageURL), animated: true)
       }
     })
     .viewConfig({ (v) in

@@ -68,6 +68,7 @@ extension Component {
     flexNode.viewProducer = viewProducer
     flexNode.asRootNode = true
     flexNode.isWrapperNode = true
+    flexNode.style.flex = 0
 
     let coordinatorContext = CoordinatorContext<Self, Coordinator>(current: {
       return self as Self
@@ -98,6 +99,10 @@ extension Component {
     let bodyNodes = body(with: coordinator).build(with: context.with(parent: flexNode))
     for n in bodyNodes {
       flexNode.insertChild(n)
+//      flexNode.style.flexDirection = n.style.flexDirection
+//      flexNode.style.flexGrow = n.style.flexGrow
+//      flexNode.style.flexShrink = n.style.flexShrink
+//      flexNode.style.flexBasis = n.style.flexBasis
     }
     return [flexNode]
   }

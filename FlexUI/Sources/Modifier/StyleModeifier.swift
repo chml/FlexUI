@@ -325,6 +325,7 @@ public struct FlexModifier: NodeModifier {
 
   public func build<T>(node: T, with context: FlexTreeContext) -> [FlexNode] where T : Node {
     let contentYogaNodes = node.build(with: context)
+    contentYogaNodes.first?.style.display = .flex
     switch demensionValue {
     case .flex(let value): contentYogaNodes.forEach { $0.style.flex = value }
     case .flexGrow(let value): contentYogaNodes.forEach { $0.style.flexGrow = value }

@@ -29,6 +29,7 @@ public protocol AnyComponentCoordinator: AnyObject {
 
   func setHighlighted(_ highlighted: Bool, animated: Bool)
 
+  func cellWillDisplay(_ cell: UIView)
 }
 
 public protocol ComponentCoordinator: AnyComponentCoordinator {
@@ -56,6 +57,8 @@ extension ComponentCoordinator {
       }
     }
   }
+
+  public func cellWillDisplay(_ cell: UIView) { }
 
 }
 

@@ -33,6 +33,7 @@
 		CBA9D1672500EFE600A7D1AC /* DiffTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBA9D1662500EFE600A7D1AC /* DiffTableViewController.swift */; };
 		CBC2DAC725079A55008C56FF /* NodeViewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBC2DAC625079A55008C56FF /* NodeViewViewController.swift */; };
 		CBC6F75E24FFC1D3009D7A5C /* LivePreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBC6F75D24FFC1D3009D7A5C /* LivePreview.swift */; };
+		CBD766EF251AF824006A7466 /* BannerNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBD766EE251AF824006A7466 /* BannerNode.swift */; };
 		CBDBC1E3251465DA00D7955D /* MagazineLayoutViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBDBC1E2251465DA00D7955D /* MagazineLayoutViewController.swift */; };
 		CBDBC1E7251466E600D7955D /* ListViewAdapter+MagazineLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBDBC1E6251466E600D7955D /* ListViewAdapter+MagazineLayout.swift */; };
 /* End PBXBuildFile section */
@@ -83,6 +84,7 @@
 		CBC2DAC625079A55008C56FF /* NodeViewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NodeViewViewController.swift; sourceTree = "<group>"; };
 		CBC6F75B24FFC107009D7A5C /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
 		CBC6F75D24FFC1D3009D7A5C /* LivePreview.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LivePreview.swift; sourceTree = "<group>"; };
+		CBD766EE251AF824006A7466 /* BannerNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BannerNode.swift; sourceTree = "<group>"; };
 		CBDBC1E2251465DA00D7955D /* MagazineLayoutViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MagazineLayoutViewController.swift; sourceTree = "<group>"; };
 		CBDBC1E6251466E600D7955D /* ListViewAdapter+MagazineLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ListViewAdapter+MagazineLayout.swift"; sourceTree = "<group>"; };
 		EDBAB5C20DFC97849986A5AA /* Pods-FlexUI_Example.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FlexUI_Example.debug.xcconfig"; path = "Target Support Files/Pods-FlexUI_Example/Pods-FlexUI_Example.debug.xcconfig"; sourceTree = "<group>"; };
@@ -231,8 +233,9 @@
 			isa = PBXGroup;
 			children = (
 				CB6CA1B32511BC4700A4D8C6 /* LiveRoomViewController.swift */,
-				CB6CA1B52511BCEC00A4D8C6 /* LiveRoomMessagesNode.swift */,
 				CB6CA1BC2513142600A4D8C6 /* LiveRoomsListViewController.swift */,
+				CBD766EE251AF824006A7466 /* BannerNode.swift */,
+				CB6CA1B52511BCEC00A4D8C6 /* LiveRoomMessagesNode.swift */,
 			);
 			name = LiveRoom;
 			sourceTree = "<group>";
@@ -449,6 +452,7 @@
 				607FACD61AFB9204008FA782 /* AppDelegate.swift in Sources */,
 				CB4E694C250522C900FF782D /* UserProfileTagsEditingViewController.swift in Sources */,
 				CBDBC1E3251465DA00D7955D /* MagazineLayoutViewController.swift in Sources */,
+				CBD766EF251AF824006A7466 /* BannerNode.swift in Sources */,
 				CBC6F75E24FFC1D3009D7A5C /* LivePreview.swift in Sources */,
 				CB6CA1B42511BC4700A4D8C6 /* LiveRoomViewController.swift in Sources */,
 				CB6CA03D2510AD1C00A4D8C6 /* FeedItemFlexUINode.swift in Sources */,

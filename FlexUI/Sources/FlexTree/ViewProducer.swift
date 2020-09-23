@@ -16,7 +16,9 @@ public final class ViewProducer {
   public init<T: UIView>(type: T.Type) {
     viewTypeName = String(describing: type)
     viewMaker = {
-      T()
+      let v = T()
+      v.backgroundColor = .clear
+      return v
     }
   }
 

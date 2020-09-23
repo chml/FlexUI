@@ -114,7 +114,7 @@ private struct FLCommentNode: Node {
     HStack(spacing: 4) {
       Image(UIImage(named: "50x50.png"))
       Text(comment)
-        .flexGrow(1).flexShrink(1)
+        .flexGrow(1)
         .viewConfig { (v) in
           v.contentMode = .scaleAspectFit
           v.backgroundColor = .orange

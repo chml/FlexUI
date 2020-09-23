@@ -83,8 +83,7 @@ final class MagazineLayoutViewController: UIViewController, Component {
     .sectionHeaderKind(MagazineLayout.SupplementaryViewKind.sectionHeader)
     .onSelect({[weak self] (item) in
       if let cell = item.unwrap(as: LiveRoomCell.self) {
-        print("\(cell.room)")
-        self?.navigationController?.pushViewController(LiveRoomViewController(), animated: true)
+        self?.navigationController?.pushViewController(LiveRoomViewController(liveURL: cell.room.imageURL), animated: true)
       }
     })
     .viewConfig({ (v) in

@@ -10,6 +10,9 @@ import class UIKit.UIViewController
 extension Flex where Base: UIViewController, Base: Component {
   public func render(_ direction: Direction? = nil) {
     base.view.flex.render(base, direction: direction)
+    #if DEBUG
+    print("\(base.view.flex.tree!)")
+    #endif
   }
 }
 

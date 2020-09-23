@@ -20,7 +20,7 @@ extension ListViewAdapter: UICollectionViewDataSource {
   }
 
   public func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-    let cell = data[indexPath.section].cells[indexPath.item]
+    let cell = itemCell(at: indexPath)
     let reuseID = cell.typeName
     let reg = Registration(id: reuseID, viewClass: customCellClass ??  UICollectionViewCell.self)
     if !resigteredViews.contains(reg) {
@@ -35,7 +35,7 @@ extension ListViewAdapter: UICollectionViewDataSource {
   public func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
     switch kind {
     case sectionHeaderKind:
-      if let header = data[indexPath.section].header {
+      if let header = sectionHeader(at: indexPath.section) {
         let reuseID = header.typeName
         let reg = Registration(id: reuseID, viewClass: customReusableViewClass ?? UICollectionReusableView.self)
         if !resigteredViews.contains(reg) {
@@ -47,7 +47,7 @@ extension ListViewAdapter: UICollectionViewDataSource {
         return view
       }
     case sectionFooterKind:
-      if let footer = data[indexPath.section].footer {
+      if let footer = sectionFooter(at: indexPath.section) {
         let reuseID = footer.typeName
         let reg = Registration(id: reuseID, viewClass: customReusableViewClass ?? UICollectionReusableView.self)
         if !resigteredViews.contains(reg) {
@@ -68,6 +68,9 @@ extension ListViewAdapter: UICollectionViewDataSource {
 
 
 extension ListViewAdapter: UICollectionViewDelegateFlowLayout {
+
+  public func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+  }
 
   public func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
     return treeForItem(at: indexPath)?.layout?.contentSize ?? .zero

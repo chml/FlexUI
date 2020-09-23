@@ -143,6 +143,7 @@ public final class FlexNode {
     let container = FlexNode()
     container.isWrapperNode = true
     container.insertChild(self)
+    container.style.flex = 0
     YGNodeCalculateLayout(container.yogaRef, Float(width), Float(height), dir)
     return YogaNodeLayout(root: self, container: container)
   }
@@ -197,7 +198,7 @@ extension FlexNode: CustomDebugStringConvertible {
     let indentText = (0..<indent).reduce("") { (result, _) -> String in
       result + " |"
     }
-    let content = "\(debugName) (\(layoutFrame) reuseID: \(viewProducer?.reuseID?.baseDesc ?? "nil")\n"
+    let content = "\(debugName) (\(layoutFrame) reuseID: \(viewProducer?.reuseID?.baseDesc ?? "nil") grow: \(style.flexGrow) shrink: \(style.flexShrink)\n"
     let childrenDesc = children.reduce("") { (result, node) -> String in
       result + node.debugDesc(indent: indent + 1)
     }

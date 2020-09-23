@@ -51,6 +51,17 @@ public final class ListViewAdapter: NSObject {
   var dynamicLayoutStorage = [AnyHashable: FlexTree]()
   var isStaticLayout = false
 
+  public func itemCell(at indexPath: IndexPath) -> AnyNode {
+    data[indexPath.section].cells[indexPath.item]
+  }
+
+  public func sectionHeader(at index: Int) -> AnyNode? {
+    data[index].header
+  }
+
+  public func sectionFooter(at index: Int) -> AnyNode? {
+    data[index].footer
+  }
 
   public func treeForItem(at indexPath: IndexPath) -> FlexTree? {
     if isStaticLayout {

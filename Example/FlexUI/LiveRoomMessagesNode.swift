@@ -12,6 +12,7 @@ import FlexUI
 struct LiveRoomMessage: Hashable {
   let id: Int
   let user: String
+  let avatarURL: URL
   let message: String
 }
 
@@ -21,12 +22,47 @@ struct LiveRoomMessageCell: Node, Hashable {
   var id: AnyHashable { message.id }
 
   var body: AnyNode {
-    HStack(spacing: 8, wrap: .wrap, lineSpacing: 8) {
-      Text("\(message.user): ")
-        .flexGrow(1).flexShrink(1)
-      Text("\(message.message)")
-        .flexGrow(1).flexShrink(1)
+    HStack(spacing: 12, alignItems: .flexStart) {
+      Image(message.avatarURL)
+        .viewReuseID("avatar")
+        .viewConfig { (v) in
+          v.layer.cornerRadius = v.bounds.width/2
+          v.layer.masksToBounds = true
+        }
+        .width(30)
+        .height(30)
+
+      VStack(spacing: 12) {
+        Text(message.user)
+          .font(.preferredFont(forTextStyle: .caption1))
+          .textColor(.blue)
+          .flexGrow(1)
+          .flexShrink(1)
+          .viewReuseID("userName")
+        Text(message.message)
+          .font(.preferredFont(forTextStyle: .caption1))
+          .textColor(.white)
+          .flexGrow(1)
+          .flexShrink(1)
+          .viewReuseID("text")
+      }
+      .padding(8)
+      .background {
+        View()
+          .viewReuseID("bubble")
+          .viewConfig { (v) in
+            v.backgroundColor = .init(white: 0.2, alpha: 0.5)
+            v.layer.cornerRadius = min(v.bounds.width/2, 8)
+            v.layer.masksToBounds = true
+          }
+          .width(.percent(100))
+          .height(.percent(100))
+      }
+
     }
+    .padding(12)
+    .flexGrow(1)
+    .flexShrink(1)
     .asAnyNode
   }
 }
@@ -37,24 +73,41 @@ struct LiveRoomMessagesNode: Component {
   var messages: [LiveRoomMessage]
 
   func body(with coordinator: SimpleCoordinator<LiveRoomMessagesNode>) -> AnyNode {
-    List(data: messages) { msg in
-      LiveRoomMessageCell(message: msg)
+    VStack(alignItems: .stretch) {
+      List(data: messages) { msg in
+        LiveRoomMessageCell(message: msg)
+      }
+      .reversed(true)
+      .viewReuseID("msglist")
+      .viewConfig({ (v) in
+        v.separatorStyle = .none
+        v.backgroundColor = .clear
+      })
+      .flexGrow(1)
     }
-    .reversed(true)
+    .flexGrow(1)
     .asAnyNode
   }
 
 }
 
-#if DEBUG
+//#if DEBUG
 extension LiveRoomMessage {
-  static func generateMessages() -> [LiveRoomMessage] {
-    return Array(0..<10).map { n in
-      LiveRoomMessage(id: n, user: "User\(n)", message: "long long message \(n)")
+  static func generateMessages(_ seed: Int = 0 , _ count: Int = 20) -> [LiveRoomMessage] {
+
+    let messages: [String] = [
+      "引号，是标点符号的一种，标示引用、着重、特别用意的符号。 中国国家标准《标点符号用法》将“引号”定义为标识语段中直接引用的内容或需要特别指出的成分。“行文中直接引用的话，用引号标示。”“需要着重论述的对象，用引号标示。”“具有特殊含义的词语，也用引号标示",
+      "《奇异人生 2》永久免费，《荒野大镖客 2》马上结束促销，还有更多 iOS 应用游戏促销中",
+      "6666666",
+      "666",
+    ]
+
+    return Array(seed..<count).map { n in
+      LiveRoomMessage(id: n, user: "User\(n)", avatarURL: randomImageURL(), message: "\(n) \(messages.randomElement()!)")
     }
   }
 }
-#endif
+//#endif
 //
 //#if canImport(SwiftUI)
 //import SwiftUI

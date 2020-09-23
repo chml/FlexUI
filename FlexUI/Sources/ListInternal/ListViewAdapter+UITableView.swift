@@ -19,9 +19,10 @@ import Foundation
 
 
   public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-    let cell = data[indexPath.section].cells[indexPath.item]
+    let cell = itemCell(at: indexPath)
     let reuseID = cell.typeName
     if let view = tableView.dequeueReusableCell(withIdentifier: reuseID) {
+      view.backgroundColor = .clear
       treeForItem(at: indexPath)?.render(in: view.contentView)
       view.transform = CGAffineTransform(scaleX: 1, y: reversed ? -1 : 1)
       return view
@@ -39,13 +40,14 @@ import Foundation
     if autoDeselect {
       tableView.deselectRow(at: indexPath, animated: true)
     }
-    onSelect?(data[indexPath.section].cells[indexPath.item], indexPath)
+    onSelect?(itemCell(at: indexPath), indexPath)
   }
 
   public func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-    if let header = data[section].header {
+    if let header = sectionHeader(at: section) {
       let reuseID = header.typeName
       if let view = tableView.dequeueReusableHeaderFooterView(withIdentifier: reuseID) {
+        view.backgroundColor = .clear
         treeForHeader(at: section)?.render(in: view.contentView)
         view.transform = CGAffineTransform(scaleX: 1, y: reversed ? -1 : 1)
         return view
@@ -58,9 +60,10 @@ import Foundation
   }
 
   public func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
-    if let footer = data[section].footer {
+    if let footer = sectionFooter(at: section) {
       let reuseID = footer.typeName
       if let view = tableView.dequeueReusableHeaderFooterView(withIdentifier: reuseID) {
+        view.backgroundColor = .clear
         treeForFooter(at: section)?.render(in: view.contentView)
         view.transform = CGAffineTransform(scaleX: 1, y: reversed ? -1 : 1)
         return view
