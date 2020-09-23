@@ -103,7 +103,7 @@ final class LiveRoomViewController: UIViewController, Component {
       return VStack(justifyContent:.spaceAround, alignItems: .stretch) {
         liveStreamNode()
           .aspectRatio(16.0/9.0)
-        LiveRoomMessagesNode(messages: LiveRoomMessage.generateMessages())
+        LiveRoomMessagesNode(compact: false, messages: LiveRoomMessage.generateMessages())
           .flexGrow(1)
       }
       .flexGrow(1)
@@ -125,7 +125,7 @@ final class LiveRoomViewController: UIViewController, Component {
       }
       .flexGrow(1)
       .overlay({
-        LiveRoomMessagesNode(messages: LiveRoomMessage.generateMessages())
+        LiveRoomMessagesNode(compact: true, messages: LiveRoomMessage.generateMessages())
           .width(.percent(70))
           .height(.percent(50))
           .end(0)
@@ -145,7 +145,7 @@ final class LiveRoomViewController: UIViewController, Component {
         Image(randomImageURL())
           .viewReuseID("hostLiveStream")
           .aspectRatio(16.0/9.0)
-        LiveRoomMessagesNode(messages: LiveRoomMessage.generateMessages())
+        LiveRoomMessagesNode(compact: true, messages: LiveRoomMessage.generateMessages())
           .flexGrow(1).flexShrink(1)
       }
       .width(.percent(100))

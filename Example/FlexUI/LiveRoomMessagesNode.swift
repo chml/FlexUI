@@ -17,6 +17,7 @@ struct LiveRoomMessage: Hashable {
 }
 
 struct LiveRoomMessageCell: Node, Hashable {
+  let compact: Bool
   let message: LiveRoomMessage
 
   var id: AnyHashable { message.id }
@@ -37,13 +38,11 @@ struct LiveRoomMessageCell: Node, Hashable {
           .font(.preferredFont(forTextStyle: .caption1))
           .textColor(.blue)
           .flexGrow(1)
-          .flexShrink(1)
           .viewReuseID("userName")
         Text(message.message)
           .font(.preferredFont(forTextStyle: .caption1))
           .textColor(.white)
           .flexGrow(1)
-          .flexShrink(1)
           .viewReuseID("text")
       }
       .padding(8)
@@ -58,7 +57,7 @@ struct LiveRoomMessageCell: Node, Hashable {
           .width(.percent(100))
           .height(.percent(100))
       }
-
+      .flexShrink(1)
     }
     .padding(12)
     .flexGrow(1)
@@ -70,12 +69,14 @@ struct LiveRoomMessageCell: Node, Hashable {
 struct LiveRoomMessagesNode: Component {
   typealias Body = AnyNode
 
+  let compact: Bool
   var messages: [LiveRoomMessage]
+
 
   func body(with coordinator: SimpleCoordinator<LiveRoomMessagesNode>) -> AnyNode {
     VStack(alignItems: .stretch) {
       List(data: messages) { msg in
-        LiveRoomMessageCell(message: msg)
+        LiveRoomMessageCell(compact: compact, message: msg)
       }
       .reversed(true)
       .viewReuseID("msglist")
