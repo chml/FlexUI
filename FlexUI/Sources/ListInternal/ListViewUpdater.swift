@@ -12,6 +12,7 @@ import DifferenceKit
 public final class ListViewUpdater {
   public var animatableChangeCount:Int = 50
   public var keepsContentOffset: Bool = true
+  public var alwaysReload: Bool = false
 
   fileprivate enum UpdateContent {
     case changed(data: [Section], stagedChangeset: StagedChangeset<[Section]>)
@@ -61,9 +62,13 @@ public final class ListViewUpdater {
 
     layout(with: listView, adapter: adapter, updateContent: .changed(data: data, stagedChangeset: stagedChangeset)) { (content) in
       if case .changed(_, let change) = content {
-        CATransaction.begin()
-        self.performDiffenrentialUpdates(in: listView, adapter: adapter, stagedChangeset: change)
-        CATransaction.commit()
+        if self.alwaysReload {
+          adapter.reloadData()
+        } else {
+          CATransaction.begin()
+          self.performDiffenrentialUpdates(in: listView, adapter: adapter, stagedChangeset: change)
+          CATransaction.commit()
+        }
       }
     }
   }

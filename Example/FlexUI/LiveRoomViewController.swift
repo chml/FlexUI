@@ -73,7 +73,7 @@ final class LiveRoomViewController: UIViewController, Component {
 
   func fullScreenButton(_ coordinator: Coordinator) -> AnyNode {
     Button("「」") {
-      coordinator.update(animated: false) { (vc) in
+      coordinator.update(animated: true) { (vc) in
         if vc.displayMode == .portraintNormal {
           vc.displayMode = .portraintFullScreen
         } else if vc.displayMode == .portraintFullScreen {

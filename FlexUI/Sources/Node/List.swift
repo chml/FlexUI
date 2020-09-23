@@ -23,6 +23,7 @@ public struct List<View: ListView, Data, Element>: Node, ViewProducible {
     case pullToRefresh(action: (_ endRefreshing: @escaping () -> Void) -> Void)
     case infiniteScroll(action: (_ endRefreshing: @escaping (_ isAllLoaded: Bool) -> Void) -> Void)
     case reversed(Bool)
+    case alwaysReload(Bool)
     case customLayoutInfo(AnyObject)
     case customCellClass(AnyClass)
     case customReusableViewClass(AnyClass)
@@ -167,6 +168,10 @@ extension List {
     return list(with: .reversed(reversed))
   }
 
+  public func alwaysReload(_ reload: Bool) -> Self {
+    return list(with: .alwaysReload(reload))
+  }
+
   public func customLayoutInfo(_ info: AnyObject) -> Self {
     return list(with: .customLayoutInfo(info))
   }
@@ -235,6 +240,8 @@ extension List {
           adapter.infinateScrollAction = action
         case .reversed(let reversed):
           adapter.reversed = reversed
+        case .alwaysReload(let reload):
+          adapter.updater.alwaysReload = reload
         case .customLayoutInfo(let info):
           adapter.customLayoutInfo = info
         case .customCellClass(let cls):
