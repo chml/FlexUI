@@ -7,6 +7,8 @@
 
 import UIKit
 import MPITextKit
+import Nuke
+
 
 public struct Button: Node, ViewProducible {
   public typealias Body = Never
@@ -14,7 +16,7 @@ public struct Button: Node, ViewProducible {
 
   public enum ButtonType {
     case system(title: String)
-    case custom(image: UIImage? = nil, title: String? = nil, font: UIFont? = nil)
+    case custom(image: UIImage? = nil, imageURL: URL? = nil, title: String? = nil, font: UIFont? = nil)
     case detailDisclosure
     case infoLight
     case infoDark
@@ -54,7 +56,7 @@ extension Button {
       viewProducer.appendConfiguration(as: ProductedView.self) { (v) in
         v.setTitle(title, for: .normal)
       }
-    case .custom(let image, let title, let font):
+    case .custom(let image, let url, let title, let font):
       buttonType = .custom
       var totalSize: CGSize = .zero
       if let image = image {
@@ -75,7 +77,12 @@ extension Button {
           v.titleLabel?.font = font
         }
         v.setTitle(title, for: .normal)
-        v.setImage(image, for: .normal)
+        if let image = image {
+          v.setImage(image, for: .normal)
+        }
+        if let url = url {
+          Nuke.loadImage(with: url, into: v)
+        }
       }
     case .detailDisclosure:
       buttonType = .detailDisclosure
@@ -104,4 +111,35 @@ extension Button {
   }
 
 
+}
+
+
+extension UIButton: Nuke_ImageDisplaying {
+  @objc open func nuke_display(image: PlatformImage?) {
+    guard image != nil else {
+//      self.animatedImage = nil
+//      self.image = nil
+      self.setImage(nil, for: .normal)
+      return
+    }
+    if let _ = image?.animatedImageData {
+      // Display poster image immediately
+      self.setImage(image, for: .normal)
+
+      // Prepare FLAnimatedImage object asynchronously (it takes a
+      // noticeable amount of time), and start playback.
+      DispatchQueue.global().async {
+//        let animatedImage = FLAnimatedImage(animatedGIFData: data)
+        DispatchQueue.main.async {
+          // If view is still displaying the same image
+          if self.imageView?.image === image {
+//            self.animatedImage = animatedImage
+          }
+        }
+      }
+    } else {
+//      self.image = image
+      self.setImage(image, for: .normal)
+    }
+  }
 }

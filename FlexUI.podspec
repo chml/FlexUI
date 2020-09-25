@@ -38,6 +38,7 @@ TODO: Add long description of the pod here.
   s.dependency 'MPITextKit'
   s.dependency 'DifferenceKit'
   s.dependency 'Nuke'
+  s.dependency 'Nuke-WebP-Plugin'
   s.dependency 'FLAnimatedImage'
 
    s.frameworks = 'UIKit', 'MapKit'

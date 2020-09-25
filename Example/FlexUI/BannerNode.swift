@@ -63,6 +63,7 @@ struct BannerNode: Component {
       .viewConfig { (v) in
         v.isPagingEnabled = true
         v.backgroundColor = .white
+        v.transform = CGAffineTransform(scaleX: -1, y: 1)
         coordinator.collectionView = v
       }
       .height(.percent(100))

@@ -23,15 +23,17 @@ struct LiveRoomMessageCell: Node, Hashable {
   var id: AnyHashable { message.id }
 
   var body: AnyNode {
-    HStack(spacing: 12, alignItems: .flexStart) {
-      Image(message.avatarURL)
-        .viewReuseID("avatar")
-        .viewConfig { (v) in
-          v.layer.cornerRadius = v.bounds.width/2
-          v.layer.masksToBounds = true
-        }
-        .width(30)
-        .height(30)
+    HStack(spacing: 12, justifyContent: compact ? .flexEnd : .flexStart, alignItems: .flexStart) {
+      if !compact {
+        Image(message.avatarURL)
+          .viewReuseID("avatar")
+          .viewConfig { (v) in
+            v.layer.cornerRadius = v.bounds.width/2
+            v.layer.masksToBounds = true
+          }
+          .width(30)
+          .height(30)
+      }
 
       VStack(spacing: 12) {
         Text(message.user)
@@ -58,6 +60,17 @@ struct LiveRoomMessageCell: Node, Hashable {
           .height(.percent(100))
       }
       .flexShrink(1)
+
+      if compact {
+        Image(message.avatarURL)
+          .viewReuseID("avatar")
+          .viewConfig { (v) in
+            v.layer.cornerRadius = v.bounds.width/2
+            v.layer.masksToBounds = true
+          }
+          .width(30)
+          .height(30)
+      }
     }
     .padding(12)
     .flexGrow(1)

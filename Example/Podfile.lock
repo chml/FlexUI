@@ -11,10 +11,23 @@ PODS:
     - FLAnimatedImage
     - MPITextKit
     - Nuke
+    - Nuke-WebP-Plugin
     - Yoga
+  - libwebp (1.1.0):
+    - libwebp/demux (= 1.1.0)
+    - libwebp/mux (= 1.1.0)
+    - libwebp/webp (= 1.1.0)
+  - libwebp/demux (1.1.0):
+    - libwebp/webp
+  - libwebp/mux (1.1.0):
+    - libwebp/demux
+  - libwebp/webp (1.1.0)
   - MagazineLayout (1.6.2)
   - MPITextKit (0.1.8)
   - Nuke (9.1.2)
+  - Nuke-WebP-Plugin (5.0.0):
+    - libwebp (= 1.1.0)
+    - Nuke (~> 9.0)
   - SnapKit (5.0.1)
   - Yoga (1.14.0)
 
@@ -27,9 +40,11 @@ SPEC REPOS:
   trunk:
     - DifferenceKit
     - FLAnimatedImage
+    - libwebp
     - MagazineLayout
     - MPITextKit
     - Nuke
+    - Nuke-WebP-Plugin
     - SnapKit
     - Yoga
 
@@ -40,10 +55,12 @@ EXTERNAL SOURCES:
 SPEC CHECKSUMS:
   DifferenceKit: 516f12e336ed65a3a0665847b5c3cb5cad4bd4ea
   FLAnimatedImage: 4a0b56255d9b05f18b6dd7ee06871be5d3b89e31
-  FlexUI: 7b2dacfca50c87d1e6ba6b18ce76084f02b3da2b
+  FlexUI: 067c5e2515ed52eb3430fed4fa6dea5e73ccbb40
+  libwebp: 946cb3063cea9236285f7e9a8505d806d30e07f3
   MagazineLayout: 8e995730bc2b1ff8f11f44cb7d7926ab9640892f
   MPITextKit: 475a22b8df57c42c8c040bf95df47427642199ad
   Nuke: dd2e6be6a34c042a7861e190632781d11f253026
+  Nuke-WebP-Plugin: a79a97be508453ce5c36b78989595cbbc19c2deb
   SnapKit: 97b92857e3df3a0c71833cce143274bf6ef8e5eb
   Yoga: cff67a400f6b74dc38eb0bad4f156673d9aa980c
 

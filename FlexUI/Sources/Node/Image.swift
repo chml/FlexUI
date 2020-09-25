@@ -6,6 +6,7 @@
 //
 
 import Nuke
+import NukeWebPPlugin
 import FLAnimatedImage
 
 public struct Image: Node, ViewProducible {
@@ -55,10 +56,7 @@ extension Image {
       viewProducer.appendConfiguration(as: ProductedView.self) { (view) in
         view.image = placehoder
         if let url = url {
-          ImageLoadingOptions.shared.isPrepareForReuseEnabled = false
-          ImagePipeline.Configuration.isAnimatedImageDataEnabled = true
-
-          Nuke.loadImage(with: url, options: ImageLoadingOptions.shared, into: view)
+          Nuke.loadImage(with: url, into: view)
         }
       }
     }

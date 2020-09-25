@@ -54,7 +54,9 @@ final class DiffCollectionViewController: UIViewController, Component {
   }
 
   func body(with coordinator: SimpleCoordinator<DiffCollectionViewController>) -> AnyNode {
-    return List(collection: UICollectionViewFlowLayout(), data: state) { (i) in
+    let layout = UICollectionViewFlowLayout()
+    layout.scrollDirection = .horizontal
+    return List(collection: layout, data: state) { (i) in
       Section(id: i, header: Header(id: i, text: "header \(i)")) {
         ForEach(0..<i) {
           Cell(id: "\(i)-\($0)", text: "section\(i) item\($0)")

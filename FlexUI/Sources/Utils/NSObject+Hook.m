@@ -19,3 +19,5 @@
 IMPL_HOOK_LOADABLE(UITableViewCell)
 
 IMPL_HOOK_LOADABLE(UICollectionViewCell)
+
+IMPL_HOOK_LOADABLE(UIViewController)

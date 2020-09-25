@@ -30,6 +30,7 @@ final class LiveRoomViewController: UIViewController, Component {
     case landscapeFullScreen
   }
   var displayMode: DisplayMode = .portraintNormal
+  var messages: [LiveRoomMessage] = LiveRoomMessage.generateMessages(0, 30)
 
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -103,7 +104,7 @@ final class LiveRoomViewController: UIViewController, Component {
       return VStack(justifyContent:.spaceAround, alignItems: .stretch) {
         liveStreamNode()
           .aspectRatio(16.0/9.0)
-        LiveRoomMessagesNode(compact: false, messages: LiveRoomMessage.generateMessages())
+        LiveRoomMessagesNode(compact: false, messages: self.messages)
           .flexGrow(1)
       }
       .flexGrow(1)
@@ -125,7 +126,7 @@ final class LiveRoomViewController: UIViewController, Component {
       }
       .flexGrow(1)
       .overlay({
-        LiveRoomMessagesNode(compact: true, messages: LiveRoomMessage.generateMessages())
+        LiveRoomMessagesNode(compact: true, messages: self.messages)
           .width(.percent(70))
           .height(.percent(50))
           .end(0)
