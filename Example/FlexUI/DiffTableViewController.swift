@@ -2,7 +2,7 @@
 //  DiffTableViewController.swift
 //  FlexUI_Example
 //
-//  Created by 黎昌明 on 2020/9/3.
+//  Created by Li ChangMing on 2020/9/3.
 //  Copyright © 2020 CocoaPods. All rights reserved.
 //
 

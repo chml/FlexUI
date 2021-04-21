@@ -39,6 +39,7 @@ struct LiveRoomMessageCell: Node, Hashable {
         Text(message.user)
           .font(.preferredFont(forTextStyle: .caption1))
           .textColor(.blue)
+          .alignSelf(compact ? .flexEnd : .flexStart)
           .flexGrow(1)
           .viewReuseID("userName")
         Text(message.message)

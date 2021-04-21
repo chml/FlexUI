@@ -2,7 +2,7 @@
 //  UIViewController+Flex.swift
 //  FlexUI
 //
-//  Created by 黎昌明 on 2020/9/10.
+//  Created by Li ChangMing on 2020/9/10.
 //
 
 import class UIKit.UIViewController
@@ -10,9 +10,9 @@ import class UIKit.UIViewController
 extension Flex where Base: UIViewController, Base: Component {
   public func render(_ direction: Direction? = nil) {
     base.view.flex.render(base, direction: direction)
-    #if DEBUG
-    print("\(base.view.flex.tree!)")
-    #endif
+//    #if DEBUG
+//    print("\(base.view.flex.tree!)")
+//    #endif
   }
 }
 

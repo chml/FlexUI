@@ -62,7 +62,7 @@ final class LiveRoomViewController: UIViewController, Component {
   }
 
   func closeButton() -> AnyNode {
-    Button("Close") { [weak self] in
+    Button(" ㄨ ") { [weak self] in
       self?.navigationController?.popViewController(animated: true)
     }
     .viewReuseID("closeBtn")
@@ -73,7 +73,9 @@ final class LiveRoomViewController: UIViewController, Component {
   }
 
   func fullScreenButton(_ coordinator: Coordinator) -> AnyNode {
-    Button("「」") {
+    let isFullScreen = coordinator.content.displayMode != .portraintNormal
+    let title = isFullScreen ? "◢◤" : "◤◢"
+    return Button(title) {
       coordinator.update(animated: true) { (vc) in
         if vc.displayMode == .portraintNormal {
           vc.displayMode = .portraintFullScreen
@@ -100,6 +102,8 @@ final class LiveRoomViewController: UIViewController, Component {
     let insets = safeInsets()
     if insets == .zero { return EmptyNode().asAnyNode }
     switch displayMode {
+
+
     case .portraintNormal:
       return VStack(justifyContent:.spaceAround, alignItems: .stretch) {
         liveStreamNode()
@@ -119,6 +123,7 @@ final class LiveRoomViewController: UIViewController, Component {
       .height(.percent(100))
       .padding(insets)
       .asAnyNode
+      
     case .portraintFullScreen:
       return VStack(justifyContent:.spaceAround, alignItems: .stretch) {
         liveStreamNode()

@@ -2,14 +2,14 @@
 //  Component.swift
 //  FlexUI
 //
-//  Created by 黎昌明 on 2020/9/8.
+//  Created by Li ChangMing on 2020/9/8.
 //
 
 /*
  Component is a Stateful Node, Use a Coordinator to coordinate UI event and State
  */
 
-public protocol Component: Node {
+public protocol Component: Node, ViewProducible {
   associatedtype Coordinator: ComponentCoordinator
 
   func body(with coordinator: Coordinator) -> Body
@@ -55,6 +55,7 @@ extension Component where Coordinator == SimpleCoordinator<Self>{
 
 
 extension Component {
+  public typealias ProductedView = ComponentView<Self>
   public var isComponent: Bool { return true }
 
   public var body: Body {
@@ -62,8 +63,17 @@ extension Component {
   }
 
   public func build(with context: FlexTreeContext) -> [FlexNode] {
+
+//    let mirror = Mirror(reflecting: self)
+//    for child in mirror.children {
+//      print("Mirror:\(String(describing: self)): \(child)")
+//      if let dynamicProperty = child.value as? DynamicProperty {
+//        dynamicProperty.update()
+//        print("String: \(dynamicProperty)")
+//      }
+//    }
     let flexNode = FlexNode()
-    let viewProducer = ViewProducer(type: ComponentView<Self>.self)
+    let viewProducer = ViewProducer(type: ProductedView.self)
     viewProducer.reuseID = id
     flexNode.viewProducer = viewProducer
     flexNode.asRootNode = true
@@ -86,23 +96,17 @@ extension Component {
           context.animator.addAnimations {
             context.tree.layoutIfNeed()
           }
-           
           context.animator.startAnimation()
         } else {
           context.tree.layoutIfNeed()
         }
       }
-      }
-    )
+    })
     let coordinator = self.coordinator(with: coordinatorContext)
     flexNode.coordinator = coordinator
     let bodyNodes = body(with: coordinator).build(with: context.with(parent: flexNode))
     for n in bodyNodes {
       flexNode.insertChild(n)
-//      flexNode.style.flexDirection = n.style.flexDirection
-//      flexNode.style.flexGrow = n.style.flexGrow
-//      flexNode.style.flexShrink = n.style.flexShrink
-//      flexNode.style.flexBasis = n.style.flexBasis
     }
     return [flexNode]
   }

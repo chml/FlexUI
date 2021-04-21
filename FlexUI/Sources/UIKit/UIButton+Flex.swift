@@ -2,7 +2,7 @@
 //  UIButtonExtensions.swift
 //  FlexUI
 //
-//  Created by 黎昌明 on 2020/9/9.
+//  Created by Li ChangMing on 2020/9/9.
 //
 
 import class UIKit.UIButton

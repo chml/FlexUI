@@ -2,7 +2,7 @@
 //  ViewModifier.swift
 //  FlexUI
 //
-//  Created by 黎昌明 on 2020/9/1.
+//  Created by Li ChangMing on 2020/9/1.
 //
 
 extension ModifiedContent: ViewProducible where Content: ViewProducible {

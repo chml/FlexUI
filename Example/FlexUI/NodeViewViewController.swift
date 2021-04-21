@@ -2,7 +2,7 @@
 //  NodeViewViewController.swift
 //  FlexUI_Example
 //
-//  Created by 黎昌明 on 2020/9/8.
+//  Created by Li ChangMing on 2020/9/8.
 //  Copyright © 2020 CocoaPods. All rights reserved.
 //
 

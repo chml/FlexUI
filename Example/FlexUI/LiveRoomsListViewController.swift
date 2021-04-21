@@ -133,9 +133,11 @@ final class LiveRoomsListViewController: UIViewController, Component {
   }
 
   func body(with coordinator: SimpleCoordinator<LiveRoomsListViewController>) -> AnyNode {
+
     List(collection: layout) {
       Section(id: "banners") {
         BannerNode(bannerImageURLs: self.banners) { (index) in
+          print("Selected Banner at index: \(index)")
         }
       }
       Section(id: "rooms", header: LiveRoomHeader(id: "room Header", text: "Online")) {

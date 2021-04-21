@@ -2,7 +2,7 @@
 //  FlexTree.swift
 //  FlexUI
 //
-//  Created by 黎昌明 on 2020/8/31.
+//  Created by Li ChangMing on 2020/8/31.
 //
 
 
@@ -81,16 +81,16 @@ public class FlexTree {
     view = rootView
     rootView.flex.tree = self
     rootView.adjustSizeForTreeIfNeed()
+    let rootRecycler = ViewRecycler.recycler(for: rootView)
+    rootRecycler.prepareRecycling()
+    var processedRecylers: [ViewRecycler] = [rootRecycler]
+    var deferConfigs: [() -> Void] = []
+
     struct LayoutNode {
       let node: FlexNode
       let parentView: UIView
       let recycler: ViewRecycler
     }
-
-    let rootRecycler = ViewRecycler.recycler(for: rootView)
-    rootRecycler.prepareRecycling()
-    var processedRecylers: [ViewRecycler] = [rootRecycler]
-    var deferConfigs: [() -> Void] = []
     var stack: [LayoutNode] = [.init(node: layout.root, parentView: rootView, recycler: rootRecycler)]
     while !stack.isEmpty {
       let current = stack.removeLast()

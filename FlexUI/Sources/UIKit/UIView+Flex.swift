@@ -27,6 +27,7 @@ extension Flex where Base: UIView {
     get { objc_getAssociatedObject(base, &Key.flexTree) as? FlexTree }
     set { objc_setAssociatedObject(base, &Key.flexTree, newValue, .OBJC_ASSOCIATION_RETAIN) }
   }
+  
   public func render<Content: Node>(_ node: Content, direction: Direction? = nil) {
     node.buildFlexTree()
       .calculateLayout(width: base.bounds.width, height: base.bounds.height, direction: direction ?? base.flex.direction)

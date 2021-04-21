@@ -2,7 +2,7 @@
 //  Button.swift
 //  FlexUI
 //
-//  Created by 黎昌明 on 2020/9/8.
+//  Created by Li ChangMing on 2020/9/8.
 //
 
 import UIKit

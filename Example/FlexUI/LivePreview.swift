@@ -2,7 +2,7 @@
 //  LivePreview.swift
 //  YogaUI
 //
-//  Created by 黎昌明 on 2020/8/17.
+//  Created by Li ChangMing on 2020/8/17.
 //
 
 

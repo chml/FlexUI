@@ -2,7 +2,7 @@
 //  DiffCollectionViewController.swift
 //  FlexUI_Example
 //
-//  Created by 黎昌明 on 2020/9/5.
+//  Created by Li ChangMing on 2020/9/5.
 //  Copyright © 2020 CocoaPods. All rights reserved.
 //
 
@@ -54,9 +54,7 @@ final class DiffCollectionViewController: UIViewController, Component {
   }
 
   func body(with coordinator: SimpleCoordinator<DiffCollectionViewController>) -> AnyNode {
-    let layout = UICollectionViewFlowLayout()
-    layout.scrollDirection = .horizontal
-    return List(collection: layout, data: state) { (i) in
+    List(collection: UICollectionViewFlowLayout(), data: state) { (i) in
       Section(id: i, header: Header(id: i, text: "header \(i)")) {
         ForEach(0..<i) {
           Cell(id: "\(i)-\($0)", text: "section\(i) item\($0)")
@@ -71,12 +69,12 @@ final class DiffCollectionViewController: UIViewController, Component {
       }
       endRefreshing()
     })
-      .viewConfig({ (v) in
-        v.backgroundColor = .white
-      })
-      .width(.percent(100))
-      .height(.percent(100))
-      .asAnyNode
+    .viewConfig({ (v) in
+      v.backgroundColor = .white
+    })
+    .width(.percent(100))
+    .height(.percent(100))
+    .asAnyNode
   }
 
 }

@@ -2,12 +2,86 @@
 //  UserProfileViewController.swift
 //  FlexUI_Example
 //
-//  Created by 黎昌明 on 2020/9/6.
+//  Created by Li ChangMing on 2020/9/6.
 //  Copyright © 2020 CocoaPods. All rights reserved.
 //
 
 import UIKit
 import FlexUI
+
+class AvatarView: UIView {
+  private lazy var imageView = UIImageView()
+  private var ob: NSKeyValueObservation?
+  weak var scrollView: UIScrollView? {
+    didSet {
+      if scrollView != nil {
+        ob = scrollView?.observe(\.contentOffset, changeHandler: { [weak self] (sv, _) in
+          let offset = sv.contentOffset
+          if offset.y < 0 {
+            let factor = max(min((abs(offset.y) / 100.0 + 1), 3), 1)
+            print("\(factor)")
+            self?.transform = .init(scaleX: factor, y: factor)
+          } else {
+            self?.transform = .identity
+          }
+        })
+      }
+    }
+  }
+
+  init() {
+    super.init(frame: .zero)
+    addSubview(imageView)
+    imageView.image = UIImage(named: "350x200")
+  }
+
+  required init?(coder: NSCoder) {
+    fatalError("init(coder:) has not been implemented")
+  }
+
+  override func layoutSubviews() {
+    super.layoutSubviews()
+    imageView.frame = bounds
+  }
+
+}
+
+fileprivate struct AvatarNode: Component, Hashable {
+  typealias Body = AnyNode
+  let id: AnyHashable
+  func body(with coordinator: Coordinator) -> AnyNode {
+    VStack(alignItems: .stretch) {
+      View(of: AvatarView.self)
+        .height(200)
+        .width(.percent(100))
+        .flexGrow(1)
+        .flexShrink(0)
+        .viewConfig { (v) in
+          DispatchQueue.main.async {
+            var sv: UIView? = v.superview
+            while (sv != .none) {
+              if let scrollView  = sv! as? UIScrollView {
+                v.scrollView = scrollView
+              }
+              sv = sv?.superview
+            }
+          }
+        }
+    }
+    .asAnyNode
+  }
+
+  final class Coordinator: NSObject, ComponentCoordinator, UIGestureRecognizerDelegate {
+    typealias Content = AvatarNode
+    let context: Context
+
+    weak var imageView: UIImageView? = nil
+
+    init(with context: Context) {
+      self.context = context
+    }
+  }
+}
 
 fileprivate struct AlubmNode: Component, Hashable {
   typealias Body = AnyNode
@@ -160,6 +234,7 @@ final class UserProfileViewController: UIViewController, Component {
   typealias Body = AnyNode
   func body(with coordinator: SimpleCoordinator<UserProfileViewController>) -> AnyNode {
     List {
+      AvatarNode(id: 3)
       AlubmNode(id: 0, photos: self.album)
       TagsNode(id: 1, title: "爱好1", tags: self.tags1, color: .orange)
       TagsNode(id: 2, title: "爱好2", tags: self.tags2, color: .green)

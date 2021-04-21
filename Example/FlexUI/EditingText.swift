@@ -2,7 +2,7 @@
 //  EditingText.swift
 //  FlexUI_Example
 //
-//  Created by 黎昌明 on 2020/9/9.
+//  Created by Li ChangMing on 2020/9/9.
 //  Copyright © 2020 CocoaPods. All rights reserved.
 //
 

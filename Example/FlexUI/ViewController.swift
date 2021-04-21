@@ -12,6 +12,7 @@ import FlexUI
 
 private struct Cell: Component {
   typealias Body = AnyNode
+  
   let title: String
 
   var isHighlightable: Bool { true }

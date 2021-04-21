@@ -2,7 +2,7 @@
 //  FlexboxViewController.swift
 //  FlexUI_Example
 //
-//  Created by 黎昌明 on 2020/9/3.
+//  Created by Li ChangMing on 2020/9/3.
 //  Copyright © 2020 CocoaPods. All rights reserved.
 //
 
@@ -39,11 +39,11 @@ final class FlexboxViewController: UIViewController {
         }
 
         block(size: CGSize(width: 50, height: 50))
-          .top(10)
-          .end(10)
-          .background {
-            block()
-        }
+//          .top(10)
+//          .end(10)
+//          .background {
+//            block()
+//        }
         .alignSelf(.center)
 
         HStack(spacing: 8, wrap: .noWrap) {

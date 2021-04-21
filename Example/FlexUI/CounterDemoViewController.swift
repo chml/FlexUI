@@ -2,70 +2,53 @@
 //  CounterDemoViewController.swift
 //  FlexUI_Example
 //
-//  Created by 黎昌明 on 2020/9/9.
+//  Created by Li ChangMing on 2020/9/9.
 //  Copyright © 2020 CocoaPods. All rights reserved.
 //
 
 import UIKit
 import FlexUI
 
-private struct Counter: Component {
+final class CounterDemoViewController: UIViewController, Component {
+
   typealias Body = AnyNode
 
-  var count: Int
-
-  func body(with coordinator: Coordinator) -> AnyNode {
-    VStack(alignItems: .center) {
-      Text("\(count)")
-        .font(.preferredFont(forTextStyle: .headline))
-        .viewConfig { (label) in
-          label.backgroundColor = .gray
-      }
-      .padding(10)
-      .flexGrow(1).flexShrink(1)
-      HStack {
-        Button("-100") {
-          coordinator.update {
-            $0.count -= 100
-          }
-        }
-        Button("+100") {
-          coordinator.update(animated: true) {
-            $0.count += 100
-          }
-        }
-      }
-    }.asAnyNode
-  }
-
-}
-
-final class CounterDemoViewController: UIViewController {
-
-  var counter: Int = 0 {
-    didSet {
-      print("Counter: \(counter)")
-    }
-  }
+  var fontSize: Int = 12
 
   override func viewDidLoad() {
     super.viewDidLoad()
     title = "Counter"
     view.backgroundColor = .white
+    flex.render()
   }
 
-  override func viewDidLayoutSubviews() {
-    super.viewDidLayoutSubviews()
-    flex.render {
-      VStack(justifyContent: .center, alignItems: .center) {
-        Counter(count: self.counter)
-          .onUpdated{ [weak self] in
-            self?.counter = $0.count
+  func body(with coordinator: SimpleCoordinator<CounterDemoViewController>) -> AnyNode {
+    VStack(spacing: 20, justifyContent: .center, alignItems: .center) {
+      Text("\(coordinator.content.fontSize)")
+        .font(UIFont.boldSystemFont(ofSize: CGFloat(coordinator.content.fontSize)))
+        .padding(UIEdgeInsets(top: 5, left: 8, bottom: 5, right: 8))
+        .viewConfig { (label) in
+          label.backgroundColor = .gray
+        }
+      HStack(spacing: 20) {
+        Button("-1") {
+          coordinator.update(animated: true) {
+            $0.fontSize -= 1
           }
+        }
+        .viewReuseID("-")
+        Button("+1") {
+          coordinator.update(animated: true) {
+            $0.fontSize += 1
+          }
+        }
+        .viewReuseID("+")
       }
-      .width(.percent(100))
-      .height(.percent(100))
     }
+    .width(.percent(100))
+    .height(.percent(100))
+    .asAnyNode
   }
+
 
 }

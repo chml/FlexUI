@@ -31,6 +31,7 @@
 		CBA9D15F25008F1000A7D1AC /* ColorExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBA9D15E25008F1000A7D1AC /* ColorExt.swift */; };
 		CBA9D1632500A77E00A7D1AC /* FlexboxViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBA9D1622500A77E00A7D1AC /* FlexboxViewController.swift */; };
 		CBA9D1672500EFE600A7D1AC /* DiffTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBA9D1662500EFE600A7D1AC /* DiffTableViewController.swift */; };
+		CBAD0B572599D2E60062BFEF /* UIKitViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBAD0B562599D2E60062BFEF /* UIKitViewController.swift */; };
 		CBC2DAC725079A55008C56FF /* NodeViewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBC2DAC625079A55008C56FF /* NodeViewViewController.swift */; };
 		CBC6F75E24FFC1D3009D7A5C /* LivePreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBC6F75D24FFC1D3009D7A5C /* LivePreview.swift */; };
 		CBD766EF251AF824006A7466 /* BannerNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBD766EE251AF824006A7466 /* BannerNode.swift */; };
@@ -82,6 +83,7 @@
 		CBA9D15E25008F1000A7D1AC /* ColorExt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorExt.swift; sourceTree = "<group>"; };
 		CBA9D1622500A77E00A7D1AC /* FlexboxViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlexboxViewController.swift; sourceTree = "<group>"; };
 		CBA9D1662500EFE600A7D1AC /* DiffTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiffTableViewController.swift; sourceTree = "<group>"; };
+		CBAD0B562599D2E60062BFEF /* UIKitViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIKitViewController.swift; sourceTree = "<group>"; };
 		CBC2DAC625079A55008C56FF /* NodeViewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NodeViewViewController.swift; sourceTree = "<group>"; };
 		CBC6F75B24FFC107009D7A5C /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
 		CBC6F75D24FFC1D3009D7A5C /* LivePreview.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LivePreview.swift; sourceTree = "<group>"; };
@@ -135,6 +137,7 @@
 		607FACD21AFB9204008FA782 /* Example for FlexUI */ = {
 			isa = PBXGroup;
 			children = (
+				CBAD0B532599D2C30062BFEF /* UIKit Integrate */,
 				CBDBC1E1251465C200D7955D /* Custom CollectionView Layout */,
 				CB6CA1B22511BC2500A4D8C6 /* LiveRoom */,
 				CB6CA1AF2510B8C700A4D8C6 /* Benchmark */,
@@ -241,6 +244,14 @@
 				CBD766F5251B7723006A7466 /* LiveRoomToolBarNode.swift */,
 			);
 			name = LiveRoom;
+			sourceTree = "<group>";
+		};
+		CBAD0B532599D2C30062BFEF /* UIKit Integrate */ = {
+			isa = PBXGroup;
+			children = (
+				CBAD0B562599D2E60062BFEF /* UIKitViewController.swift */,
+			);
+			name = "UIKit Integrate";
 			sourceTree = "<group>";
 		};
 		CBDBC1E1251465C200D7955D /* Custom CollectionView Layout */ = {
@@ -411,6 +422,7 @@
 				"${BUILT_PRODUCTS_DIR}/MagazineLayout/MagazineLayout.framework",
 				"${BUILT_PRODUCTS_DIR}/Nuke/Nuke.framework",
 				"${BUILT_PRODUCTS_DIR}/Nuke-WebP-Plugin/NukeWebPPlugin.framework",
+				"${BUILT_PRODUCTS_DIR}/Runtime/Runtime.framework",
 				"${BUILT_PRODUCTS_DIR}/SnapKit/SnapKit.framework",
 				"${BUILT_PRODUCTS_DIR}/Yoga/yoga.framework",
 				"${BUILT_PRODUCTS_DIR}/libwebp/libwebp.framework",
@@ -424,6 +436,7 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MagazineLayout.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Nuke.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/NukeWebPPlugin.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Runtime.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SnapKit.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/yoga.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/libwebp.framework",
@@ -462,6 +475,7 @@
 				CBDBC1E3251465DA00D7955D /* MagazineLayoutViewController.swift in Sources */,
 				CBD766EF251AF824006A7466 /* BannerNode.swift in Sources */,
 				CBC6F75E24FFC1D3009D7A5C /* LivePreview.swift in Sources */,
+				CBAD0B572599D2E60062BFEF /* UIKitViewController.swift in Sources */,
 				CB6CA1B42511BC4700A4D8C6 /* LiveRoomViewController.swift in Sources */,
 				CB6CA03D2510AD1C00A4D8C6 /* FeedItemFlexUINode.swift in Sources */,
 			);
@@ -613,6 +627,7 @@
 				INFOPLIST_FILE = FlexUI/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LLVM_LTO = YES_THIN;
 				MODULE_NAME = ExampleApp;
 				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.demo.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -630,6 +645,7 @@
 				INFOPLIST_FILE = FlexUI/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LLVM_LTO = YES_THIN;
 				MODULE_NAME = ExampleApp;
 				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.demo.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";

@@ -2,7 +2,7 @@
 //  Image.swift
 //  FlexUI
 //
-//  Created by 黎昌明 on 2020/8/28.
+//  Created by Li ChangMing on 2020/8/28.
 //
 
 import Nuke
@@ -57,6 +57,7 @@ extension Image {
         view.image = placehoder
         if let url = url {
           Nuke.loadImage(with: url, into: view)
+//          view.kf.setURL()
         }
       }
     }

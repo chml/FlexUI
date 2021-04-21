@@ -2,7 +2,7 @@
 //  List.swift
 //  FlexUI
 //
-//  Created by 黎昌明 on 2020/8/27.
+//  Created by Li ChangMing on 2020/8/27.
 //
 
 public struct List<View: ListView, Data, Element>: Node, ViewProducible {
