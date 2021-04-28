@@ -9,6 +9,19 @@
 import UIKit
 import FlexUI
 
+extension UIView {
+  func findFirstSuperview<T: UIView>(is type: T.Type) -> T? {
+    var sv: UIView? = superview
+    while (sv != .none) {
+      if let found  = sv! as? T {
+        return found
+      }
+      sv = sv?.superview
+    }
+    return nil
+  }
+}
+
 class AvatarView: UIView {
   private lazy var imageView = UIImageView()
   private var ob: NSKeyValueObservation?
@@ -58,13 +71,7 @@ fileprivate struct AvatarNode: Component, Hashable {
         .flexShrink(0)
         .viewConfig { (v) in
           DispatchQueue.main.async {
-            var sv: UIView? = v.superview
-            while (sv != .none) {
-              if let scrollView  = sv! as? UIScrollView {
-                v.scrollView = scrollView
-              }
-              sv = sv?.superview
-            }
+            v.scrollView = v.findFirstSuperview(is: UIScrollView.self)
           }
         }
     }

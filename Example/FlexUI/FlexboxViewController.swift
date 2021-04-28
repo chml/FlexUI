@@ -30,7 +30,7 @@ final class FlexboxViewController: UIViewController {
         block()
         block()
           .overlay {
-            HStack {
+            VStack {
               block(size: CGSize(width: 40, height: 40))
               block(size: CGSize(width: 40, height: 40))
             }
@@ -59,7 +59,24 @@ final class FlexboxViewController: UIViewController {
             }
           }
         }
+        .padding(of: .horizontal, 8)
         .scrollable()
+
+        block()
+
+        HStack(spacing: 8, wrap: .wrap, lineSpacing: 8) {
+          ForEach("Hello, FlexUI".map { "\($0)" }) {
+            Text("\($0)")
+              .font(UIFont(name: "Menlo-Bold", size: 20)!)
+              .textColor(.random)
+              .padding(8)
+              .viewConfig { (v) in
+                v.backgroundColor = .init(red: 0.95, green: 0.95, blue: 0.95, alpha: 1)
+                v.layer.cornerRadius = 5
+                v.layer.masksToBounds = true
+            }
+          }
+        }
 
         block()
           .alignSelf(.flexEnd)

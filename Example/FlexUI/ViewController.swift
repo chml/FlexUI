@@ -54,7 +54,7 @@ final class ViewController: UIViewController {
           Cell("Flexbox Layout", FlexboxViewController.self)
           Cell("Diffable TableView", DiffTableViewController.self)
           Cell("Diffable CollectionView", DiffCollectionViewController.self)
-//          Cell("NodeView && AutoLayout", NodeViewViewController.self)
+          Cell("NodeView && AutoLayout", NodeViewViewController.self)
         }
         Section(id: AnyHashable(1), header: Text("Demo")) {
           Cell("Counter", CounterDemoViewController.self)
@@ -68,16 +68,16 @@ final class ViewController: UIViewController {
       }
       .onSelect {[weak self] (item) in
         if let cell = item.unwrap(as: Cell.self) {
-//          if cell.title == "Benchmark" {
-//            let viewControllerData = ViewControllerData(title: cell.title) {
-////              print("ViewControllerData \($0)")
-//              return FlexUICollectionViewController(data: FeedItemData.generate(count: $0))
-//            }
-//            self?.runBenchmark(viewControllerData: viewControllerData, logResults: true, completed: { [weak self] (results) in
-//              self?.printResults(name: viewControllerData.title, results: results)
-//            })
-//            return
-//          }
+          //          if cell.title == "Benchmark" {
+          //            let viewControllerData = ViewControllerData(title: cell.title) {
+          ////              print("ViewControllerData \($0)")
+          //              return FlexUICollectionViewController(data: FeedItemData.generate(count: $0))
+          //            }
+          //            self?.runBenchmark(viewControllerData: viewControllerData, logResults: true, completed: { [weak self] (results) in
+          //              self?.printResults(name: viewControllerData.title, results: results)
+          //            })
+          //            return
+          //          }
           self?.navigationController?.pushViewController(cell.viewController(), animated: true)
         }
       }
@@ -115,12 +115,12 @@ final class ViewController: UIViewController {
       let result = Stopwatch.benchmark(description, logResults: logResults, block: { (stopwatch: Stopwatch) -> Void in
         let vc = viewControllerData.factoryBlock(i)
         stopwatch.resume()
-//        vc?.view.layoutIfNeeded()
+        //        vc?.view.layoutIfNeeded()
         self.navigationController?.pushViewController(vc!, animated: false)
         stopwatch.pause()
         self.navigationController?.popViewController(animated: false)
       })
-
+      
       results.append(result)
     }
 
@@ -134,15 +134,12 @@ private struct ViewControllerData {
   let factoryBlock: (_ viewCount: Int) -> UIViewController?
 }
 
-#if canImport(SwiftUI)
+#if canImport(SwiftUI) && DEBUG
 import SwiftUI
 @available(iOS 13.0, *)
-struct _LayoutKitTableViewController_Preview: PreviewProvider {
-  typealias Previews = LiveView<UINavigationController>
-
-  static var previews: LiveView<UINavigationController> {
-    return LiveView(UINavigationController(rootViewController:ViewController()))
+struct ViewController_Preview: PreviewProvider {
+  static var previews: some View {
+    return UIViewControllerPreview(ViewController())
   }
-
 }
 #endif

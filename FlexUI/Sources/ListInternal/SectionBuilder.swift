@@ -31,7 +31,7 @@ extension ListViewAdapter {
 
 }
 
-@_functionBuilder
+@resultBuilder
 public struct SectionBuilder: SectionBuildable {
   private let sections: [Section]
 

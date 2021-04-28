@@ -57,7 +57,7 @@ extension Section {
 
 }
 
-@_functionBuilder
+@resultBuilder
 public struct CellBuilder: CellBuildable {
 
   private let cells: [AnyNode]

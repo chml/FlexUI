@@ -7,7 +7,7 @@
 
 //import Mirror
 
-@_functionBuilder
+@resultBuilder
 public struct NodeBuilder {
 
   public static func buildBlock() -> EmptyNode {

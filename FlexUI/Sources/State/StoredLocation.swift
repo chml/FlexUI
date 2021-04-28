@@ -7,14 +7,14 @@
 
 
 final class StoredLocation<Value> {
+  typealias ObserveToken = UInt
 
-  private var sinks: [(Value)->()] = []
+  private var sinks: [ObserveToken: (Value)->()] = [:]
+  private var observeTokenSeed: UInt = 1
 
   var value: Value {
     didSet {
-      sinks.forEach {
-        $0(value)
-      }
+      sinks.forEach { $0.value(value) }
     }
   }
 
@@ -22,8 +22,15 @@ final class StoredLocation<Value> {
     self.value = value
   }
 
-  func observe(_ sink: @escaping (Value)->()) {
-    sinks.append(sink)
+  func observe(_ sink: @escaping (Value)->()) -> ObserveToken {
+    observeTokenSeed += 1
+    let token = observeTokenSeed
+    sinks[token] = sink
+    return token
+  }
+
+  func removeObserve(_ token: ObserveToken) {
+    sinks.removeValue(forKey: token)
   }
 
 }
