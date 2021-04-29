@@ -25,7 +25,7 @@ final class CounterDemoViewController: UIViewController, Component {
   func body(with coordinator: SimpleCoordinator<CounterDemoViewController>) -> AnyNode {
     VStack(spacing: 20, justifyContent: .center, alignItems: .center) {
       Text("\(coordinator.content.fontSize)")
-        .font(UIFont.boldSystemFont(ofSize: CGFloat(coordinator.content.fontSize)))
+        .font(.boldSystemFont(ofSize: CGFloat(coordinator.content.fontSize)))
         .padding(UIEdgeInsets(top: 5, left: 8, bottom: 5, right: 8))
         .viewConfig { (label) in
           label.backgroundColor = .gray
