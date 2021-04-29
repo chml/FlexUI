@@ -15,8 +15,9 @@ public struct State<Value>: DynamicProperty {
   let _location: StoredLocation<Value>
   weak var _flexNode: FlexNode? {
     didSet {
-//      _location.observe { (_) in
-//      }
+      _location.observe { [weak _flexNode] (_) in
+//        _flexNode?.coordinator
+      }
     }
   }
 

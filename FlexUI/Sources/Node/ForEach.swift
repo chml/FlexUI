@@ -28,7 +28,12 @@ extension ForEach: Node, CellBuildable, Diffable, YogaTreeBuildable where Conten
       content()
     }
   }
-  
+
+  public init(_ data: Data) where Content == Data.Element {
+    self.data = data
+    self.content = { $0 }
+  }
+
   public func build(with context: FlexTreeContext) -> [FlexNode] {
     data.map { (elem) -> [FlexNode] in
       content(elem).build(with: context)

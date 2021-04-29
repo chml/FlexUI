@@ -12,7 +12,7 @@ import NukeWebPPlugin
 
 extension UIViewController {
 
-  @objc static func _flexSwiftLoad() {
+  @objc static func _FlexUI_UIViewController_SwiftLoad() {
     ImageLoadingOptions.shared.isPrepareForReuseEnabled = false
     ImagePipeline.Configuration.isAnimatedImageDataEnabled = true
     WebPImageDecoder.enable()

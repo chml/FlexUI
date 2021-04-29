@@ -43,7 +43,7 @@ private struct FLMiniProfileNode: Node {
   var body: AnyNode {
     VStack {
       HStack(spacing: 4) {
-        Image(UIImage(named: "50x50.png"))
+        Image(.named("50x50.png"))
         VStack {
           Text(name)
             .viewConfig { (v) in
@@ -73,7 +73,7 @@ private struct FLMiniContentNode: Node {
 
   var body: AnyNode {
     VStack(alignItems: .stretch) {
-      Image(UIImage(named: "350x200.png"))
+      Image(.named("350x200.png"))
         .viewConfig { v in
           v.backgroundColor = .orange
           v.contentMode = .scaleAspectFit
@@ -112,7 +112,7 @@ private struct FLCommentNode: Node {
 
   var body: AnyNode {
     HStack(spacing: 4) {
-      Image(UIImage(named: "50x50.png"))
+      Image(.named("50x50.png"))
       Text(comment)
         .flexGrow(1)
         .viewConfig { (v) in

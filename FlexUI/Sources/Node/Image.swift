@@ -13,21 +13,16 @@ public struct Image: Node, ViewProducible {
   public typealias ProductedView = FLAnimatedImageView
   public typealias Body = Never
   public enum Source {
-    case image(image: UIImage?)
-    case url(url: URL?, placeholder: UIImage? = nil)
+    case image(UIImage?)
+    case named(String)
+    @available(iOS 13, *)
+    case systemName(String)
+    case url(_ url: URL?, placeholder: UIImage? = nil)
   }
   public let source: Source
 
   public init(_ source: Source) {
     self.source = source
-  }
-
-  public init(_ image: UIImage?) {
-    self.init(.image(image: image))
-  }
-
-  public init(_ url: URL?, placeholder: UIImage? = nil) {
-    self.init(.url(url: url, placeholder: placeholder))
   }
 
 }
@@ -44,6 +39,26 @@ extension Image {
     }
     yogaNode.viewProducer = viewProducer
     switch source {
+    case .named(let name):
+      if let image = UIImage(named: name) {
+        let size = image.size
+        yogaNode.style.width = .point(size.width)
+        yogaNode.style.height = .point(size.height)
+        viewProducer.appendConfiguration(as: ProductedView.self) { view in
+          view.image = image
+        }
+      }
+    case .systemName(let name):
+    if #available(iOS 13.0, *) {
+      if let image = UIImage(systemName: name) {
+        let size = image.size
+        yogaNode.style.width = .point(size.width)
+        yogaNode.style.height = .point(size.height)
+        viewProducer.appendConfiguration(as: ProductedView.self) { view in
+          view.image = image
+        }
+      }
+    }
     case .image(let image):
       if let size = image?.size {
         yogaNode.style.width = .point(size.width)

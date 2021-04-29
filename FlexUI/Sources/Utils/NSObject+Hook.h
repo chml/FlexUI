@@ -1,5 +1,5 @@
 //
-//  NSObject+Hook.h
+//  NSObject+SwiftLoad.h
 //  FlexUI
 //
 //  Created by Li ChangMing on 2020/9/18.
@@ -9,20 +9,19 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@protocol _NSObjectLoadable<NSObject>
-+ (void)_flexSwiftLoad;
-@end
+#define SWIFT_LOAD_DECL(cls, category) \
+@protocol _##category##_##cls##_Loadable<NSObject> \
++ (void)_##category##_##cls##_SwiftLoad;\
+@end;\
+@interface cls(category) \
+@end;\
+@implementation cls(category) \
++ (void)load { [[self class] _##category##_##cls##_SwiftLoad]; } \
+@end; \
 
-#define DECL_HOOK_LOADABLE(cls) \
-@interface cls(FlexHook) \
-@end
 
-
-DECL_HOOK_LOADABLE(UITableViewCell)
-
-DECL_HOOK_LOADABLE(UICollectionViewCell)
-
-DECL_HOOK_LOADABLE(UIViewController)
-
+SWIFT_LOAD_DECL(UITableViewCell, FlexUI)
+SWIFT_LOAD_DECL(UICollectionViewCell, FlexUI)
+SWIFT_LOAD_DECL(UIViewController, FlexUI)
 
 NS_ASSUME_NONNULL_END

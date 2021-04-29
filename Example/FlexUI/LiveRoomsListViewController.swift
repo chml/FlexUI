@@ -58,7 +58,7 @@ struct LiveRoomCell: Component  {
   func body(with coordinator: SimpleCoordinator<LiveRoomCell>) -> AnyNode {
     View {
       VStack(alignItems: .stretch) {
-        Image(room.imageURL)
+        Image(.url(room.imageURL))
           .aspectRatio(1)
           .width(.percent(100))
           .viewReuseID("image")

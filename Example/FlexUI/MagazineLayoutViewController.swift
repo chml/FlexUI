@@ -17,7 +17,7 @@ struct LiveRoomFullWidthCell: Node, Hashable {
 
   var body: AnyNode {
     HStack(spacing: 12) {
-      Image(room.imageURL)
+      Image(.url(room.imageURL))
         .aspectRatio(1)
         .width(100)
       VStack(spacing: 8) {

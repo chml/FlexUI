@@ -116,7 +116,7 @@ fileprivate struct AlubmNode: Component, Hashable {
   func image(index: Int, _ coordinator: Coordinator) -> AnyNode {
     let url = photos[index]
     return AnyNode(
-      Image(url)
+      Image(.url(url))
         .flexGrow(1)
         .aspectRatio(1)
         .viewReuseID(url)

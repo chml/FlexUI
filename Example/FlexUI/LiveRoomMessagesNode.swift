@@ -17,61 +17,50 @@ struct LiveRoomMessage: Hashable {
 }
 
 struct LiveRoomMessageCell: Node, Hashable {
-  let compact: Bool
+  let isCompact: Bool
   let message: LiveRoomMessage
 
   var id: AnyHashable { message.id }
 
   var body: AnyNode {
-    HStack(spacing: 12, justifyContent: compact ? .flexEnd : .flexStart, alignItems: .flexStart) {
-      if !compact {
-        Image(message.avatarURL)
-          .viewReuseID("avatar")
-          .viewConfig { (v) in
-            v.layer.cornerRadius = v.bounds.width/2
-            v.layer.masksToBounds = true
-          }
-          .width(30)
-          .height(30)
-      }
+    HStack(spacing: 12, justifyContent: isCompact ? .flexEnd : .flexStart, alignItems: .flexStart) {
+      ForEach([
+          Image(.url(message.avatarURL))
+            .viewReuseID("avatar")
+            .viewConfig { (v) in
+              v.layer.cornerRadius = v.bounds.width/2
+              v.layer.masksToBounds = true
+            }
+            .width(30).height(30)
+            .asAnyNode,
 
-      VStack(spacing: 12) {
-        Text(message.user)
-          .font(.preferredFont(forTextStyle: .caption1))
-          .textColor(.blue)
-          .alignSelf(compact ? .flexEnd : .flexStart)
-          .flexGrow(1)
-          .viewReuseID("userName")
-        Text(message.message)
-          .font(.preferredFont(forTextStyle: .caption1))
-          .textColor(.white)
-          .flexGrow(1)
-          .viewReuseID("text")
-      }
-      .padding(8)
-      .background {
-        View()
-          .viewReuseID("bubble")
-          .viewConfig { (v) in
-            v.backgroundColor = .init(white: 0.2, alpha: 0.5)
-            v.layer.cornerRadius = min(v.bounds.width/2, 8)
-            v.layer.masksToBounds = true
+          VStack(spacing: 12) {
+            Text(message.user)
+              .font(.preferredFont(forTextStyle: .caption1))
+              .textColor(.blue)
+              .alignSelf(isCompact ? .flexEnd : .flexStart)
+              .flexGrow(1)
+              .viewReuseID("userName")
+            Text(message.message)
+              .font(.preferredFont(forTextStyle: .caption1))
+              .textColor(.white)
+              .flexGrow(1)
+              .viewReuseID("text")
           }
-          .width(.percent(100))
-          .height(.percent(100))
-      }
-      .flexShrink(1)
-
-      if compact {
-        Image(message.avatarURL)
-          .viewReuseID("avatar")
-          .viewConfig { (v) in
-            v.layer.cornerRadius = v.bounds.width/2
-            v.layer.masksToBounds = true
+          .padding(8)
+          .background {
+            View()
+              .viewReuseID("bubble")
+              .viewConfig { (v) in
+                v.backgroundColor = .init(white: 0.2, alpha: 0.3)
+                v.layer.cornerRadius = min(v.bounds.width/2, 8)
+                v.layer.masksToBounds = true
+              }
+              .width(.percent(100)).height(.percent(100))
           }
-          .width(30)
-          .height(30)
-      }
+          .flexShrink(1)
+          .asAnyNode
+      ].reversed(if: isCompact))
     }
     .padding(12)
     .flexGrow(1)
@@ -79,6 +68,7 @@ struct LiveRoomMessageCell: Node, Hashable {
     .asAnyNode
   }
 }
+
 
 struct LiveRoomMessagesNode: Component {
   typealias Body = AnyNode
@@ -90,7 +80,7 @@ struct LiveRoomMessagesNode: Component {
   func body(with coordinator: SimpleCoordinator<LiveRoomMessagesNode>) -> AnyNode {
     VStack(alignItems: .stretch) {
       List(data: messages) { msg in
-        LiveRoomMessageCell(compact: compact, message: msg)
+        LiveRoomMessageCell(isCompact: compact, message: msg)
       }
       .reversed(true)
       .viewReuseID("msglist")

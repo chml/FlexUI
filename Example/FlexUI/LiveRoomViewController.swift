@@ -53,7 +53,7 @@ final class LiveRoomViewController: UIViewController, Component {
   }
 
   func liveStreamNode() -> AnyNode {
-    Image(liveURL)
+    Image(.url(liveURL))
       .viewReuseID("hostLiveStream")
       .viewConfig({ (v) in
         v.contentMode = .scaleAspectFill
@@ -148,7 +148,7 @@ final class LiveRoomViewController: UIViewController, Component {
       .asAnyNode
     case .landscapeFullScreen:
       return VStack(alignItems: .stretch) {
-        Image(randomImageURL())
+        Image(.url(randomImageURL()))
           .viewReuseID("hostLiveStream")
           .aspectRatio(16.0/9.0)
         LiveRoomMessagesNode(compact: true, messages: LiveRoomMessage.generateMessages())

@@ -35,8 +35,12 @@ private struct Cell: Component {
       Text(title)
         .textColor(isHighlighted ? .red : .darkText)
         .flexShrink(1).flexGrow(1)
-      Text("->")
-        .textColor(isHighlighted ? .red : .darkText)
+      if #available(iOS 13, *) {
+        Image(.systemName("chevron.right.circle.fill"))
+      } else {
+        Text("->")
+          .textColor(isHighlighted ? .red : .darkText)
+      }
     }
     .padding(20)
     .asAnyNode

@@ -19,6 +19,7 @@
 		CB4E69442503A8E300FF782D /* DiffCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB4E69432503A8E300FF782D /* DiffCollectionViewController.swift */; };
 		CB4E694A25050C8B00FF782D /* UserProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB4E694925050C8B00FF782D /* UserProfileViewController.swift */; };
 		CB4E694C250522C900FF782D /* UserProfileTagsEditingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB4E694B250522C900FF782D /* UserProfileTagsEditingViewController.swift */; };
+		CB6247A6263AF5D70075DC8D /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB6247A5263AF5D70075DC8D /* Extensions.swift */; };
 		CB6CA03D2510AD1C00A4D8C6 /* FeedItemFlexUINode.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB6CA03B2510AD1C00A4D8C6 /* FeedItemFlexUINode.swift */; };
 		CB6CA03E2510AD1C00A4D8C6 /* FlexUICollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB6CA03C2510AD1C00A4D8C6 /* FlexUICollectionViewController.swift */; };
 		CB6CA0412510AE9D00A4D8C6 /* DataBinder.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB6CA03F2510AE9D00A4D8C6 /* DataBinder.swift */; };
@@ -28,7 +29,6 @@
 		CB6CA1BD2513142600A4D8C6 /* LiveRoomsListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB6CA1BC2513142600A4D8C6 /* LiveRoomsListViewController.swift */; };
 		CB6CA1BF251318C400A4D8C6 /* Data.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB6CA1BE251318C400A4D8C6 /* Data.swift */; };
 		CB7D71422513656200B4B9AF /* IMB_ZX07DS.gif in Resources */ = {isa = PBXBuildFile; fileRef = CB7D71412513656200B4B9AF /* IMB_ZX07DS.gif */; };
-		CBA9D15F25008F1000A7D1AC /* ColorExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBA9D15E25008F1000A7D1AC /* ColorExt.swift */; };
 		CBA9D1632500A77E00A7D1AC /* FlexboxViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBA9D1622500A77E00A7D1AC /* FlexboxViewController.swift */; };
 		CBA9D1672500EFE600A7D1AC /* DiffTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBA9D1662500EFE600A7D1AC /* DiffTableViewController.swift */; };
 		CBAD0B572599D2E60062BFEF /* UIKitViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBAD0B562599D2E60062BFEF /* UIKitViewController.swift */; };
@@ -71,6 +71,7 @@
 		CB4E69432503A8E300FF782D /* DiffCollectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiffCollectionViewController.swift; sourceTree = "<group>"; };
 		CB4E694925050C8B00FF782D /* UserProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfileViewController.swift; sourceTree = "<group>"; };
 		CB4E694B250522C900FF782D /* UserProfileTagsEditingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfileTagsEditingViewController.swift; sourceTree = "<group>"; };
+		CB6247A5263AF5D70075DC8D /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		CB6CA03B2510AD1C00A4D8C6 /* FeedItemFlexUINode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedItemFlexUINode.swift; sourceTree = "<group>"; };
 		CB6CA03C2510AD1C00A4D8C6 /* FlexUICollectionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FlexUICollectionViewController.swift; sourceTree = "<group>"; };
 		CB6CA03F2510AE9D00A4D8C6 /* DataBinder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataBinder.swift; sourceTree = "<group>"; };
@@ -80,7 +81,6 @@
 		CB6CA1BC2513142600A4D8C6 /* LiveRoomsListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveRoomsListViewController.swift; sourceTree = "<group>"; };
 		CB6CA1BE251318C400A4D8C6 /* Data.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Data.swift; sourceTree = "<group>"; };
 		CB7D71412513656200B4B9AF /* IMB_ZX07DS.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = IMB_ZX07DS.gif; sourceTree = "<group>"; };
-		CBA9D15E25008F1000A7D1AC /* ColorExt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorExt.swift; sourceTree = "<group>"; };
 		CBA9D1622500A77E00A7D1AC /* FlexboxViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlexboxViewController.swift; sourceTree = "<group>"; };
 		CBA9D1662500EFE600A7D1AC /* DiffTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiffTableViewController.swift; sourceTree = "<group>"; };
 		CBAD0B562599D2E60062BFEF /* UIKitViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIKitViewController.swift; sourceTree = "<group>"; };
@@ -152,9 +152,9 @@
 				CB7D71412513656200B4B9AF /* IMB_ZX07DS.gif */,
 				607FACDE1AFB9204008FA782 /* LaunchScreen.xib */,
 				607FACD31AFB9204008FA782 /* Supporting Files */,
-				CBA9D15E25008F1000A7D1AC /* ColorExt.swift */,
 				CB2DAA952508C1D2002E083B /* EditingText.swift */,
 				CB6CA1BE251318C400A4D8C6 /* Data.swift */,
+				CB6247A5263AF5D70075DC8D /* Extensions.swift */,
 			);
 			name = "Example for FlexUI";
 			path = FlexUI;
@@ -468,12 +468,12 @@
 				CB6CA1BF251318C400A4D8C6 /* Data.swift in Sources */,
 				CBA9D1632500A77E00A7D1AC /* FlexboxViewController.swift in Sources */,
 				607FACD81AFB9204008FA782 /* ViewController.swift in Sources */,
-				CBA9D15F25008F1000A7D1AC /* ColorExt.swift in Sources */,
 				607FACD61AFB9204008FA782 /* AppDelegate.swift in Sources */,
 				CB4E694C250522C900FF782D /* UserProfileTagsEditingViewController.swift in Sources */,
 				CBD766F6251B7723006A7466 /* LiveRoomToolBarNode.swift in Sources */,
 				CBDBC1E3251465DA00D7955D /* MagazineLayoutViewController.swift in Sources */,
 				CBD766EF251AF824006A7466 /* BannerNode.swift in Sources */,
+				CB6247A6263AF5D70075DC8D /* Extensions.swift in Sources */,
 				CBC6F75E24FFC1D3009D7A5C /* LivePreview.swift in Sources */,
 				CBAD0B572599D2E60062BFEF /* UIKitViewController.swift in Sources */,
 				CB6CA1B42511BC4700A4D8C6 /* LiveRoomViewController.swift in Sources */,

@@ -14,7 +14,7 @@ struct BannerCell: Node, Hashable {
 
   var body: AnyNode {
     VStack(justifyContent: .spaceAround, alignItems: .center) {
-      Image(imageURL)
+      Image(.url(imageURL))
         .viewConfig({ (v) in
           v.contentMode = .scaleAspectFill
           v.layer.cornerRadius = 10

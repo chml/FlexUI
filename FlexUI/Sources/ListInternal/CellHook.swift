@@ -9,7 +9,9 @@ import UIKit
 
 
 extension UITableViewCell {
-  @objc static func _flexSwiftLoad() {
+
+  @objc
+  static func _FlexUI_UITableViewCell_SwiftLoad() {
     if let m1 = class_getInstanceMethod(self, #selector(setHighlighted(_:animated:))),
        let m2 = class_getInstanceMethod(self, #selector(UITableViewCell._hooked_setHighlighted(_:animated:))) {
       method_exchangeImplementations(m1, m2)
@@ -28,7 +30,8 @@ extension UITableViewCell {
 }
 
 extension UICollectionViewCell {
-  @objc static func _flexSwiftLoad() {
+  @objc
+  static func _FlexUI_UICollectionViewCell_SwiftLoad() {
     if let m1 = class_getInstanceMethod(self, #selector(setter: UICollectionViewCell.isHighlighted)),
        let m2 = class_getInstanceMethod(self, #selector(UICollectionViewCell._hooked_setHighlighted(_:))) {
       method_exchangeImplementations(m1, m2)
