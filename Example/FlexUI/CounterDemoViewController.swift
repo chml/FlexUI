@@ -9,7 +9,7 @@
 import UIKit
 import FlexUI
 
-final class CounterDemoViewController: UIViewController, Component {
+final class CounterDemoViewController: UIViewController, CoordinateNode {
 
   typealias Body = AnyNode
 
@@ -22,7 +22,7 @@ final class CounterDemoViewController: UIViewController, Component {
     flex.render()
   }
 
-  func body(with coordinator: SimpleCoordinator<CounterDemoViewController>) -> AnyNode {
+  func body(with coordinator: DefaultCoordinator<CounterDemoViewController>) -> AnyNode {
     VStack(spacing: 20, justifyContent: .center, alignItems: .center) {
       Text("\(coordinator.content.fontSize)")
         .font(.boldSystemFont(ofSize: CGFloat(coordinator.content.fontSize)))

@@ -29,7 +29,7 @@ struct BannerCell: Node, Hashable {
   }
 }
 
-struct BannerNode: Component {
+struct BannerNode: CoordinateNode {
   typealias Body = AnyNode
 
   let bannerImageURLs: [URL]
@@ -73,7 +73,7 @@ struct BannerNode: Component {
     .asAnyNode
   }
 
-  final class Coordinator: ComponentCoordinator {
+  final class Coordinator: NodeCoordinator {
     typealias Content = BannerNode
     let context: Context
     var collectionView: UICollectionView? = nil {

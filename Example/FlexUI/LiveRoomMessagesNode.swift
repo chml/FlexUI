@@ -70,14 +70,14 @@ struct LiveRoomMessageCell: Node, Hashable {
 }
 
 
-struct LiveRoomMessagesNode: Component {
+struct LiveRoomMessagesNode: CoordinateNode {
   typealias Body = AnyNode
 
   let compact: Bool
   var messages: [LiveRoomMessage]
 
 
-  func body(with coordinator: SimpleCoordinator<LiveRoomMessagesNode>) -> AnyNode {
+  func body(with coordinator: DefaultCoordinator<LiveRoomMessagesNode>) -> AnyNode {
     VStack(alignItems: .stretch) {
       List(data: messages) { msg in
         LiveRoomMessageCell(isCompact: compact, message: msg)

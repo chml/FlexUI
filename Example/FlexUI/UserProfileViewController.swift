@@ -59,7 +59,7 @@ class AvatarView: UIView {
 
 }
 
-fileprivate struct AvatarNode: Component, Hashable {
+fileprivate struct AvatarNode: CoordinateNode, Hashable {
   typealias Body = AnyNode
   let id: AnyHashable
   func body(with coordinator: Coordinator) -> AnyNode {
@@ -78,7 +78,7 @@ fileprivate struct AvatarNode: Component, Hashable {
     .asAnyNode
   }
 
-  final class Coordinator: NSObject, ComponentCoordinator, UIGestureRecognizerDelegate {
+  final class Coordinator: NSObject, NodeCoordinator, UIGestureRecognizerDelegate {
     typealias Content = AvatarNode
     let context: Context
 
@@ -90,7 +90,7 @@ fileprivate struct AvatarNode: Component, Hashable {
   }
 }
 
-fileprivate struct AlubmNode: Component, Hashable {
+fileprivate struct AlubmNode: CoordinateNode, Hashable {
   typealias Body = AnyNode
   let id: AnyHashable
   var photos: [URL]
@@ -125,7 +125,7 @@ fileprivate struct AlubmNode: Component, Hashable {
         })
     )
   }
-  final class Coordinator: NSObject, ComponentCoordinator, UIGestureRecognizerDelegate {
+  final class Coordinator: NSObject, NodeCoordinator, UIGestureRecognizerDelegate {
     typealias Content = AlubmNode
     let context: Context
 
@@ -225,7 +225,7 @@ fileprivate struct TagsNode: Node, Hashable {
   }
 }
 
-final class UserProfileViewController: UIViewController, Component {
+final class UserProfileViewController: UIViewController, CoordinateNode {
 
   var album: [URL] = [
     URL(string:"https://s3.ifanr.com/wp-content/uploads/2020/09/3090.png!720")!,
@@ -239,7 +239,7 @@ final class UserProfileViewController: UIViewController, Component {
   var tags2: [String] = ["是不是", "马上就", "迫不及", "待地"]
 
   typealias Body = AnyNode
-  func body(with coordinator: SimpleCoordinator<UserProfileViewController>) -> AnyNode {
+  func body(with coordinator: DefaultCoordinator<UserProfileViewController>) -> AnyNode {
     List {
       AvatarNode(id: 3)
       AlubmNode(id: 0, photos: self.album)

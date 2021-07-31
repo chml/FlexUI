@@ -10,7 +10,7 @@ import UIKit
 import FlexUI
 
 
-private struct Cell: Component {
+private struct Cell: CoordinateNode {
   typealias Body = AnyNode
   
   let title: String
@@ -30,7 +30,7 @@ private struct Cell: Component {
     self.viewController = vc
   }
 
-  func body(with coordinator: SimpleCoordinator<Cell>) -> AnyNode {
+  func body(with coordinator: DefaultCoordinator<Cell>) -> AnyNode {
     HStack(spacing: 20, alignItems: .center) {
       Text(title)
         .textColor(isHighlighted ? .red : .darkText)
@@ -58,7 +58,7 @@ final class ViewController: UIViewController {
           Cell("Flexbox Layout", FlexboxViewController.self)
           Cell("Diffable TableView", DiffTableViewController.self)
           Cell("Diffable CollectionView", DiffCollectionViewController.self)
-          Cell("NodeView && AutoLayout", NodeViewViewController.self)
+//          Cell("NodeView && AutoLayout", NodeViewViewController.self)
         }
         Section(id: AnyHashable(1), header: Text("Demo")) {
           Cell("Counter", CounterDemoViewController.self)

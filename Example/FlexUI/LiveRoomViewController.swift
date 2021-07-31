@@ -9,7 +9,7 @@
 import UIKit
 import FlexUI
 
-final class LiveRoomViewController: UIViewController, Component {
+final class LiveRoomViewController: UIViewController, CoordinateNode {
 
   typealias Body = AnyNode
 
@@ -98,7 +98,7 @@ final class LiveRoomViewController: UIViewController, Component {
     return insets
   }
 
-  func body(with coordinator: SimpleCoordinator<LiveRoomViewController>) -> AnyNode {
+  func body(with coordinator: DefaultCoordinator<LiveRoomViewController>) -> AnyNode {
     let insets = safeInsets()
     if insets == .zero { return EmptyNode().asAnyNode }
     switch displayMode {

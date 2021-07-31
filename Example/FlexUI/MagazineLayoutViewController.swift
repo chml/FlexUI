@@ -37,7 +37,7 @@ struct LiveRoomFullWidthCell: Node, Hashable {
   }
 }
 
-final class MagazineLayoutViewController: UIViewController, Component {
+final class MagazineLayoutViewController: UIViewController, CoordinateNode {
 
   typealias Body = AnyNode
 
@@ -63,7 +63,7 @@ final class MagazineLayoutViewController: UIViewController, Component {
     flex.render()
   }
 
-  func body(with coordinator: SimpleCoordinator<MagazineLayoutViewController>) -> AnyNode {
+  func body(with coordinator: DefaultCoordinator<MagazineLayoutViewController>) -> AnyNode {
     List(collection: layout, data: [("Online", online), ("Offline", offline)]) { data in
       Section(id: data.0, header: LiveRoomHeader(id: data.0, text: data.0)) {
         if data.0 == "Online" {

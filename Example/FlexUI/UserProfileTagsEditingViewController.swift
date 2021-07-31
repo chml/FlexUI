@@ -46,7 +46,7 @@ struct EqualableClosure<Value> {
 }
 
 
-private struct TagCell: Component {
+private struct TagCell: CoordinateNode {
 
   typealias Body = AnyNode
 
@@ -86,7 +86,7 @@ private struct TagCell: Component {
     .asAnyNode
   }
 
-  final class Coordinator: ComponentCoordinator {
+  final class Coordinator: NodeCoordinator {
     typealias Content = TagCell
     let context: Context
     init(with context: Context) {
@@ -101,7 +101,7 @@ private struct TagCell: Component {
   }
 }
 
-final class UserProfileTagsEditingViewController: UIViewController, Component {
+final class UserProfileTagsEditingViewController: UIViewController, CoordinateNode {
   typealias Body = AnyNode
 
   var tags: [EditingText]
@@ -132,7 +132,7 @@ final class UserProfileTagsEditingViewController: UIViewController, Component {
     self.dismiss(animated: true, completion: nil)
   }
 
-  func body(with coordinator: SimpleCoordinator<UserProfileTagsEditingViewController>) -> AnyNode {
+  func body(with coordinator: DefaultCoordinator<UserProfileTagsEditingViewController>) -> AnyNode {
     List(table: .grouped, data: self.tags) {
       TagCell(editingText: $0, onDelete: { (tag) in
         print("onDelete \(Unmanaged.passUnretained(coordinator).toOpaque())")

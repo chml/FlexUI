@@ -38,7 +38,7 @@ struct LiveRoomHeader: Node, Hashable {
   }
 }
 
-struct LiveRoomCell: Component  {
+struct LiveRoomCell: CoordinateNode  {
   typealias Body = AnyNode
   let room: LiveRoom
   var id: AnyHashable { room.id }
@@ -55,7 +55,7 @@ struct LiveRoomCell: Component  {
     self.room = room
     self.widthPercent = widthPercent
   }
-  func body(with coordinator: SimpleCoordinator<LiveRoomCell>) -> AnyNode {
+  func body(with coordinator: DefaultCoordinator<LiveRoomCell>) -> AnyNode {
     View {
       VStack(alignItems: .stretch) {
         Image(.url(room.imageURL))
@@ -116,7 +116,7 @@ final class LiveRoomLayout: UICollectionViewFlowLayout {
 }
 
 
-final class LiveRoomsListViewController: UIViewController, Component {
+final class LiveRoomsListViewController: UIViewController, CoordinateNode {
   typealias Body = AnyNode
 
   fileprivate var banners: [URL] = (0..<5).map { _ in randomImageURL() }
@@ -132,7 +132,7 @@ final class LiveRoomsListViewController: UIViewController, Component {
     flex.render()
   }
 
-  func body(with coordinator: SimpleCoordinator<LiveRoomsListViewController>) -> AnyNode {
+  func body(with coordinator: DefaultCoordinator<LiveRoomsListViewController>) -> AnyNode {
 
     List(collection: layout) {
       Section(id: "banners") {

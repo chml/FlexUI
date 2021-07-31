@@ -5,12 +5,9 @@
 //  Created by Li ChangMing on 2020/9/8.
 //
 
-/*
- Component is a Stateful Node, Use a Coordinator to coordinate UI event and State
- */
 
-public protocol Component: Node, ViewProducible {
-  associatedtype Coordinator: ComponentCoordinator
+public protocol CoordinateNode: Node, ViewProducible {
+  associatedtype Coordinator: NodeCoordinator
 
   func body(with coordinator: Coordinator) -> Body
 
@@ -20,7 +17,7 @@ public protocol Component: Node, ViewProducible {
   var isHighlighted: Bool { get set }
 }
 
-extension Component where Body == AnyNode {
+extension CoordinateNode where Body == AnyNode {
 
   public var isHighlightable: Bool { false }
 
@@ -29,22 +26,22 @@ extension Component where Body == AnyNode {
     set {}
   }
 
-  public func body(with coordinator: SimpleCoordinator<Self>) -> AnyNode {
+  public func body(with coordinator: DefaultCoordinator<Self>) -> AnyNode {
     fatalError()
   }
 
 }
 
-extension Component where Coordinator.Content == Self {
+extension CoordinateNode where Coordinator.Content == Self {
   public func coordinator(with context: CoordinatorContext<Self, Coordinator>) -> Coordinator {
-    Coordinator(with: context)
+    return Coordinator(with: context)
   }
 }
 
-extension Component where Coordinator == SimpleCoordinator<Self>{
+extension CoordinateNode where Coordinator == DefaultCoordinator<Self>{
 
-  public func coordinator(with context: CoordinatorContext<Self, SimpleCoordinator<Self>>) -> SimpleCoordinator<Self> {
-    SimpleCoordinator(with: context)
+  public func coordinator(with context: CoordinatorContext<Self, DefaultCoordinator<Self>>) -> DefaultCoordinator<Self> {
+    DefaultCoordinator(with: context)
   }
 
   func body(with coordinator: Coordinator) -> AnyNode {
@@ -54,7 +51,7 @@ extension Component where Coordinator == SimpleCoordinator<Self>{
 }
 
 
-extension Component {
+extension CoordinateNode {
   public typealias ProductedView = ComponentView<Self>
   public var isComponent: Bool { return true }
 

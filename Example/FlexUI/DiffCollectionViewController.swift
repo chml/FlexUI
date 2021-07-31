@@ -41,7 +41,7 @@ private struct Cell: Node {
 
 }
 
-final class DiffCollectionViewController: UIViewController, Component {
+final class DiffCollectionViewController: UIViewController, CoordinateNode {
 
   typealias Body = AnyNode
 
@@ -53,7 +53,7 @@ final class DiffCollectionViewController: UIViewController, Component {
     flex.render()
   }
 
-  func body(with coordinator: SimpleCoordinator<DiffCollectionViewController>) -> AnyNode {
+  func body(with coordinator: DefaultCoordinator<DiffCollectionViewController>) -> AnyNode {
     List(collection: UICollectionViewFlowLayout(), data: state) { (i) in
       Section(id: i, header: Header(id: i, text: "header \(i)")) {
         ForEach(0..<i) {

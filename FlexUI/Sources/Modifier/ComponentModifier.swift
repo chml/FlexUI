@@ -6,7 +6,7 @@
 //
 
 
-extension Component where Self == Self.Coordinator.Content {
+extension CoordinateNode where Self == Self.Coordinator.Content {
 
   public func onUpdated(_ updated: @escaping (Self) -> Void) -> ModifiedContent<Self, ComponentModifier<Self>> {
     modifier(ComponentModifier(onUpdated: updated))
@@ -14,7 +14,7 @@ extension Component where Self == Self.Coordinator.Content {
 
 }
 
-public struct ComponentModifier<Content: Component>: NodeModifier, Hashable where Content.Coordinator.Content == Content {
+public struct ComponentModifier<Content: CoordinateNode>: NodeModifier, Hashable where Content.Coordinator.Content == Content {
   let onUpdated: (Content) -> Void
 
   public func build<T>(node: T, with context: FlexTreeContext) -> [FlexNode] where T : Node {

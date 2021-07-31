@@ -10,12 +10,12 @@ import UIKit
 import FlexUI
 
 
-struct LiveRoomToolBarNode: Component {
+struct LiveRoomToolBarNode: CoordinateNode {
   typealias Body = AnyNode
 
   let iconURLs: [URL]
 
-  func body(with coordinator: SimpleCoordinator<LiveRoomToolBarNode>) -> AnyNode {
+  func body(with coordinator: DefaultCoordinator<LiveRoomToolBarNode>) -> AnyNode {
     HStack {
     }
     .asAnyNode

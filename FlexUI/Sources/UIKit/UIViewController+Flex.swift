@@ -7,7 +7,7 @@
 
 import class UIKit.UIViewController
 
-extension Flex where Base: UIViewController, Base: Component {
+extension Flex where Base: UIViewController, Base: CoordinateNode {
   public func render(_ direction: Direction? = nil) {
     base.view.flex.render(base, direction: direction)
 //    #if DEBUG
@@ -27,11 +27,11 @@ extension Flex where Base: UIViewController {
 
 }
 
-private struct VCComponent: Component {
+private struct VCComponent: CoordinateNode {
   typealias Body = AnyNode
   let content: () -> AnyNode
 
-  func body(with coordinator: SimpleCoordinator<VCComponent>) -> AnyNode {
+  func body(with coordinator: DefaultCoordinator<VCComponent>) -> AnyNode {
     return content()
   }
 }

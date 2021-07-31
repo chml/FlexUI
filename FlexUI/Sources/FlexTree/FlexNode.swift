@@ -43,7 +43,7 @@ public final class FlexNode {
     return nil
   }
 
-  func findFirstCoodinator() -> AnyComponentCoordinator? {
+  func findFirstCoodinator() -> AnyNodeCoordinator? {
     var node: FlexNode? = self
     while let n = node, n.coordinator == nil {
       node = n.children.first
@@ -80,7 +80,7 @@ public final class FlexNode {
 
   public var asRootNode: Bool = false // for View Recycler
   public var viewProducer: ViewProducer?
-  public var coordinator: AnyComponentCoordinator? = nil
+  public var coordinator: AnyNodeCoordinator? = nil
 
   public var isLeaf: Bool {
     return children.count == 0

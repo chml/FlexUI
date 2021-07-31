@@ -6,7 +6,7 @@
 //
 
 
-public protocol AnyComponentCoordinator: AnyObject {
+public protocol AnyNodeCoordinator: AnyObject {
 
   func setHighlighted(_ highlighted: Bool, animated: Bool)
 
@@ -16,8 +16,8 @@ public protocol AnyComponentCoordinator: AnyObject {
 
 }
 
-public protocol ComponentCoordinator: AnyComponentCoordinator {
-  associatedtype Content: Component
+public protocol NodeCoordinator: AnyNodeCoordinator {
+  associatedtype Content: CoordinateNode
   typealias Context = CoordinatorContext<Content, Self>
   var context: Context { get }
 
@@ -26,7 +26,7 @@ public protocol ComponentCoordinator: AnyComponentCoordinator {
   func update(animated: Bool, _ action:(inout Content) -> Void)
 }
 
-extension ComponentCoordinator {
+extension NodeCoordinator {
 
   public var content: Content { context.current() }
 
@@ -49,7 +49,7 @@ extension ComponentCoordinator {
 
 }
 
-public final class CoordinatorContext<Content: Component, Coordinator> {
+public final class CoordinatorContext<Content: CoordinateNode, Coordinator> {
 
   public let current: () -> Content
   public let updated: (Content, Coordinator, Bool) -> Void
@@ -69,8 +69,8 @@ public final class CoordinatorContext<Content: Component, Coordinator> {
 
 }
 
-public final class SimpleCoordinator<Content: Component>: ComponentCoordinator {
-  public typealias Context = CoordinatorContext<Content, SimpleCoordinator<Content>>
+public final class DefaultCoordinator<Content: CoordinateNode>: NodeCoordinator {
+  public typealias Context = CoordinatorContext<Content, DefaultCoordinator<Content>>
   public let context: Context
   public init(with context: Context) {
     self.context = context
