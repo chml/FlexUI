@@ -15,7 +15,7 @@ public struct Image: Node, ViewProducible {
   public enum Source {
     case image(UIImage?)
     case named(String)
-    @available(iOS 13, *)
+//    @available(iOS 13, *)
     case systemName(String)
     case url(_ url: URL?, placeholder: UIImage? = nil)
   }
@@ -44,7 +44,7 @@ extension Image {
         let size = image.size
         yogaNode.style.width = .point(size.width)
         yogaNode.style.height = .point(size.height)
-        viewProducer.appendConfiguration(as: ProductedView.self) { view in
+        viewProducer.appendViewConfig(as: ProductedView.self) { view in
           view.image = image
         }
       }
@@ -54,7 +54,7 @@ extension Image {
         let size = image.size
         yogaNode.style.width = .point(size.width)
         yogaNode.style.height = .point(size.height)
-        viewProducer.appendConfiguration(as: ProductedView.self) { view in
+        viewProducer.appendViewConfig(as: ProductedView.self) { view in
           view.image = image
         }
       }
@@ -64,15 +64,14 @@ extension Image {
         yogaNode.style.width = .point(size.width)
         yogaNode.style.height = .point(size.height)
       }
-      viewProducer.appendConfiguration(as: ProductedView.self) { view in
+      viewProducer.appendViewConfig(as: ProductedView.self) { view in
         view.image = image
       }
     case .url(let url, let placehoder):
-      viewProducer.appendConfiguration(as: ProductedView.self) { (view) in
+      viewProducer.appendViewConfig(as: ProductedView.self) { (view) in
         view.image = placehoder
         if let url = url {
           Nuke.loadImage(with: url, into: view)
-//          view.kf.setURL()
         }
       }
     }

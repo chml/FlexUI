@@ -65,27 +65,24 @@ fileprivate struct AvatarNode: CoordinateNode, Hashable {
   func body(with coordinator: Coordinator) -> AnyNode {
     VStack(alignItems: .stretch) {
       View(of: AvatarView.self)
+        .viewConfig { (v) in
+          coordinator.avatarView = v
+        }
         .height(200)
         .width(.percent(100))
         .flexGrow(1)
         .flexShrink(0)
-        .viewConfig { (v) in
-          DispatchQueue.main.async {
-            v.scrollView = v.findFirstSuperview(is: UIScrollView.self)
-          }
-        }
     }
     .asAnyNode
   }
 
-  final class Coordinator: NSObject, NodeCoordinator, UIGestureRecognizerDelegate {
-    typealias Content = AvatarNode
-    let context: Context
+  final class Coordinator: NodeCoordinator, UIGestureRecognizerDelegate {
+    weak var avatarView: AvatarView? = nil
 
-    weak var imageView: UIImageView? = nil
-
-    init(with context: Context) {
-      self.context = context
+    override func didLoad() {
+      DispatchQueue.main.async { //
+        self.avatarView?.scrollView = self.avatarView?.findFirstSuperview(is: UIScrollView.self)
+      }
     }
   }
 }
@@ -125,15 +122,9 @@ fileprivate struct AlubmNode: CoordinateNode, Hashable {
         })
     )
   }
-  final class Coordinator: NSObject, NodeCoordinator, UIGestureRecognizerDelegate {
-    typealias Content = AlubmNode
-    let context: Context
+  final class Coordinator: NodeCoordinator, UIGestureRecognizerDelegate {
 
     weak var floatingImage: UIView? = nil
-
-    init(with context: Context) {
-      self.context = context
-    }
 
     func config(imageView: UIView, index: Int) {
       imageView.tag = index
@@ -239,7 +230,7 @@ final class UserProfileViewController: UIViewController, CoordinateNode {
   var tags2: [String] = ["是不是", "马上就", "迫不及", "待地"]
 
   typealias Body = AnyNode
-  func body(with coordinator: DefaultCoordinator<UserProfileViewController>) -> AnyNode {
+  func body(with coordinator: NodeCoordinator) -> AnyNode {
     List {
       AvatarNode(id: 3)
       AlubmNode(id: 0, photos: self.album)

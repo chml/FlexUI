@@ -30,24 +30,33 @@ private struct Cell: CoordinateNode {
     self.viewController = vc
   }
 
-  func body(with coordinator: DefaultCoordinator<Cell>) -> AnyNode {
+  func body(with coordinator: Coordinator) -> AnyNode {
     HStack(spacing: 20, alignItems: .center) {
       Text(title)
         .textColor(isHighlighted ? .red : .darkText)
         .flexShrink(1).flexGrow(1)
-      if #available(iOS 13, *) {
-        Image(.systemName("chevron.right.circle.fill"))
-      } else {
-        Text("->")
-          .textColor(isHighlighted ? .red : .darkText)
+      Button("Detail") {
+        coordinator.onDetailClick?()
+      }
+      .viewConfig { btn in
+        btn.backgroundColor = .gray
       }
     }
     .padding(20)
     .asAnyNode
   }
+
+  final class Coordinator: NodeCoordinator {
+    
+    var onDetailClick: (() -> ())? = nil
+
+    override func didLoad() {
+    }
+  }
 }
 
 final class ViewController: UIViewController {
+
 
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -58,6 +67,7 @@ final class ViewController: UIViewController {
           Cell("Flexbox Layout", FlexboxViewController.self)
           Cell("Diffable TableView", DiffTableViewController.self)
           Cell("Diffable CollectionView", DiffCollectionViewController.self)
+          Cell("Playground", PlaygroundViewController.self)
 //          Cell("NodeView && AutoLayout", NodeViewViewController.self)
         }
         Section(id: AnyHashable(1), header: Text("Demo")) {

@@ -84,7 +84,7 @@ public class FlexTree {
     let rootRecycler = ViewRecycler.recycler(for: rootView)
     rootRecycler.prepareRecycling()
     var processedRecylers: [ViewRecycler] = [rootRecycler]
-    var deferConfigs: [() -> Void] = []
+    var viewDidLoads: [() -> Void] = []
 
     struct LayoutNode {
       let node: FlexNode
@@ -106,17 +106,16 @@ public class FlexTree {
           frame.origin.x = max(0, frame.origin.x)
           view.frame = frame
         }
+        viewProducer.viewConfig?(view)
         parentView.addSubview(view)
-        if let config = viewProducer.configure {
-          config(view)
-        }
-        if let config = viewProducer.deferConfigure {
-          deferConfigs.append {
-            config(view)
-          }
-        }
         parentView = view
-        if node.asRootNode {
+        viewDidLoads.append {
+          if let didLoad = viewProducer.viewDidLoad {
+            didLoad(view)
+          }
+          node.coordinator?.didLoad()
+        }
+        if node.isContainerNode {
           recycler = ViewRecycler.recycler(for: view)
           recycler.prepareRecycling()
           processedRecylers.append(recycler)
@@ -126,13 +125,9 @@ public class FlexTree {
         stack.append(.init(node: child, parentView: parentView, recycler: recycler))
       }
     }
-    processedRecylers.forEach {
-      $0.flush()
-    }
-    deferConfigs.forEach {
-      $0()
-    }
 
+    processedRecylers.forEach { $0.flush() }
+    viewDidLoads.forEach { $0() }
   }
 
 }

@@ -77,7 +77,7 @@ struct LiveRoomMessagesNode: CoordinateNode {
   var messages: [LiveRoomMessage]
 
 
-  func body(with coordinator: DefaultCoordinator<LiveRoomMessagesNode>) -> AnyNode {
+  func body(with coordinator: NodeCoordinator) -> AnyNode {
     VStack(alignItems: .stretch) {
       List(data: messages) { msg in
         LiveRoomMessageCell(isCompact: compact, message: msg)

@@ -53,7 +53,7 @@ final class DiffCollectionViewController: UIViewController, CoordinateNode {
     flex.render()
   }
 
-  func body(with coordinator: DefaultCoordinator<DiffCollectionViewController>) -> AnyNode {
+  func body(with coordinator: NodeCoordinator) -> AnyNode {
     List(collection: UICollectionViewFlowLayout(), data: state) { (i) in
       Section(id: i, header: Header(id: i, text: "header \(i)")) {
         ForEach(0..<i) {
@@ -69,7 +69,7 @@ final class DiffCollectionViewController: UIViewController, CoordinateNode {
       }
       endRefreshing()
     })
-    .viewConfig({ (v) in
+    .viewConfig({ v in
       v.backgroundColor = .white
     })
     .width(.percent(100))

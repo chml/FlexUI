@@ -31,7 +31,7 @@ private struct VCComponent: CoordinateNode {
   typealias Body = AnyNode
   let content: () -> AnyNode
 
-  func body(with coordinator: DefaultCoordinator<VCComponent>) -> AnyNode {
+  func body(with coordinator: NodeCoordinator) -> AnyNode {
     return content()
   }
 }

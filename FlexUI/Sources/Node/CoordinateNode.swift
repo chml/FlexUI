@@ -6,83 +6,44 @@
 //
 
 
-public protocol CoordinateNode: Node, ViewProducible {
-  associatedtype Coordinator: NodeCoordinator
+public protocol CoordinateNode: Node, ViewProducible where ProductedView == ComponentView<Self> {
+  typealias NodeCoordinator = _NodeCoordinator<Self>
+  associatedtype Coordinator: AnyNodeCoordinator
 
   func body(with coordinator: Coordinator) -> Body
 
-  func coordinator(with context: CoordinatorContext<Self, Coordinator>) -> Coordinator
-
-  var isHighlightable: Bool { get }
-  var isHighlighted: Bool { get set }
+  func coordinator(with context: CoordinatorContext<Self>) -> Coordinator
 }
 
-extension CoordinateNode where Body == AnyNode {
 
-  public var isHighlightable: Bool { false }
-
-  public var isHighlighted: Bool {
-    get { false }
-    set {}
-  }
-
-  public func body(with coordinator: DefaultCoordinator<Self>) -> AnyNode {
-    fatalError()
-  }
-
-}
-
-extension CoordinateNode where Coordinator.Content == Self {
-  public func coordinator(with context: CoordinatorContext<Self, Coordinator>) -> Coordinator {
+extension CoordinateNode where Coordinator: NodeCoordinator {
+  public func coordinator(with context: CoordinatorContext<Self>) -> Coordinator {
     return Coordinator(with: context)
   }
 }
 
-extension CoordinateNode where Coordinator == DefaultCoordinator<Self>{
-
-  public func coordinator(with context: CoordinatorContext<Self, DefaultCoordinator<Self>>) -> DefaultCoordinator<Self> {
-    DefaultCoordinator(with: context)
-  }
-
-  func body(with coordinator: Coordinator) -> AnyNode {
-    return AnyNode(EmptyNode())
-  }
-
-}
-
-
 extension CoordinateNode {
-  public typealias ProductedView = ComponentView<Self>
   public var isComponent: Bool { return true }
 
   public var body: Body {
-    fatalError("Use body(with coordinator:) instead")
+    fatalError("Use func body(with coordinator:) instead")
   }
 
   public func build(with context: FlexTreeContext) -> [FlexNode] {
-
-//    let mirror = Mirror(reflecting: self)
-//    for child in mirror.children {
-//      print("Mirror:\(String(describing: self)): \(child)")
-//      if let dynamicProperty = child.value as? DynamicProperty {
-//        dynamicProperty.update()
-//        print("String: \(dynamicProperty)")
-//      }
-//    }
-    let flexNode = FlexNode()
+    let containerFlexNode = FlexNode()
     let viewProducer = ViewProducer(type: ProductedView.self)
     viewProducer.reuseID = id
-    flexNode.viewProducer = viewProducer
-    flexNode.asRootNode = true
-    flexNode.isWrapperNode = true
-    flexNode.style.flex = 0
+    containerFlexNode.viewProducer = viewProducer
+    containerFlexNode.isContainerNode = true
+    containerFlexNode.isWrapperNode = true
+    containerFlexNode.style.flex = 0
 
-    let coordinatorContext = CoordinatorContext<Self, Coordinator>(current: {
+    let coordinatorContext = CoordinatorContext<Self>(current: {
       return self as Self
-    }, updated: { [weak flexNode] (content, coordinator, animated) in
-      guard let flexNode = flexNode, let parent = flexNode.parent else { return }
-      if let index = parent.indexOfChild(flexNode) {
-        parent.removeChild(flexNode)
+    }, updated: { [weak containerFlexNode] (content,  animated) in
+      guard let containerFlexNode = containerFlexNode, let parent = containerFlexNode.parent else { return }
+      if let index = parent.indexOfChild(containerFlexNode) {
+        parent.removeChild(containerFlexNode)
         content.build(with: context).forEach { (n) in // It should be only one flexNode in it;
           parent.insertChild(n, at: index)
         }
@@ -100,12 +61,12 @@ extension CoordinateNode {
       }
     })
     let coordinator = self.coordinator(with: coordinatorContext)
-    flexNode.coordinator = coordinator
-    let bodyNodes = body(with: coordinator).build(with: context.with(parent: flexNode))
+    containerFlexNode.coordinator = coordinator
+    let bodyNodes = body(with: coordinator).build(with: context.with(parent: containerFlexNode))
     for n in bodyNodes {
-      flexNode.insertChild(n)
+      containerFlexNode.insertChild(n)
     }
-    return [flexNode]
+    return [containerFlexNode]
   }
 }
 

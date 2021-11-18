@@ -32,6 +32,7 @@
 		CBA9D1632500A77E00A7D1AC /* FlexboxViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBA9D1622500A77E00A7D1AC /* FlexboxViewController.swift */; };
 		CBA9D1672500EFE600A7D1AC /* DiffTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBA9D1662500EFE600A7D1AC /* DiffTableViewController.swift */; };
 		CBAD0B572599D2E60062BFEF /* UIKitViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBAD0B562599D2E60062BFEF /* UIKitViewController.swift */; };
+		CBB7597326DF901B0042E491 /* PlaygroundViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBB7597226DF901B0042E491 /* PlaygroundViewController.swift */; };
 		CBC6F75E24FFC1D3009D7A5C /* LivePreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBC6F75D24FFC1D3009D7A5C /* LivePreview.swift */; };
 		CBD766EF251AF824006A7466 /* BannerNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBD766EE251AF824006A7466 /* BannerNode.swift */; };
 		CBD766F6251B7723006A7466 /* LiveRoomToolBarNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBD766F5251B7723006A7466 /* LiveRoomToolBarNode.swift */; };
@@ -83,6 +84,7 @@
 		CBA9D1622500A77E00A7D1AC /* FlexboxViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlexboxViewController.swift; sourceTree = "<group>"; };
 		CBA9D1662500EFE600A7D1AC /* DiffTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiffTableViewController.swift; sourceTree = "<group>"; };
 		CBAD0B562599D2E60062BFEF /* UIKitViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIKitViewController.swift; sourceTree = "<group>"; };
+		CBB7597226DF901B0042E491 /* PlaygroundViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaygroundViewController.swift; sourceTree = "<group>"; };
 		CBC6F75B24FFC107009D7A5C /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
 		CBC6F75D24FFC1D3009D7A5C /* LivePreview.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LivePreview.swift; sourceTree = "<group>"; };
 		CBD766EE251AF824006A7466 /* BannerNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BannerNode.swift; sourceTree = "<group>"; };
@@ -216,6 +218,7 @@
 				CBA9D1622500A77E00A7D1AC /* FlexboxViewController.swift */,
 				CBA9D1662500EFE600A7D1AC /* DiffTableViewController.swift */,
 				CB4E69432503A8E300FF782D /* DiffCollectionViewController.swift */,
+				CBB7597226DF901B0042E491 /* PlaygroundViewController.swift */,
 			);
 			name = Basic;
 			sourceTree = "<group>";
@@ -453,6 +456,7 @@
 				CBDBC1E7251466E600D7955D /* ListViewAdapter+MagazineLayout.swift in Sources */,
 				CB6CA1B62511BCEC00A4D8C6 /* LiveRoomMessagesNode.swift in Sources */,
 				CB4E69442503A8E300FF782D /* DiffCollectionViewController.swift in Sources */,
+				CBB7597326DF901B0042E491 /* PlaygroundViewController.swift in Sources */,
 				CB4E694A25050C8B00FF782D /* UserProfileViewController.swift in Sources */,
 				CB06273C2508EAE600621727 /* CounterDemoViewController.swift in Sources */,
 				CB6CA1BD2513142600A4D8C6 /* LiveRoomsListViewController.swift in Sources */,

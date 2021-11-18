@@ -55,7 +55,7 @@ public struct ViewConfigModifier<View: UIView>: NodeModifier {
   public func build<T>(node: T, with context: FlexTreeContext) -> [FlexNode] where T : Node {
     let contentYogaNodes = node.build(with: context)
     contentYogaNodes.forEach {
-      $0.viewProducer?.appendConfiguration(as: View.self, config: config)
+      $0.viewProducer?.appendViewConfig(as: View.self, config: config)
     }
     return contentYogaNodes
   }

@@ -19,7 +19,7 @@ public final class ListViewUpdater {
     case reload(data: [Section], isStatic: Bool)
   }
 
-  lazy var layoutQueue:OperationQueue = {
+  private lazy var layoutQueue:OperationQueue = {
     let queue = OperationQueue()
     queue.maxConcurrentOperationCount = 1
     return queue

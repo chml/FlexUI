@@ -8,6 +8,7 @@
 
 import UIKit
 import FlexUI
+import CloudKit
 
 final class CounterDemoViewController: UIViewController, CoordinateNode {
 
@@ -22,10 +23,10 @@ final class CounterDemoViewController: UIViewController, CoordinateNode {
     flex.render()
   }
 
-  func body(with coordinator: DefaultCoordinator<CounterDemoViewController>) -> AnyNode {
+  func body(with coordinator: NodeCoordinator) -> AnyNode {
     VStack(spacing: 20, justifyContent: .center, alignItems: .center) {
-      Text("\(coordinator.content.fontSize)")
-        .font(.boldSystemFont(ofSize: CGFloat(coordinator.content.fontSize)))
+      Text("\(fontSize)")
+        .font(.boldSystemFont(ofSize: CGFloat(fontSize)))
         .padding(UIEdgeInsets(top: 5, left: 8, bottom: 5, right: 8))
         .viewConfig { (label) in
           label.backgroundColor = .gray

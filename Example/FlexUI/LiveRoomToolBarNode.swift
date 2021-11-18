@@ -15,7 +15,7 @@ struct LiveRoomToolBarNode: CoordinateNode {
 
   let iconURLs: [URL]
 
-  func body(with coordinator: DefaultCoordinator<LiveRoomToolBarNode>) -> AnyNode {
+  func body(with coordinator: NodeCoordinator) -> AnyNode {
     HStack {
     }
     .asAnyNode

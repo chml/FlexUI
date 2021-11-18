@@ -8,71 +8,55 @@
 
 public protocol AnyNodeCoordinator: AnyObject {
 
+  // Only Work with UITableViewCell/UICollecionViewCell
   func setHighlighted(_ highlighted: Bool, animated: Bool)
 
+  // Only Work with UITableViewCell/UICollecionViewCell
   func willDisplay(_ view: UIView)
 
+  // Only Work with UITableViewCell/UICollecionViewCell
   func didEndDisplaying(_ view: UIView)
 
+  // 调用时，UIView Tree 已经完成构建和布局
+  func didLoad()
+
 }
 
-public protocol NodeCoordinator: AnyNodeCoordinator {
-  associatedtype Content: CoordinateNode
-  typealias Context = CoordinatorContext<Content, Self>
-  var context: Context { get }
+open class _NodeCoordinator<ContentNode: CoordinateNode>: NSObject, AnyNodeCoordinator {
+  public typealias Context = CoordinatorContext<ContentNode>
+  public let context: Context
 
-  init(with context: Context)
-
-  func update(animated: Bool, _ action:(inout Content) -> Void)
-}
-
-extension NodeCoordinator {
-
-  public var content: Content { context.current() }
-
-  public func update(animated: Bool = false, _ action:(inout Content) -> Void) {
-    context.update(with: self, animated: animated, action)
+  required public init(with context: Context) {
+    self.context = context
   }
 
-  public func setHighlighted(_ highlighted: Bool, animated: Bool) {
-    let current = context.current()
-    if current.isHighlightable && current.isHighlighted != highlighted {
-      context.update(with: self, animated: animated) {
-        $0.isHighlighted = highlighted
-      }
-    }
+  public func update(animated: Bool = false, _ updater: (inout ContentNode) -> Void) {
+    context.update(animated: animated, updater)
   }
 
-  public func willDisplay(_ view: UIView) { }
-  
-  public func didEndDisplaying(_ view: UIView) { }
-
+  open func setHighlighted(_ highlighted: Bool, animated: Bool) { }
+  open func willDisplay(_ view: UIView) { }
+  open func didEndDisplaying(_ view: UIView) { }
+  open func didLoad() { }
 }
 
-public final class CoordinatorContext<Content: CoordinateNode, Coordinator> {
 
-  public let current: () -> Content
-  public let updated: (Content, Coordinator, Bool) -> Void
-  public var onContentUpdated: ((Content) -> Void)? = nil
+public struct CoordinatorContext<ContentNode: CoordinateNode> {
 
-  public init(current: @escaping () -> Content, updated: @escaping (Content, Coordinator, Bool) -> Void) {
+  public let current: () -> ContentNode
+  public let updated: (ContentNode, _ animated: Bool) -> Void
+  public var onContentUpdated: ((ContentNode) -> Void)? = nil
+
+  public init(current: @escaping () -> ContentNode, updated: @escaping (ContentNode,  Bool) -> Void) {
     self.current = current
     self.updated = updated
   }
 
-  public func update(with coordinator: Coordinator, animated: Bool = false, _ action:(inout Content) -> Void) {
+  public func update(animated: Bool = false, _ action:(inout ContentNode) -> Void) {
     var new = current()
     action(&new)
     onContentUpdated?(new)
-    updated(new, coordinator, animated)
+    updated(new, animated)
   }
 
-}
-
-public final class DefaultCoordinator<Content: CoordinateNode>: NodeCoordinator {
-  public typealias Context = CoordinatorContext<Content, DefaultCoordinator<Content>>
-  public let context: Context
-  public init(with context: Context) {
-    self.context = context
-  }
 }

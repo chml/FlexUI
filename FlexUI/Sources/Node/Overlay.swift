@@ -46,14 +46,17 @@ extension Overlay {
         yogaNode.insertChild($0)
       }
       content.build(with: context).forEach {
+        yogaNode.copySytle(from: $0)
         yogaNode.insertChild($0)
       }
     case .background(let backgroundContent):
       content.build(with: context).forEach {
+        yogaNode.copySytle(from: $0)
         yogaNode.insertChild($0)
       }
       backgroundContent.build(with: context).forEach {
         $0.style.postionType = .absolute
+//        $0.style.position(of: .all)
         yogaNode.insertChild($0)
       }
     }

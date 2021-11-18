@@ -19,8 +19,9 @@ struct BannerCell: Node, Hashable {
           v.contentMode = .scaleAspectFill
           v.layer.cornerRadius = 10
           v.layer.masksToBounds = true
+          v.backgroundColor = .random
         })
-        .width(.percent(95))
+        .width(.percent(90))
         .aspectRatio(16.0/9)
     }
     .width(.percent(100))
@@ -29,7 +30,37 @@ struct BannerCell: Node, Hashable {
   }
 }
 
+final class SurroundLayout: UICollectionViewFlowLayout {
+  override init() {
+    super.init()
+    minimumLineSpacing = 0
+    minimumInteritemSpacing = 0
+    scrollDirection = .horizontal
+  }
+
+  required init?(coder: NSCoder) {
+    fatalError("init(coder:) has not been implemented")
+  }
+
+  override func shouldInvalidateLayout(forBoundsChange newBounds: CGRect) -> Bool {
+    true
+  }
+
+  override func layoutAttributesForElements(in rect: CGRect) -> [UICollectionViewLayoutAttributes]? {
+    let results = super.layoutAttributesForElements(in: rect)
+    guard let bounds = collectionView?.bounds else {
+      return results
+    }
+    results?.forEach({ attr in
+      let scale: CGFloat = (1 - (abs(attr.frame.midX - bounds.midX)/(bounds.width)/2))
+      attr.transform = .init(scaleX: scale, y: scale)
+    })
+    return results
+  }
+}
+
 struct BannerNode: CoordinateNode {
+
   typealias Body = AnyNode
 
   let bannerImageURLs: [URL]
@@ -43,12 +74,12 @@ struct BannerNode: CoordinateNode {
     bannerImageURLs == other.bannerImageURLs && $onSelect === other.$onSelect
   }
 
-  private var layout: UICollectionViewFlowLayout {
-    let ret = UICollectionViewFlowLayout()
-    ret.scrollDirection = .horizontal
-    ret.minimumInteritemSpacing = 0
-    ret.minimumLineSpacing = 0
-    ret.sectionInset = .zero
+  private var layout: SurroundLayout {
+    let ret = SurroundLayout()
+//    ret.scrollDirection = .horizontal
+//    ret.minimumInteritemSpacing = 0
+//    ret.minimumLineSpacing = 0
+//    ret.sectionInset = .zero
     return ret
   }
 
@@ -64,38 +95,32 @@ struct BannerNode: CoordinateNode {
         v.isPagingEnabled = true
         v.backgroundColor = .white
         v.transform = CGAffineTransform(scaleX: -1, y: 1)
+        v.clipsToBounds = false
         coordinator.collectionView = v
       }
       .height(.percent(100))
     }
-    .width(.percent(100))
+    .width(.percent(80))
     .aspectRatio(16.0/9)
     .asAnyNode
   }
 
   final class Coordinator: NodeCoordinator {
-    typealias Content = BannerNode
-    let context: Context
-    var collectionView: UICollectionView? = nil {
-      didSet {
-        startAutoScrolling()
-      }
-    }
+    var collectionView: UICollectionView!
     var timer: Timer? = nil
 
     deinit {
       timer?.invalidate()
     }
 
-    required init(with context: Context) {
-      self.context = context
+    override func didLoad() {
     }
 
     func startAutoScrolling() {
       guard let _ = collectionView else { return }
       timer?.invalidate()
-      timer = Timer(fire: Date(), interval: 3, repeats: true, block: { [weak self] (_) in
-      })
+//      timer = Timer(fire: Date(), interval: 3, repeats: true, block: { [weak self] (_) in
+//      })
     }
 
   }

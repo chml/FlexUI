@@ -40,13 +40,13 @@ extension View where T == UIView, Children == EmptyNode {
 extension View {
 
   public func build(with context: FlexTreeContext) -> [FlexNode] {
-    let node = FlexNode()
+    let yogaNode = FlexNode()
     let viewProducer = ViewProducer(type: T.self)
-    node.viewProducer = viewProducer
-    children.build(with: context.with(parent: node)).forEach { (n) in
-      node.insertChild(n)
+    yogaNode.viewProducer = viewProducer
+    children.build(with: context.with(parent: yogaNode)).forEach { (n) in
+      yogaNode.insertChild(n)
     }
-    return [node]
+    return [yogaNode]
   }
 
 }

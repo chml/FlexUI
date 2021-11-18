@@ -107,12 +107,21 @@ extension List where View: UICollectionView, Data: Collection, Element == Data.E
 
 extension List where View: UITableView, Data == Void, Element == Void {
 
+  private static func tableView(of style: View.Style) -> View {
+    View(frame: .zero, style: style)
+      .then {
+        $0.separatorStyle = .none
+      }
+  }
+
   public init(@SectionBuilder sectionBuilder: @escaping () -> SectionBuildable) {
     self.init(table: .plain, sectionBuilder: sectionBuilder)
   }
 
   public init(table style: View.Style, @SectionBuilder sectionBuilder: @escaping () -> SectionBuildable) {
-    self.init(of: View.self, maker: { View(frame: .zero, style: style) }, sectionBuilder: sectionBuilder)
+    self.init(of: View.self,
+              maker: { Self.tableView(of: style) },
+              sectionBuilder: sectionBuilder)
   }
 
   public init(@CellBuilder cellBuilder: @escaping () -> CellBuildable) {
@@ -120,19 +129,25 @@ extension List where View: UITableView, Data == Void, Element == Void {
   }
 
   public init(table style: View.Style, @CellBuilder cellBuilder: @escaping () -> CellBuildable) {
-    self.init(of: View.self, maker: { View(frame: .zero, style: style) }, cellBuilder: cellBuilder)
+    self.init(of: View.self,
+              maker: { Self.tableView(of: style) },
+              cellBuilder: cellBuilder)
   }
 
 }
 
 extension List where View: UICollectionView, Data == Void, Element == Void {
 
+  private static func collectionView(with layout: UICollectionViewLayout) -> View {
+    View(frame: .zero, collectionViewLayout: layout)
+  }
+
   public init(collection layout: UICollectionViewLayout, @SectionBuilder sectionBuilder: @escaping () -> SectionBuildable) {
-    self.init(of: View.self, maker: { View(frame: .zero, collectionViewLayout: layout) }, sectionBuilder: sectionBuilder)
+    self.init(of: View.self, maker: { Self.collectionView(with: layout)  }, sectionBuilder: sectionBuilder)
   }
 
   public init(collection layout: UICollectionViewLayout, @CellBuilder cellBuilder: @escaping () -> CellBuildable) {
-    self.init(of: View.self, maker: { View(frame: .zero, collectionViewLayout: layout) }, cellBuilder: cellBuilder)
+    self.init(of: View.self, maker: { Self.collectionView(with: layout) }, cellBuilder: cellBuilder)
   }
 
 }
@@ -209,7 +224,7 @@ extension List {
   }
 
   private func configureListView(with provider: ViewProducer) {
-    provider.appendDeferConfiguration(as: ProductedView.self) { view in
+    provider.appendViewConfig(as: ProductedView.self) { view in
       if view.listAdapter == nil {
         ListViewAdapter().listView = view
       }

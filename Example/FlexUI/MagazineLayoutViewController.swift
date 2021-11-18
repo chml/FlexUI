@@ -63,7 +63,7 @@ final class MagazineLayoutViewController: UIViewController, CoordinateNode {
     flex.render()
   }
 
-  func body(with coordinator: DefaultCoordinator<MagazineLayoutViewController>) -> AnyNode {
+  func body(with coordinator: NodeCoordinator) -> AnyNode {
     List(collection: layout, data: [("Online", online), ("Offline", offline)]) { data in
       Section(id: data.0, header: LiveRoomHeader(id: data.0, text: data.0)) {
         if data.0 == "Online" {

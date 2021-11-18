@@ -73,7 +73,7 @@ final class LiveRoomViewController: UIViewController, CoordinateNode {
   }
 
   func fullScreenButton(_ coordinator: Coordinator) -> AnyNode {
-    let isFullScreen = coordinator.content.displayMode != .portraintNormal
+    let isFullScreen = displayMode != .portraintNormal
     let title = isFullScreen ? "◢◤" : "◤◢"
     return Button(title) {
       coordinator.update(animated: true) { (vc) in
@@ -98,7 +98,7 @@ final class LiveRoomViewController: UIViewController, CoordinateNode {
     return insets
   }
 
-  func body(with coordinator: DefaultCoordinator<LiveRoomViewController>) -> AnyNode {
+  func body(with coordinator: NodeCoordinator) -> AnyNode {
     let insets = safeInsets()
     if insets == .zero { return EmptyNode().asAnyNode }
     switch displayMode {

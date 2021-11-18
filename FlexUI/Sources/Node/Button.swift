@@ -53,7 +53,7 @@ extension Button {
       let attr = MPITextRenderAttributes(builder: attrBuilder)
       let titleSize = MPITextSuggestFrameSizeForAttributes(attr, CGSize(width: CGFloat.greatestFiniteMagnitude, height: CGFloat.greatestFiniteMagnitude), UIEdgeInsets(top: 6, left: 2, bottom: 6, right: 2))
       size = titleSize
-      viewProducer.appendConfiguration(as: ProductedView.self) { (v) in
+      viewProducer.appendViewConfig(as: ProductedView.self) { (v) in
         v.setTitle(title, for: .normal)
       }
     case .custom(let image, let url, let title, let font):
@@ -72,7 +72,7 @@ extension Button {
       }
 
       size = totalSize
-      viewProducer.appendConfiguration(as: ProductedView.self) { (v) in
+      viewProducer.appendViewConfig(as: ProductedView.self) { (v) in
         if let font = font {
           v.titleLabel?.font = font
         }
@@ -97,7 +97,7 @@ extension Button {
       buttonType = .contactAdd
       size = CGSize(width: 25, height: 25)
     }
-    viewProducer.appendConfiguration(as: ProductedView.self) {
+    viewProducer.appendViewConfig(as: ProductedView.self) {
       $0.flex.action = self.action
     }
     viewProducer.viewMaker = { UIButton(type: buttonType) }

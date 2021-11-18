@@ -6,7 +6,7 @@
 //
 
 
-extension CoordinateNode where Self == Self.Coordinator.Content {
+extension CoordinateNode {
 
   public func coordinate(_ setup: @escaping (Self.Coordinator) -> ()) -> ModifiedContent<Self, CoordinateNodeModifier<Self>> {
     modifier(CoordinateNodeModifier(setup: setup))
@@ -14,7 +14,7 @@ extension CoordinateNode where Self == Self.Coordinator.Content {
 
 }
 
-public struct CoordinateNodeModifier<Content: CoordinateNode>: NodeModifier where Content.Coordinator.Content == Content {
+public struct CoordinateNodeModifier<Content: CoordinateNode>: NodeModifier {
 
   let setup: (Content.Coordinator) -> Void
 

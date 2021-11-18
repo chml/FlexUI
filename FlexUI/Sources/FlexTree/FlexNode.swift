@@ -78,8 +78,8 @@ public final class FlexNode {
     }
   }
 
-  public var asRootNode: Bool = false // for View Recycler
-  public var viewProducer: ViewProducer?
+  public var isContainerNode: Bool = false // for View Recycler
+  public var viewProducer: ViewProducerType?
   public var coordinator: AnyNodeCoordinator? = nil
 
   public var isLeaf: Bool {

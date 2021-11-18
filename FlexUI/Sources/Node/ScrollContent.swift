@@ -27,10 +27,8 @@ public struct ScrollContent<Content: Node>: Node, ViewProducible {
 extension ScrollContent {
   public func build(with context: FlexTreeContext) -> [FlexNode] {
     let viewProducer = ViewProducer(type: ProductedView.self)
-    viewProducer.appendDeferConfiguration(as: ProductedView.self) { (view) in
-      DispatchQueue.main.async {
+    viewProducer.appendViewDidLoad(as: ProductedView.self) { (view) in
         view.adjustContentSizeForSubviews()
-      }
     }
     let yogaNode = FlexNode()
     yogaNode.viewProducer = viewProducer
@@ -41,13 +39,13 @@ extension ScrollContent {
     let contentYogaNodes = content.build(with: context.with(parent: yogaNode))
     containerYogaNode.viewProducer = ViewProducer(type: UIView.self)
 
-    containerYogaNode.viewProducer?.appendDeferConfiguration(config: { (v) in
+    containerYogaNode.viewProducer?.appendViewDidLoad { (v) in
       // WORKAROUND FIX for Horizontal Scrolling in RTL
       // TODO: Refactor
       var frame = v.frame
       frame.origin = .zero
       v.frame = frame
-    })
+    }
     
     contentYogaNodes.forEach { (child) in
       containerYogaNode.insertChild(child)

@@ -22,6 +22,7 @@ fileprivate struct Cell: Node, Hashable {
 }
 
 final class DiffTableViewController: UIViewController, CoordinateNode {
+
   typealias Body = AnyNode
 
   var state: [Int] = Array(0..<20)
@@ -31,7 +32,7 @@ final class DiffTableViewController: UIViewController, CoordinateNode {
     flex.render()
   }
 
-  func body(with coordinator: DefaultCoordinator<DiffTableViewController>) -> AnyNode {
+  func body(with coordinator: NodeCoordinator) -> AnyNode {
     List(table: .grouped, data: state) { (i) in
       Cell(text:  i%2 == 1 ? "Row \(i)\nThat's odd?" : "Row \(i)")
     }

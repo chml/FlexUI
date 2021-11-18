@@ -55,7 +55,7 @@ struct LiveRoomCell: CoordinateNode  {
     self.room = room
     self.widthPercent = widthPercent
   }
-  func body(with coordinator: DefaultCoordinator<LiveRoomCell>) -> AnyNode {
+  func body(with coordinator: NodeCoordinator) -> AnyNode {
     View {
       VStack(alignItems: .stretch) {
         Image(.url(room.imageURL))
@@ -132,7 +132,7 @@ final class LiveRoomsListViewController: UIViewController, CoordinateNode {
     flex.render()
   }
 
-  func body(with coordinator: DefaultCoordinator<LiveRoomsListViewController>) -> AnyNode {
+  func body(with coordinator: NodeCoordinator) -> AnyNode {
 
     List(collection: layout) {
       Section(id: "banners") {

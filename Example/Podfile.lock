@@ -1,9 +1,9 @@
 PODS:
-  - DifferenceKit (1.1.5):
-    - DifferenceKit/Core (= 1.1.5)
-    - DifferenceKit/UIKitExtension (= 1.1.5)
-  - DifferenceKit/Core (1.1.5)
-  - DifferenceKit/UIKitExtension (1.1.5):
+  - DifferenceKit (1.2.0):
+    - DifferenceKit/Core (= 1.2.0)
+    - DifferenceKit/UIKitExtension (= 1.2.0)
+  - DifferenceKit/Core (1.2.0)
+  - DifferenceKit/UIKitExtension (1.2.0):
     - DifferenceKit/Core
   - FLAnimatedImage (1.0.16)
   - FlexUI (0.1.0):
@@ -24,7 +24,7 @@ PODS:
     - libwebp/demux
   - libwebp/webp (1.1.0)
   - MagazineLayout (1.6.4)
-  - MPITextKit (0.1.8)
+  - MPITextKit (0.1.9)
   - Nuke (9.5.0)
   - Nuke-WebP-Plugin (5.0.0):
     - libwebp (= 1.1.0)
@@ -56,12 +56,12 @@ EXTERNAL SOURCES:
     :path: "../"
 
 SPEC CHECKSUMS:
-  DifferenceKit: 516f12e336ed65a3a0665847b5c3cb5cad4bd4ea
+  DifferenceKit: 5659c430bb7fe45876fa32ce5cba5d6167f0c805
   FLAnimatedImage: 8f3e854ebf9680b71f0b6e700939687fc4d82b4b
-  FlexUI: c6fc337f5618ddae398d4e3fd8afd237967a92a8
+  FlexUI: 367c0fea114635fa27e689ae1307796faa2c0c8a
   libwebp: 946cb3063cea9236285f7e9a8505d806d30e07f3
   MagazineLayout: 10598ab8b3554c224b75da32b613c76becd9786c
-  MPITextKit: 475a22b8df57c42c8c040bf95df47427642199ad
+  MPITextKit: 50b85bc96d04fbb975c34c7e65fbaa787279b4da
   Nuke: 6f400a4ea957e09149ec335a3c6acdcc814d89e4
   Nuke-WebP-Plugin: a79a97be508453ce5c36b78989595cbbc19c2deb
   Runtime: 67741bd196fb4ad821c4d259ccc527bf734d8806

@@ -7,6 +7,7 @@
 
 import UIKit
 
+// `UITableView` `UICollectionView` 抽象接口
 public protocol ListView: UIView {
 
   var contentOffset: CGPoint { get }
@@ -26,12 +27,12 @@ public protocol ListView: UIView {
   func setup(with adapter: ListViewAdapter)
 
   func registerCell(for viewClass: AnyClass?, reuseID: String)
+
   func registerHeaderFooterView(for viewClass: AnyClass?, kind: String?, reuseID: String)
 
   func adjustContentOffsetIfNeeded(_ offset: CGPoint)
 
   var infiniteScrollFooter: InfiniteScrollFooter { get }
-
 }
 
 public class ListUpdates {

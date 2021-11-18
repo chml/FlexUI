@@ -6,6 +6,7 @@
 //
 
 import MPITextKit
+import UIKit
 
 public struct Text: Node, ViewProducible {
   public typealias Body = Never
@@ -32,30 +33,22 @@ public struct Text: Node, ViewProducible {
     case .verbatim(let str):
       var attr: [NSAttributedString.Key: Any] = [.font: UIFont.preferredFont(forTextStyle: .body),
                                                  .foregroundColor: UIColor.darkText]
-      modifiers.forEach {
-        switch $0 {
-        case .font(let font):
-          attr[.font] = font
+      for modeifier in modifiers {
+        switch modeifier {
+        case .numberOfLines: break
+        case .textAlignment: break
         case .textColor(let color):
           attr[.foregroundColor] = color
-        default: break
+        case .font(let font):
+          attr[.font] = font
         }
       }
+
       return NSAttributedString(string: str, attributes: attr)
     }
   }
 
-  var numberOfLines: Int {
-    for modifier in modifiers {
-      switch modifier {
-      case .numberOfLines(let lines): return lines
-      default: break
-      }
-    }
-    return 0
-  }
-
-  init(storage: Storage, modifiers: [Modifier]) {
+  init(storage: Storage, modifiers: [Modifier] = []) {
     self.storage = storage
     self.modifiers = modifiers
   }
@@ -63,11 +56,11 @@ public struct Text: Node, ViewProducible {
 
 extension Text {
   public init(_ string: NSAttributedString) {
-    self.init(storage: .attributed(string), modifiers: [])
+    self.init(storage: .attributed(string))
   }
 
   public init(_ string: String) {
-    self.init(storage: .verbatim(string), modifiers: [])
+    self.init(storage: .verbatim(string))
   }
 }
 
@@ -101,34 +94,45 @@ extension Text {
 extension Text {
   public func build(with context: FlexTreeContext) -> [FlexNode] {
     let yogaNode = FlexNode()
-    let viewProducer = ViewProducer(type: ProductedView.self)
-    yogaNode.measureFunc = { (node, width, widthMode, height, heightMode) in
+    let viewProducer = TextViewProducer(type: ProductedView.self)
+    yogaNode.measureFunc = {  (node, width, widthMode, height, heightMode) in
+      let attrStr = NSMutableAttributedString(attributedString: self.attributedString)
       let attrBuilder = MPITextRenderAttributesBuilder()
-      attrBuilder.attributedText = self.attributedString
-      attrBuilder.maximumNumberOfLines = UInt(self.numberOfLines)
+      attrBuilder.maximumNumberOfLines = 0
+      for modifier in self.modifiers {
+        switch modifier {
+        case .numberOfLines(let lines):
+          attrBuilder.maximumNumberOfLines = UInt(lines)
+        case .textAlignment(let alignment):
+          attrStr.mpi_setAlignment(alignment, range: .init(location: 0, length: attrStr.length))
+        case .textColor: break
+        case .font: break
+        }
+      }
+      attrBuilder.attributedText = attrStr
       let attr = MPITextRenderAttributes(builder: attrBuilder)
-      let fitSize = CGSize(width: width, height: height).normalized
-      var size = MPITextSuggestFrameSizeForAttributes(attr, fitSize, .zero)
+      let renderer = MPITextRenderer(renderAttributes: attr,
+                                     constrainedSize: CGSize(width: widthMode == .undefined ? .greatestFiniteMagnitude : width,
+                                                             height: heightMode == .undefined ? .greatestFiniteMagnitude : height))
+      viewProducer.textRenderer = renderer
+      var size = renderer.size()
       size.width = ceil(size.width)
       size.height = ceil(size.height)
       return size
     }
-    viewProducer.appendConfiguration(as: ProductedView.self) { [weak yogaNode] label in
+    
+    viewProducer.appendViewConfig(as: ProductedView.self) { [weak yogaNode] label in
       let padding = yogaNode?.style.paddingInsets() ?? .zero
       label.textContainerInset = padding
-      label.numberOfLines = 0
-      for modifier in self.modifiers {
-        switch modifier {
-        case .numberOfLines(let lines):
-          label.numberOfLines = lines
-        case .textAlignment(let align):
-          label.textAlignment = align
-        default: break
-        }
+      if let viewProducer = yogaNode?.viewProducer as? TextViewProducer {
+        label.textRenderer = viewProducer.textRenderer
       }
-      label.attributedText = self.attributedString
     }
     yogaNode.viewProducer = viewProducer
     return [yogaNode]
   }
+}
+
+private final class TextViewProducer: ViewProducer {
+  var textRenderer: MPITextRenderer? = nil
 }

@@ -19,27 +19,7 @@ extension Node {
   public var isComponent: Bool { false }
 
   public func build(with context: FlexTreeContext) -> [FlexNode] {
-//    if isComponent {
-//
-//      let mirror = Mirror(reflecting: self)
-//      for child in mirror.children {
-//        print("Mirror:\(String(describing: self)): \(child)")
-//      }
-//      let flexNode = FlexNode()
-//      flexNode.isWrapperNode = true
-//      flexNode.style.flex = 0
-//      let viewProducer = ViewProducer(type: ComponentView<Self>.self)
-//      viewProducer.reuseID = id
-//      flexNode.viewProducer = viewProducer
-//      flexNode.asRootNode = true
-//      let bodyNodes = body.build(with: context)
-//      bodyNodes.forEach { (n) in
-//        flexNode.insertChild(n)
-//      }
-//      return [flexNode]
-//    } else{
-      return body.build(with: context)
-//    }
+    return body.build(with: context)
   }
 }
 

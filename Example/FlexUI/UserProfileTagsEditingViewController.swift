@@ -87,11 +87,6 @@ private struct TagCell: CoordinateNode {
   }
 
   final class Coordinator: NodeCoordinator {
-    typealias Content = TagCell
-    let context: Context
-    init(with context: Context) {
-      self.context = context
-    }
 
     @objc
     func textChanged(_ sender: UITextField) {
@@ -132,7 +127,7 @@ final class UserProfileTagsEditingViewController: UIViewController, CoordinateNo
     self.dismiss(animated: true, completion: nil)
   }
 
-  func body(with coordinator: DefaultCoordinator<UserProfileTagsEditingViewController>) -> AnyNode {
+  func body(with coordinator: NodeCoordinator) -> AnyNode {
     List(table: .grouped, data: self.tags) {
       TagCell(editingText: $0, onDelete: { (tag) in
         print("onDelete \(Unmanaged.passUnretained(coordinator).toOpaque())")
