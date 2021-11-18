@@ -38,28 +38,34 @@ public struct Overlay<Content: Node, OverlayContent: Node>: Node {
 
 extension Overlay {
   public func build(with context: FlexTreeContext) -> [FlexNode] {
-    let yogaNode = FlexNode()
+    let flexNode = FlexNode()
     switch overlay {
     case .overlay(let overlayContent):
       overlayContent.build(with: context).forEach {
         $0.style.postionType = .absolute
-        yogaNode.insertChild($0)
+        flexNode.insertChild($0)
       }
       content.build(with: context).forEach {
-        yogaNode.copySytle(from: $0)
-        yogaNode.insertChild($0)
+        flexNode.copySytle(from: $0)
+        if $0.nodeType == .text {
+          flexNode.style.setPadding(of: .all, value: .point(0))
+        }
+        flexNode.insertChild($0)
       }
     case .background(let backgroundContent):
       content.build(with: context).forEach {
-        yogaNode.copySytle(from: $0)
-        yogaNode.insertChild($0)
+        flexNode.copySytle(from: $0)
+        if $0.nodeType == .text {
+          flexNode.style.setPadding(of: .all, value: .point(0))
+        }
+        flexNode.insertChild($0)
       }
       backgroundContent.build(with: context).forEach {
         $0.style.postionType = .absolute
-//        $0.style.position(of: .all)
-        yogaNode.insertChild($0)
+        flexNode.insertChild($0)
       }
     }
-    return [yogaNode]
+    flexNode.style.flex = 0
+    return [flexNode]
   }
 }

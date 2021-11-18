@@ -28,7 +28,7 @@ extension ScrollContent {
   public func build(with context: FlexTreeContext) -> [FlexNode] {
     let viewProducer = ViewProducer(type: ProductedView.self)
     viewProducer.appendViewDidLoad(as: ProductedView.self) { (view) in
-        view.adjustContentSizeForSubviews()
+      view.adjustContentSizeForSubviews()
     }
     let yogaNode = FlexNode()
     yogaNode.viewProducer = viewProducer

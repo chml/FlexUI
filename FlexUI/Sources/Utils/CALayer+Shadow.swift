@@ -12,7 +12,9 @@ extension CALayer {
     shadowColor = shadow.color.cgColor
     shadowOffset = CGSize(width: shadow.offset.x, height: shadow.offset.y)
     shadowRadius = shadow.blur / 2.0
-    let path = UIBezierPath(roundedRect: bounds, byRoundingCorners: maskedCorners.uiRectCorner, cornerRadii: CGSize(width: cornerRadius, height: cornerRadius))
+    shadowOpacity = shadow.alpha
+    let rect = bounds.insetBy(dx: -shadow.spread, dy: -shadow.spread)
+    let path = UIBezierPath(roundedRect: rect, byRoundingCorners: maskedCorners.uiRectCorner, cornerRadii: CGSize(width: cornerRadius, height: cornerRadius))
     if animated {
       let anim = CABasicAnimation(keyPath: #keyPath(shadowPath))
       anim.toValue = path.cgPath

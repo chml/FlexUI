@@ -10,12 +10,15 @@ import UIKit
 import FlexUI
 
 private func block(color: UIColor = .random, size: CGSize = .init(width: 100, height: 100)) -> AnyNode {
-  AnyNode(View(of: UIView.self)
+  View(of: UIView.self)
     .width(size.width)
     .height(size.height)
     .viewConfig { (v) in
+      v.layer.cornerRadius = 5
+      v.layer.masksToBounds = true
       v.backgroundColor = color
-  })
+    }
+    .asAnyNode
 }
 
 final class FlexboxViewController: UIViewController {
@@ -27,7 +30,7 @@ final class FlexboxViewController: UIViewController {
     view.backgroundColor = .white
     let cond = true
 
-    let shadow = Shadow(color: .gray, offset: .init(x: 0, y: 1), blur: 2)
+    let shadow = Shadow(color: .init(white: 0, alpha: 0.5), offset: .init(x: 0, y: 2), blur: 10, spread: -1)
 
     let body =
       VStack(spacing: 10) {
@@ -38,14 +41,15 @@ final class FlexboxViewController: UIViewController {
               block(size: CGSize(width: 40, height: 40))
               block(size: CGSize(width: 40, height: 40))
             }
+            .dropShadow(shadow)
             .bottom(10)
             .end(10)
         }
 
         if cond {
-          block(size: CGSize(width: 50, height: 50))
+          block(color: .blue, size: CGSize(width: 50, height: 50))
             .alignSelf(.center)
-            .dropShadow(shadow)
+            .dropShadow(shadow, cornerRadius: 5)
         }
 
         HStack(spacing: 8, wrap: .noWrap) {
@@ -59,10 +63,14 @@ final class FlexboxViewController: UIViewController {
                 v.layer.cornerRadius = 5
                 v.layer.masksToBounds = true
               }
+              .dropShadow(shadow, cornerRadius: 5)
           }
         }
-        .padding(of: .horizontal, 8)
+        .padding(of: .all, 8)
         .scrollable()
+        .viewConfig { v in
+          v.clipsToBounds = false
+        }
 
         block()
 
@@ -76,7 +84,7 @@ final class FlexboxViewController: UIViewController {
                 v.backgroundColor = .init(red: 0.95, green: 0.95, blue: 0.95, alpha: 1)
                 v.layer.cornerRadius = 5
                 v.layer.masksToBounds = true
-            }
+              }
           }
         }
 
@@ -90,8 +98,12 @@ final class FlexboxViewController: UIViewController {
           .padding(40)
           .viewConfig { v in
             v.backgroundColor = .lightGray
+            v.layer.cornerRadius = 10
+            v.layer.masksToBounds = true
           }
+          .dropShadow(shadow, cornerRadius: 10)
       }
+      .padding(10)
       .scrollable()
       .width(.percent(100))
       .height(.percent(100))

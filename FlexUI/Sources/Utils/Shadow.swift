@@ -6,6 +6,7 @@
 //
 
 public struct Shadow {
+  public var alpha: Float = 1
   public var color: UIColor
   public var offset: CGPoint
   public var blur: CGFloat

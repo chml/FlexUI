@@ -93,9 +93,10 @@ extension Text {
 
 extension Text {
   public func build(with context: FlexTreeContext) -> [FlexNode] {
-    let yogaNode = FlexNode()
+    let flexNode = FlexNode()
+    flexNode.nodeType = .text
     let viewProducer = TextViewProducer(type: ProductedView.self)
-    yogaNode.measureFunc = {  (node, width, widthMode, height, heightMode) in
+    flexNode.measureFunc = {  (node, width, widthMode, height, heightMode) in
       let attrStr = NSMutableAttributedString(attributedString: self.attributedString)
       let attrBuilder = MPITextRenderAttributesBuilder()
       attrBuilder.maximumNumberOfLines = 0
@@ -121,15 +122,15 @@ extension Text {
       return size
     }
     
-    viewProducer.appendViewConfig(as: ProductedView.self) { [weak yogaNode] label in
-      let padding = yogaNode?.style.paddingInsets() ?? .zero
+    viewProducer.appendViewConfig(as: ProductedView.self) { [weak flexNode] label in
+      let padding = flexNode?.style.paddingInsets() ?? .zero
       label.textContainerInset = padding
-      if let viewProducer = yogaNode?.viewProducer as? TextViewProducer {
+      if let viewProducer = flexNode?.viewProducer as? TextViewProducer {
         label.textRenderer = viewProducer.textRenderer
       }
     }
-    yogaNode.viewProducer = viewProducer
-    return [yogaNode]
+    flexNode.viewProducer = viewProducer
+    return [flexNode]
   }
 }
 

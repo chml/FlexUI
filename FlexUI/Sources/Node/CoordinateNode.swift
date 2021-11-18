@@ -62,8 +62,7 @@ extension CoordinateNode {
     })
     let coordinator = self.coordinator(with: coordinatorContext)
     containerFlexNode.coordinator = coordinator
-    let bodyNodes = body(with: coordinator).build(with: context.with(parent: containerFlexNode))
-    for n in bodyNodes {
+    body(with: coordinator).build(with: context.with(parent: containerFlexNode)).forEach { n in
       containerFlexNode.insertChild(n)
     }
     return [containerFlexNode]
